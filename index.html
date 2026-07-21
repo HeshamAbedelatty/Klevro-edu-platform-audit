@@ -215,6 +215,33 @@
   .rc-block p{margin:0; color:var(--ink-soft); font-size:15px; max-width:none;}
   .rc-block code{font-family:var(--font-m); background:#EEF1F4; padding:1px 6px; border-radius:5px; font-size:13.5px; direction:ltr; display:inline-block; color:var(--navy-2);}
 
+  /* ===== PROPOSED ARCHITECTURE DIAGRAM ===== */
+  .arch-box{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:30px 26px 10px; max-width:1080px;
+  }
+  .arch-flow{display:flex; flex-direction:column; align-items:center; padding:10px 10px 30px;}
+  .arch-node{
+    background:#FAFAF8; border:1px solid var(--line); border-radius:12px; padding:14px 24px;
+    font-family:var(--font-m); font-size:13.5px; text-align:center; min-width:230px; color:var(--ink);
+  }
+  .arch-node .an-sub{display:block; font-family:var(--font-a); font-size:12px; color:var(--ink-soft); margin-top:3px;}
+  .arch-node.accent{border-color:var(--signal); box-shadow:0 0 0 3px var(--signal-soft);}
+  .arch-node.storage{border-color:var(--good); box-shadow:0 0 0 3px var(--good-bg);}
+  .arch-connector{width:2px; height:32px; background:linear-gradient(var(--line),var(--signal),var(--line)); position:relative;}
+  .arch-connector::after{
+    content:""; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
+    border-left:5px solid transparent; border-right:5px solid transparent; border-top:7px solid var(--signal);
+  }
+  .arch-branch{display:flex; gap:24px; align-items:flex-start; justify-content:center; flex-wrap:wrap;}
+  .arch-branch-col{display:flex; flex-direction:column; align-items:center; width:230px;}
+  .arch-branch-lbl{
+    font-family:var(--font-m); font-size:11px; color:var(--ink-soft); margin-bottom:8px; text-align:center;
+  }
+  .arch-legend{display:flex; gap:18px; flex-wrap:wrap; justify-content:center; padding:16px 0 22px; border-top:1px dashed var(--line); margin-top:6px;}
+  .arch-legend span{display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-soft);}
+  .arch-legend i{width:10px; height:10px; border-radius:3px; display:inline-block; border:2px solid;}
+
   /* ===== ACTION PLAN — phase timeline ===== */
   .timeline{position:relative; padding-right:2px;}
   .timeline::before{
@@ -317,6 +344,7 @@
       <li><a href="#integrity" class="nav-sub">سلامة البيانات</a></li>
       <li><a href="#persistence" class="nav-sub">استمرارية التخزين</a></li>
       <li><a href="#frontend" class="nav-h">الفرونت اند</a></li>
+      <li><a href="#proposed" class="nav-h">المعمارية المقترحة</a></li>
       <li><a href="#plan" class="nav-h">خطة العمل</a></li>
     </ul>
   </nav>
@@ -655,6 +683,52 @@
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">التحقق من نجاح الحفظ وإظهار تنبيه واضح عند الفشل، أو الانتقال لحفظ المسودات على السيرفر مباشرة.</span></div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ================= PROPOSED ARCHITECTURE ================= -->
+
+    <section id="proposed">
+      <h2>المعمارية المقترحة (بعد التنفيذ)</h2>
+      <p class="section-sub">نفس الأساس الحالي (Next.js + Express + Prisma + PostgreSQL) بدون أي تغيير جذري، مع إضافة الطبقات اللي هتقفل مشاكل الأمان والأداء والاستمرارية المذكورة فوق. المخطط ده تصور هندسي مبني على توصيات هذا التقرير، مش تنفيذ فعلي حتى الآن.</p>
+
+      <div class="arch-box">
+        <div class="arch-flow">
+          <div class="arch-node">Next.js<span class="an-sub">الفرونت اند</span></div>
+          <div class="arch-connector"></div>
+          <div class="arch-node accent">Express API + Authentication Middleware<span class="an-sub">JWT حقيقي بدون fallback</span></div>
+          <div class="arch-connector"></div>
+          <div class="arch-node">Prisma ORM</div>
+          <div class="arch-connector"></div>
+          <div class="arch-node accent">PostgreSQL<span class="an-sub">+ Connection Pooling (PgBouncer)</span></div>
+          <div class="arch-connector"></div>
+
+          <div class="arch-branch">
+            <div class="arch-branch-col">
+              <div class="arch-branch-lbl">الكاش والحماية</div>
+              <div class="arch-node storage">Redis<span class="an-sub">Cache + Rate Limiting موزّع</span></div>
+            </div>
+            <div class="arch-branch-col">
+              <div class="arch-branch-lbl">الوسائط والملفات</div>
+              <div class="arch-node storage">Object Storage<span class="an-sub">Cloudflare R2 / S3-compatible</span></div>
+            </div>
+            <div class="arch-branch-col">
+              <div class="arch-branch-lbl">النسخ الاحتياطي</div>
+              <div class="arch-node storage">نسخ تلقائي دوري</div>
+              <div class="arch-connector"></div>
+              <div class="arch-node storage">تخزين خارجي دائم<span class="an-sub">خارج سيرفر التطبيق</span></div>
+            </div>
+          </div>
+
+          <div class="arch-connector"></div>
+          <div class="arch-node accent">Monitoring &amp; Alerting<span class="an-sub">Sentry / Winston بدل console.log</span></div>
+        </div>
+
+        <div class="arch-legend">
+          <span><i style="border-color:var(--signal);"></i> طبقة أمان/تحقق أساسية</span>
+          <span><i style="border-color:var(--good);"></i> طبقة تخزين واستمرارية مضافة</span>
+          <span><i style="border-color:var(--line);"></i> نفس المكوّن الحالي بدون تغيير</span>
+        </div>
       </div>
     </section>
 
