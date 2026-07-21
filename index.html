@@ -610,9 +610,14 @@
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>Stored XSS محتمل — محتوى الدروس بيتعرض بدون تعقيم</h3></div>
           <span class="loc">HtmlRenderer.tsx:39 · LessonQuestionsBuilder.tsx:521,581 · school-admin/courses/create/page.tsx:1926,1986</span>
           <p class="desc">محتوى الأسئلة والدروس بيتعرض عبر dangerouslySetInnerHTML بدون أي تعقيم. أي كود HTML/JS داخل محتوى درس هيتنفذ فعليًا في متصفح أي طالب أو معلم بيفتحه.</p>
-          <div class="evidence">
+          <div class="fix">
+            <span class="fix-label">الحل</span>
+            <span class="fix-text">
+              الإبقاء على دعم HTML للمحتوى التعليمي، مع تعقيمه (Sanitization) قبل العرض أو عند الحفظ باستخدام مكتبة موثوقة مثل DOMPurify، والسماح فقط بعناصر HTML والخصائص الآمنة (Whitelist)، مع منع <code>&lt;script&gt;</code> وخصائص JavaScript مثل <code>onerror</code> و <code>onclick</code> وروابط <code>javascript:</code>.
+            </span>
+          </div>          <!-- <div class="evidence">
             <div class="placeholder">مكان مقترح لصورة: تجربة إدخال &lt;script&gt; بسيط داخل محتوى درس وظهور تنفيذه فعليًا</div>
-          </div>
+          </div> -->
         </div>
 
         <div class="card sev-critical">
