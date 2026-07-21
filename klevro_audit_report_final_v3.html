@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقييم جاهزية منصة Klevro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3F0;
+    --card:#FFFFFF;
+    --ink:#14181D;
+    --ink-soft:#4B5259;
+    --navy:#16273C;
+    --navy-2:#20395A;
+    --purple:#3B3168;
+    --signal:#0E7C86;
+    --signal-soft:#E2F0EF;
+    --danger:#B8433A;   --danger-bg:#FBEBE9;
+    --warn:#C1782B;     --warn-bg:#FBF0E1;
+    --caution:#A2861F;  --caution-bg:#F8F3DE;
+    --good:#3F7D52;     --good-bg:#E9F3EC;
+    --info:#3B5A7A;     --info-bg:#E7ECF3;
+    --line:#DCDBD3;
+    --font-a:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;
+    --font-m:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--font-a); line-height:1.75; font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--signal);}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+
+  /* ===== LOGO BAR ===== */
+  .logo-bar{background:#0F1B29; padding:18px 0; border-bottom:1px solid rgba(255,255,255,.08);}
+  .logo-bar .wrap{display:flex; align-items:center; justify-content:space-between;}
+  .logo-bar img{height:52px; width:auto; display:block;}
+  .logo-bar .lb-tag{font-family:var(--font-m); font-size:12px; color:#7C8FA3; letter-spacing:.03em;}
+
+  /* ===== HERO ===== */
+  .hero{background:var(--navy); color:#EDEFF2; padding:64px 0 44px;}
+  .hero .eyebrow{font-family:var(--font-m); font-size:13px; letter-spacing:.04em; color:#8FA6BC; margin:0 0 14px;}
+  .hero h1{font-size:36px; font-weight:700; line-height:1.35; margin:0 0 14px; max-width:760px;}
+  .hero p.lead{font-size:17px; color:#C4CDD6; max-width:680px; margin:0 0 28px;}
+  .meter{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:16px;}
+  .meter .chip{
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
+    border-radius:10px; padding:14px 20px; min-width:120px;
+  }
+  .meter .chip .n{font-family:var(--font-m); font-size:26px; font-weight:600; display:block;}
+  .meter .chip .l{font-size:13px; color:#AEB8C2;}
+  .meter .chip.red .n{color:#F0A39B;}
+  .meter .chip.orange .n{color:#F0C08B;}
+  .meter .chip.amber .n{color:#E6D28C;}
+  .hero .split-note{font-size:13.5px; color:#9FADBA; max-width:640px;}
+  .hero .split-note b{color:#D7DEE5;}
+
+  .stack-box{
+    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12);
+    border-radius:12px; padding:20px 22px; margin:24px 0 22px; max-width:820px;
+  }
+  .stack-box .stack-title{
+    font-family:var(--font-m); font-size:12px; letter-spacing:.04em; color:#8FA6BC;
+    margin:0 0 14px; text-transform:uppercase;
+  }
+  .stack-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  @media (max-width:760px){ .stack-grid{grid-template-columns:1fr 1fr;} }
+  .stack-item .s-label{font-size:12.5px; color:#8FA6BC; margin-bottom:4px;}
+  .stack-item .s-val{font-size:14.5px; color:#EDEFF2; font-weight:600; line-height:1.5;}
+  .stack-item .s-val span{display:block; font-weight:400; color:#C4CDD6; font-size:13px; margin-top:2px;}
+
+  /* ===== LAYOUT ===== */
+  .layout{display:grid; grid-template-columns:250px 1fr; gap:56px; padding:48px 0 100px; align-items:start;}
+  @media (max-width:900px){ .layout{grid-template-columns:1fr; gap:24px;} }
+
+  nav.toc{position:sticky; top:24px; border-right:2px solid var(--line); padding-right:20px;}
+  @media (max-width:900px){
+    nav.toc{position:static; border-right:none; border-bottom:1px solid var(--line); padding:0 0 16px; overflow-x:auto;}
+    nav.toc ul{display:flex; gap:14px;}
+    nav.toc a.nav-sub{padding-right:10px !important;}
+  }
+  nav.toc .title{font-weight:600; font-size:14px; margin-bottom:14px; color:var(--ink-soft);}
+  nav.toc ul{list-style:none; padding:0; margin:0;}
+  nav.toc li{margin-bottom:2px; white-space:nowrap;}
+  nav.toc a{
+    display:block; padding:7px 10px; border-radius:8px; text-decoration:none;
+    color:var(--ink-soft); font-size:14px; font-weight:500;
+  }
+  nav.toc a.nav-h{font-weight:700; color:var(--ink); margin-top:10px;}
+  nav.toc a.nav-sub{padding-right:22px; font-size:13px;}
+  nav.toc a:hover{background:var(--signal-soft); color:var(--signal);}
+  nav.toc a.active{background:var(--signal-soft); color:var(--signal); font-weight:600;}
+
+  main section, main .part-divider{margin-bottom:52px; scroll-margin-top:24px;}
+  main h2{font-size:24px; font-weight:700; margin:0 0 8px;}
+  main .section-sub{color:var(--ink-soft); font-size:15px; margin:0 0 26px; max-width:680px;}
+  main p{max-width:720px;}
+
+  /* ===== SUMMARY ===== */
+  .summary-box{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:28px 30px; max-width:820px;
+  }
+  .summary-box p{margin:0 0 14px; max-width:none;}
+  .summary-box p:last-child{margin-bottom:0;}
+  .summary-box strong{color:var(--navy);}
+
+  /* ===== READINESS DASHBOARD ===== */
+  .readiness-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  @media (max-width:760px){ .readiness-grid{grid-template-columns:1fr 1fr;} }
+  .r-tile{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px;}
+  .r-tile .dot{width:10px; height:10px; border-radius:50%; display:inline-block; margin-left:8px;}
+  .r-tile.danger .dot{background:var(--danger);}
+  .r-tile.warn .dot{background:var(--warn);}
+  .r-tile .r-title{font-weight:600; font-size:14.5px; display:flex; align-items:center; margin-bottom:8px;}
+  .r-tile .r-verdict{font-size:13px; color:var(--ink-soft);}
+  .r-tile.danger .r-verdict{color:var(--danger);}
+  .r-tile.warn .r-verdict{color:var(--warn);}
+
+  /* ===== PART DIVIDER ===== */
+  .part-divider{background:var(--navy); border-radius:16px; padding:34px 32px; color:#fff;}
+  .part-divider.alt{background:var(--purple);}
+  .part-divider .part-eyebrow{font-family:var(--font-m); font-size:12.5px; color:#93A8BE; margin-bottom:8px;}
+  .part-divider.alt .part-eyebrow{color:#B6AEDD;}
+  .part-divider h2{color:#fff; margin:0 0 8px; font-size:26px;}
+  .part-divider p{color:#C7CFD8; margin:0; max-width:640px; font-size:14.5px;}
+  .part-divider.alt p{color:#D6D1EC;}
+
+  /* ===== CARDS ===== */
+  .cards{display:flex; flex-direction:column; gap:16px;}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:22px 24px; border-right:4px solid var(--line);
+  }
+  .card.sev-critical{border-right-color:var(--danger);}
+  .card.sev-high{border-right-color:var(--warn);}
+  .card.sev-medium{border-right-color:var(--caution);}
+  .card.sev-info{border-right-color:var(--info);}
+  .card.sev-good{border-right-color:var(--good);}
+  .card.opp{border-right-color:var(--signal);}
+
+  .card-top{display:flex; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+  .badge{
+    font-family:var(--font-m); font-size:12px; font-weight:600; letter-spacing:.02em;
+    padding:3px 10px; border-radius:20px; white-space:nowrap;
+  }
+  .badge.sev-critical{background:var(--danger-bg); color:var(--danger);}
+  .badge.sev-high{background:var(--warn-bg); color:var(--warn);}
+  .badge.sev-medium{background:var(--caution-bg); color:var(--caution);}
+  .badge.sev-info{background:var(--info-bg); color:var(--info);}
+  .badge.sev-good{background:var(--good-bg); color:var(--good);}
+  .badge.opp{background:var(--signal-soft); color:var(--signal);}
+  .card h3{font-size:17px; font-weight:600; margin:0; flex:1;}
+  .loc{
+    font-family:var(--font-m); font-size:12.5px; color:var(--navy-2);
+    background:#EEF1F4; border:1px solid var(--line); border-radius:6px;
+    padding:2px 9px; direction:ltr; display:inline-block;
+  }
+  .card .desc{color:var(--ink-soft); font-size:15px; margin:0 0 14px;}
+  .card .desc:last-child{margin-bottom:0;}
+  .impact{
+    display:inline-flex; align-items:center; gap:6px; font-size:12.5px;
+    color:var(--ink-soft); margin-bottom:12px;
+  }
+  .impact b{color:var(--navy-2); font-weight:600;}
+  .fix{
+    background:var(--signal-soft); border-radius:8px; padding:12px 14px;
+    font-size:14.5px; display:flex; gap:8px;
+  }
+  .fix .fix-label{font-weight:600; color:var(--signal); white-space:nowrap;}
+  .fix .fix-text{color:#0E4A50;}
+  .fix.next{background:var(--info-bg);}
+  .fix.next .fix-label{color:var(--info);}
+  .fix.next .fix-text{color:#233C54;}
+
+  /* ===== EVIDENCE (optional screenshot slot) ===== */
+  .evidence{margin-top:14px; border:1.5px dashed var(--line); border-radius:10px; padding:14px; background:#FAFAF8;}
+  .evidence img{width:100%; display:block; border-radius:6px; border:1px solid var(--line);}
+  .evidence .cap{font-size:12px; color:var(--ink-soft); margin-top:8px;}
+  .evidence .placeholder{
+    font-family:var(--font-m); font-size:12.5px; color:var(--ink-soft);
+    text-align:center; padding:22px 10px;
+  }
+
+  /* ===== DATABASE / ERD ===== */
+  .erd-box{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:24px 26px; max-width:1080px;
+  }
+  .erd-box p{margin:0 0 16px; max-width:none; color:var(--ink-soft); font-size:15px;}
+  .erd-box .erd-frame{
+    border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#FAFAF8;
+  }
+  .erd-box .erd-frame img{width:100%; display:block;}
+  .erd-box .erd-cap{
+    font-family:var(--font-m); font-size:12px; color:var(--ink-soft);
+    text-align:center; padding:10px; border-top:1px solid var(--line);
+  }
+
+  /* ===== ROOT CAUSE ===== */
+  .rc-block{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:24px 26px; margin-bottom:18px; border-right:4px solid var(--danger);
+  }
+  .rc-block.second{border-right-color:var(--warn);}
+  .rc-block .rc-num{font-family:var(--font-m); font-size:13px; color:var(--ink-soft); margin-bottom:4px;}
+  .rc-block h3{font-size:18px; margin:0 0 10px;}
+  .rc-block p{margin:0; color:var(--ink-soft); font-size:15px; max-width:none;}
+  .rc-block code{font-family:var(--font-m); background:#EEF1F4; padding:1px 6px; border-radius:5px; font-size:13.5px; direction:ltr; display:inline-block; color:var(--navy-2);}
+
+  /* ===== ACTION PLAN — phase timeline ===== */
+  .timeline{position:relative; padding-right:2px;}
+  .timeline::before{
+    content:""; position:absolute; right:13px; top:6px; bottom:6px; width:2px; background:var(--line);
+  }
+  .tl-item{position:relative; padding-right:46px; padding-bottom:30px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-dot{
+    position:absolute; right:5px; top:2px; width:18px; height:18px; border-radius:50%;
+    background:var(--navy); border:3px solid var(--paper); z-index:1;
+  }
+  .tl-item.urgent .tl-dot{background:var(--danger);}
+  .tl-item.mid .tl-dot{background:var(--warn);}
+  .tl-day{font-family:var(--font-m); font-size:12px; color:var(--ink-soft); margin-bottom:4px;}
+  .tl-body{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 20px;}
+  .tl-body h4{margin:0 0 10px; font-size:16.5px; font-weight:700;}
+  .tl-body ul{margin:0; padding:0; list-style:none;}
+  .tl-body li{position:relative; padding-right:20px; margin-bottom:8px; font-size:14.5px; color:var(--ink-soft);}
+  .tl-body li:last-child{margin-bottom:0;}
+  .tl-body li::before{content:"–"; position:absolute; right:0; color:var(--ink-soft);}
+
+  footer{border-top:1px solid var(--line); padding:36px 0 60px;}
+  footer p{color:var(--ink-soft); font-size:14px; max-width:680px; margin:0;}
+  .signature{display:flex; align-items:center; gap:16px; margin-bottom:20px;}
+  .avatar-circle{
+    width:68px; height:68px; border-radius:50%; flex-shrink:0;
+    background:#FFFFFF; color:#CFE0EA;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-m); font-weight:600; font-size:17px; letter-spacing:.02em;
+    border:2px solid var(--signal); overflow:hidden;
+  }
+  .avatar-circle img{width:70%; height:70%; object-fit:contain; display:block;}
+  .signature .who .name{font-weight:600; font-size:15.5px; color:var(--ink);}
+  .signature .who .role{font-size:13px; color:var(--ink-soft);}
+  .footer-note{
+    font-family:var(--font-m); font-size:12.5px; color:var(--ink-soft);
+    margin-top:20px; padding-top:16px; border-top:1px dashed var(--line);
+  }
+</style>
+</head>
+<body>
+
+<div class="logo-bar">
+  <div class="wrap">
+    <img src="https://res.cloudinary.com/dnkuwemxn/image/upload/v1784559494/logo_riydzz.png" alt="شعار المنصة">
+    <span class="lb-tag">تقرير مراجعة تقنية — سري جدا</span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · يوليو 2026</p>
+    <h1>تقييم جاهزية المنصة: الأمان، الأداء، سلامة البيانات، واستمرارية التخزين</h1>
+    <p class="lead">مراجعة كاملة للباك اند والفرونت اند معًا، بعد الأخذ في الاعتبار إن المنصة تعليمية وممكن تستقبل آلاف المستخدمين. تقرير تحليلي — لم يتم تعديل أي كود بعد.</p>
+
+    <div class="stack-box">
+      <p class="stack-title">البنية التقنية الحالية (Technology Stack)</p>
+      <div class="stack-grid">
+        <div class="stack-item">
+          <div class="s-label">Backend</div>
+          <div class="s-val">Node.js + Express<span>TypeScript</span></div>
+        </div>
+        <div class="stack-item">
+          <div class="s-label">Frontend</div>
+          <div class="s-val">React + Next.js<span>TypeScript</span></div>
+        </div>
+        <div class="stack-item">
+          <div class="s-label">Database</div>
+          <div class="s-val">PostgreSQL<span>عبر Prisma ORM</span></div>
+        </div>
+        <div class="stack-item">
+          <div class="s-label">Deployment</div>
+          <div class="s-val">Docker Compose<span>يستهدف Dokploy</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meter">
+      <div class="chip red"><span class="n">9</span><span class="l">مشاكل حرجة</span></div>
+      <div class="chip orange"><span class="n">8</span><span class="l">مشاكل عالية الخطورة</span></div>
+      <div class="chip amber"><span class="n">6</span><span class="l">مشاكل متوسطة</span></div>
+    </div>
+    <p class="split-note"><b>22</b> ملاحظة في الباك اند + <b>6</b> في الفرونت اند = <b>28</b> ملاحظة إجمالًا. بالإضافة لـ 3 نقاط إيجابية موجودة فعلاً، ونقطتين يحتاجوا تأكيد من فريق الاستضافة.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="layout">
+
+  <nav class="toc">
+    <div class="title">محتويات التقرير</div>
+    <ul>
+      <li><a href="#summary">الملخص</a></li>
+      <li><a href="#readiness">لوحة الجاهزية</a></li>
+      <li><a href="#database">قاعدة البيانات (ERD)</a></li>
+      <li><a href="#rootcause">سبب اختفاء الدروس</a></li>
+      <li><a href="#backend" class="nav-h">الباك اند</a></li>
+      <li><a href="#security" class="nav-sub">الأمان</a></li>
+      <li><a href="#performance" class="nav-sub">الأداء</a></li>
+      <li><a href="#integrity" class="nav-sub">سلامة البيانات</a></li>
+      <li><a href="#persistence" class="nav-sub">استمرارية التخزين</a></li>
+      <li><a href="#frontend" class="nav-h">الفرونت اند</a></li>
+      <li><a href="#plan" class="nav-h">خطة العمل</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <section id="summary">
+      <h2>الملخص</h2>
+      <div class="summary-box">
+        <p>المشروع فيه أساس تقني معقول — PostgreSQL حقيقي عبر Prisma، indexes موجودة على أغلب الجداول، rate limiting عام على مستوى الـ API، وهيكلة كود منظمة. <strong>لكنه مش جاهز لآلاف المستخدمين دلوقتي</strong></p>
+        <p>المشاكل مش نظرية — دي حاجات هتظهر فعليًا مع زيادة عدد المستخدمين. تم فحص أربعة محاور بالتفصيل (الأمان، الأداء، سلامة البيانات، استمرارية التخزين) في الباك اند، وبعد سؤال منطقي عن الفرونت اند، طلع فيه مشاكل حقيقية هناك كمان — أخطرها ثغرة XSS مباشرة.</p>
+        <p>الخبر الجيد: <strong>لا حاجة لإعادة بناء من الصفر</strong>. كل مشكلة موضعية ومحددة بمكانها بالكود، وقابلة للإصلاح على مراحل واضحة.</p>
+      </div>
+    </section>
+
+    <section id="readiness">
+      <h2>لوحة الجاهزية العامة</h2>
+      <p class="section-sub">تقييم سريع لكل محور — التفاصيل الكاملة تحت في كل قسم.</p>
+      <div class="readiness-grid">
+        <div class="r-tile warn">
+          <div class="r-title"><span class="dot"></span>الأمان</div>
+          <div class="r-verdict">فيه ثغرات حرجة لازم تتقفل قبل أي نمو في عدد المستخدمين.</div>
+        </div>
+        <div class="r-tile danger">
+          <div class="r-title"><span class="dot"></span>الأداء</div>
+          <div class="r-verdict">مش جاهز — غياب ترقيم الصفحات وحده كفيل يبطئ المنصة بشكل ملحوظ.</div>
+        </div>
+        <div class="r-tile warn">
+          <div class="r-title"><span class="dot"></span>سلامة البيانات</div>
+          <div class="r-verdict">الأساسيات موجودة (transactions)، لكن غياب الاختبارات الآلية يخلي أي تعديل مستقبلي خطر.</div>
+        </div>
+        <div class="r-tile danger">
+          <div class="r-title"><span class="dot"></span>استمرارية التخزين</div>
+          <div class="r-verdict">مش جاهز — النسخ الاحتياطية نفسها مش محمية من الفقدان.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="database">
+      <h2>مخطط قاعدة البيانات (ERD)</h2>
+      <p class="section-sub">تصميم العلاقات الحالي في schema.prisma — كل الجداول والعلاقات المستخدمة فعليًا في المنصة، بما فيها العلاقات غير الموثقة بوضوح المذكورة لاحقًا في قسم سلامة البيانات.</p>
+      <div class="erd-box">
+        <p>الداتابيز مبنية على PostgreSQL عبر Prisma ORM، وفيها عدد كبير من الجداول المترابطة (كورسات، دروس، مستخدمين، مدارس، تقدّم الطلاب...). المخطط التالي مُستخرج من الـ schema الفعلي، وهو مرجع مباشر لكل الملاحظات المتعلقة بسلامة البيانات والعلاقات في هذا التقرير.</p>
+        <div class="erd-frame">
+          <img src="https://res.cloudinary.com/dnkuwemxn/image/upload/v1784615165/erd_edu_track_platform_chqnyo.png" alt="مخطط ERD لقاعدة بيانات منصة Klevro">
+          <div class="erd-cap">ERD — Entity Relationship Diagram · مستخرج من schema.prisma</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rootcause">
+      <h2>سبب اختفاء محتوى الدروس تحديدًا</h2>
+      <p class="section-sub">سببان مباشران يعملان معًا، وليس سببًا واحدًا — هما نقطة الانطلاق لكل المراجعة اللي بعد كده.</p>
+
+      <div class="rc-block">
+        <div class="rc-num">السبب الأول</div>
+        <h3>Endpoint مفتوح بدون أي حماية</h3>
+        <p>الرابط <code>/api/system/delete-images-now</code> في system.ts يمسح كل الصور المخزنة عند استدعائه بطلب GET بسيط، بدون verifyToken أو checkRole. هذا المسار الوحيد المكشوف بالكامل من بين كل مسارات الباك اند — ما يجعله أرجح تفسير مباشر لاختفاء المحتوى.</p>
+        <div class="evidence">
+          <div class="placeholder">مكان مقترح لصورة: استدعاء الرابط من المتصفح مباشرة بدون تسجيل دخول، أو Postman يوضح نجاح الطلب</div>
+        </div>
+      </div>
+
+      <div class="rc-block second">
+        <div class="rc-num">السبب الثاني</div>
+        <h3>استبدال كامل بدل حذف صريح</h3>
+        <p>عند حفظ تعديلات على كورس، يتعامل الخادم مع قائمة الدروس الواردة على أنها "كل الحقيقة" — أي درس غائب عنها يُحذف. أي خلل بسيط في الشبكة أو الواجهة الأمامية يتسبب في حذف دروس حقيقية دون قصد. تعليقات داخل الكود تثبت أن هذا حدث بالفعل من قبل وعولج بحل جزئي فقط (منع الحذف لو تجاوزت نسبته 80%).</p>
+      </div>
+    </section>
+
+    <!-- ================= BACKEND ================= -->
+
+    <div class="part-divider" id="backend">
+      <div class="part-eyebrow">الجزء الأول</div>
+      <h2>مشاكل الباك اند</h2>
+      <p>22 ملاحظة موزعة على أربعة محاور: الأمان، الأداء، سلامة البيانات، واستمرارية التخزين.</p>
+    </div>
+
+    <section id="security">
+      <h2>1. الأمان</h2>
+      <p class="section-sub">أخطر جزء في التقرير — فيه ثغرتان حرجتان مفتوحتان حاليًا.</p>
+      <div class="cards">
+
+        <div class="card sev-critical">
+          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>Endpoints مفتوحة بدون auth بتحذف/تعدل بيانات</h3></div>
+          <span class="loc">src/routes/system.ts:61, 71</span>
+          <p class="desc">مسارا /api/system/delete-images-now و/api/system/migrate-images-now بدون أي تحقق من هوية المستخدم. أي زائر يقدر يشغّلهم.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة verifyToken + checkRole(SUPER_ADMIN)، أو حذف المسارين نهائيًا إن لم يكونا ضروريين في الإنتاج.</span></div>
+        </div>
+
+        <div class="card sev-critical">
+          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>كلمة سر كل مستخدم متخزنة نص صريح</h3></div>
+          <span class="loc">src/shared.ts:257 (plainPassword: true)</span>
+          <p class="desc">ترجع في كل استجابة API تستخدم userSafeSelect، وفي كل نسخة backup.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">حذف الحقل من الاستجابات والتصدير، واستبدال ميزة "عرض الباسورد للأدمن" بآلية إعادة تعيين.</span></div>
+        </div>
+
+        <div class="card sev-high">
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>JWT_SECRET له قيمة افتراضية ثابتة</h3></div>
+          <span class="loc">src/shared.ts:9 ('fallback-secret')</span>
+          <p class="desc">لو env variable متظبطش صح في أي بيئة، توقيع الجلسات هيبقى بسر معروف وثابت — يفتح الباب لتزوير جلسات دخول.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إلغاء القيمة الاحتياطية، وإجبار التطبيق على رفض العمل بدون متغير بيئة حقيقي.</span></div>
+        </div>
+
+        <div class="card sev-high">
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>Rate limiting على تسجيل الدخول معطّل عمدًا</h3></div>
+          <span class="loc">src/routes/auth.ts:92 — كومنت صريح: "disabled by user request"</span>
+          <p class="desc">المنطق نفسه (10 محاولات) موجود وجاهز بالكود، بس متعطل. مع كلمة سر افتراضية ثابتة في مكان تاني، ده بيسهّل هجمات التخمين.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إعادة تفعيله بأرقام معقولة (10 محاولات / 15-30 دقيقة) بدل تركه معطلًا بالكامل.</span></div>
+        </div>
+
+        <div class="card sev-high">
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>منع تكرار محاولات الدخول مخزّن في الذاكرة فقط</h3></div>
+          <span class="loc">src/shared.ts:70 (loginAttempts كـ Map عادي)</span>
+          <p class="desc">لو شغّلتوا أكتر من نسخة سيرفر (متوقع مع آلاف المستخدمين)، كل نسخة هيبقى عندها عداد مختلف، فالحماية هتبقى بلا فايدة فعلية.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">نقل التخزين لـ Redis بدل Map محلي — نفس الحل يفيد مشكلة الكاش تحت في قسم الأداء.</span></div>
+        </div>
+
+        <div class="card sev-medium">
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>نوع الملف المرفوع بيتقرر من الكلاينت، وSVG مسموح</h3></div>
+          <span class="loc">مراجعة سابقة موجودة في الريبو</span>
+          <p class="desc">الـ MIME type قابل للتزوير من المستخدم، وimage/svg+xml من الأنواع المسموحة رغم إمكانية احتوائها على كود JS (stored XSS).</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">التحقق من محتوى الملف فعليًا وليس الاعتماد على الـ MIME المُرسل فقط، وإعادة النظر في السماح بـ SVG.</span></div>
+        </div>
+
+        <div class="card sev-medium">
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>حجم الملف المسموح كبير جدًا (10 GB)</h3></div>
+          <span class="loc">مراجعة سابقة</span>
+          <p class="desc">بدون حد فعلي على المساحة الكلية، ده يفتح باب لاستهلاك المساحة بالكامل (storage exhaustion).</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تقليل الحد لرقم واقعي حسب نوع المحتوى، مع مراقبة المساحة الكلية المستخدمة.</span></div>
+        </div>
+
+      </div>
+      <p class="section-sub" style="margin-top:18px;">تعليق: الـ rate limiting العام (apiLimiter) في src/index.ts:90-97 مسموح فيه بـ 5000 طلب لكل IP كل 15 دقيقة — رقم معقول لمستخدم عادي، لكنه مش بديل عن حماية مخصصة لصفحة تسجيل الدخول، خصوصًا وهي أصلًا معطّلة.</p>
+    </section>
+
+    <section id="performance">
+      <h2>2. الأداء</h2>
+      <p class="section-sub">الاستعداد الفعلي لتحمّل آلاف المستخدمين في نفس الوقت.</p>
+      <div class="cards">
+
+        <div class="card sev-critical">
+          <div class="card-top"><span class="badge sev-critical">حرج للتوسع</span><h3>غياب Pagination في أغلب الـ endpoints</h3></div>
+          <span class="loc">69 استدعاء findMany بدون take/skip، منها courses.ts, progress.ts, reports.ts, auth.ts بالكامل</span>
+          <p class="desc">كل طلب بيرجع الجدول كامل من الداتابيز. مع آلاف الطلاب والدروس، ده هيبطئ الـ API بشكل كبير ويستهلك ذاكرة السيرفر.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة take/skip على كل الاستعلامات الكبيرة — أولوية قصوى قبل أي حملة نمو في عدد المستخدمين.</span></div>
+        </div>
+
+        <div class="card sev-high">
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>صور مخزّنة base64 داخل أعمدة الداتابيز</h3></div>
+          <span class="loc">migrate-base64.ts, delete-base64.ts (سكريبتات مخصصة أصلاً لنقلها/حذفها)</span>
+          <p class="desc">كل query بيرجع أعمدة فيها صور، بيبطئ الداتابيز نفسه ويكبّر حجمه بسرعة غير طبيعية.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استكمال النقل الكامل لـ Object Storage خارجي (S3-compatible) بدل التخزين داخل الأعمدة.</span></div>
+        </div>
+
+        <div class="card sev-high">
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>الكاش مبني كـ Map في الذاكرة</h3></div>
+          <span class="loc">src/shared.ts:527 (statsCache)</span>
+          <p class="desc">لو المنصة اشتغلت بأكتر من نسخة سيرفر، كل نسخة هيبقى عندها كاش مختلف، والنتائج هتبقى غير متسقة بين طلب وطلب.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">نقل الكاش لـ Redis — نفس البنية التحتية اللي هتستخدم لحل مشكلة rate limiting فوق.</span></div>
+        </div>
+
+        <div class="card sev-high">
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>الملفات المرفوعة على القرص المحلي للسيرفر</h3></div>
+          <span class="loc">multer.diskStorage</span>
+          <p class="desc">لو شغّلتوا أكتر من نسخة backend لتوزيع الحمل (load balancing)، كل نسخة هيبقى عندها ملفات مختلفة — ده بيمنع التوسع الأفقي بشكل كامل.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">خدمة متوافقة مع S3 (Cloudflare R2 أو Backblaze B2) — بتدي كمان CDN مجاني تقريبًا لتحميل أسرع.</span></div>
+        </div>
+
+        <div class="card sev-medium">
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>مفيش connection pooling صريح لقاعدة البيانات</h3></div>
+          <span class="loc">DATABASE_URL بدون connection_limit</span>
+          <p class="desc">مع تعدد الطلبات المتزامنة، ممكن تستهلكوا كل الاتصالات المسموحة في PostgreSQL بسرعة.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة connection pooler زي PgBouncer بين السيرفر وقاعدة البيانات.</span></div>
+        </div>
+
+        <div class="card opp">
+          <div class="card-top"><span class="badge opp">إضافة مقترحة</span><h3>طابور مهام خلفية (Background Job Queue)</h3></div>
+          <span class="loc">imports.ts, backups.ts → عمليات ثقيلة تشتغل داخل الـ request نفسه</span>
+          <div class="impact">الأثر: <b>يمنع timeout وتجمّد الطلبات وقت الضغط العالي</b></div>
+          <p class="desc">استيراد كورس كامل من Excel، أو عمل backup، عمليات بتاخد وقت وبتحجز اتصال بالسيرفر لحد ما تخلص — ده مش موجود في المراجعة الأصلية، لكنه ضروري مع آلاف المستخدمين.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">نظام طابور بسيط (زي BullMQ فوق نفس الـ Redis المقترح فوق) — الطلب يرجع فورًا والمهمة تشتغل في الخلفية.</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="integrity">
+      <h2>3. سلامة البيانات</h2>
+      <p class="section-sub">هل البيانات نفسها محمية من التلف أو التعديل الخاطئ؟</p>
+      <div class="cards">
+
+        <div class="card sev-high">
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>منطق تحديث الكورس يحذف الدروس الغائبة بالكامل</h3></div>
+          <span class="loc">src/routes/courses.ts:412-424</span>
+          <p class="desc">فيه "ترقيعة" بتمنع حذف أكتر من 80% كحماية مؤقتة — حل مؤقت مش تصميم صحيح لـ update جزئي حقيقي.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تحويل الحذف لعملية صريحة عبر قائمة deletedLessonIds منفصلة، بتنسيق مع الفرونت إند.</span></div>
+        </div>
+
+        <div class="card sev-critical">
+          <div class="card-top"><span class="badge sev-critical">حرج مع نمو الفريق</span><h3>لا يوجد أي automated tests</h3></div>
+          <span class="loc">package.json — لا Jest ولا Mocha ولا Vitest ضمن الاعتماديات</span>
+          <p class="desc">أي تعديل مستقبلي في الكود (حتى لو بسيط) ممكن يكسر شيء موجود من غير ما حد يلاحظ فورًا، خصوصًا مع أكتر من ديفلوبر بيشتغلوا على نفس الكود.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">البداية بـ test suite أساسي يغطي العمليات الحرجة فقط: تسجيل الدخول، حفظ درس، استعادة backup.</span></div>
+        </div>
+
+        <div class="card opp">
+          <div class="card-top"><span class="badge opp">إضافة مقترحة</span><h3>Soft Delete بدل الحذف النهائي</h3></div>
+          <span class="loc">schema.prisma → كل الموديلات تعتمد حذف فعلي (hard delete)</span>
+          <div class="impact">الأثر: <b>حماية إضافية مباشرة ضد نفس مشكلة اختفاء المحتوى</b></div>
+          <p class="desc">دلوقتي أي عملية حذف (يدوية أو بسبب bug) نهائية ومفيش رجوع فيها إلا من backup. ده مش موجود في المراجعة الأصلية، لكنه أحد أقوى الحلول الوقائية المتاحة.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة عمود deletedAt على الموديلات المهمة (Lesson, Course)، والاستعلامات العادية تتجاهل السجلات المحذوفة تلقائيًا.</span></div>
+        </div>
+
+        <div class="card sev-good">
+          <div class="card-top"><span class="badge sev-good">نقطة إيجابية</span><h3>العمليات المركبة تستخدم transactions بشكل صحيح</h3></div>
+          <span class="loc">imports.ts, courses.ts, backups.ts</span>
+          <p class="desc">لو فشلت عملية مركبة في المنتصف، بترجع كلها (rollback) بدل ما تسيب فقدان جزئي للبيانات.</p>
+        </div>
+
+        <div class="card sev-good">
+          <div class="card-top"><span class="badge sev-good">نقطة إيجابية</span><h3>استعادة الـ backup تعمل merge بدل مسح كامل</h3></div>
+          <span class="loc">src/routes/backups.ts:282-284</span>
+          <p class="desc">تحسين تم عمله بالفعل بعد الحادثة السابقة — منطق الاستعادة بيدمج البيانات بدل استبدالها بالكامل.</p>
+        </div>
+
+        <div class="card sev-info">
+          <div class="card-top"><span class="badge sev-info">يحتاج مراجعة</span><h3>قواعد الـ Cascade على العلاقات غير موثقة بوضوح</h3></div>
+          <span class="loc">prisma/schema.prisma</span>
+          <p class="desc">لازم مراجعة شاملة لكل العلاقات للتأكد إن أي حذف بيتسبب في حذف تابع له مقصود ومفهوم، مش مفاجأة.</p>
+          <div class="fix next"><span class="fix-label">التالي</span><span class="fix-text">جرد كامل لكل علاقات onDelete: Cascade في الـ schema وتوثيقها.</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="persistence">
+      <h2>4. استمرارية / دوام التخزين</h2>
+      <p class="section-sub">لو حصلت كارثة (مسح بالغلط، تعطل سيرفر)، هل في طريقة نرجع بيها؟</p>
+      <div class="cards">
+
+        <div class="card sev-critical">
+          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>مجلد النسخ الاحتياطي بدون Docker volume دائم</h3></div>
+          <span class="loc">docker-compose.yml — backups/ غير محمي</span>
+          <p class="desc">الباك اب التلقائي (كل 30 دقيقة) موجود فعلًا، لكن أي إعادة نشر (redeploy) بتمسح كل النسخ الاحتياطية الموجودة على السيرفر.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة persistent volume لمجلد backups، أو الأفضل نقله لتخزين خارجي مباشرة.</span></div>
+        </div>
+
+        <div class="card sev-critical">
+          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>لا يوجد نسخ للباك اب على تخزين خارجي</h3></div>
+          <span class="loc">الاعتماد كله على تنزيل يدوي من الأدمن</span>
+          <p class="desc">لو السيرفر اتمسح فجأة، النسخ الوحيدة اللي هتفضل موجودة هي اللي حد نزلها يدويًا على جهازه.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">رفع النسخ الاحتياطية تلقائيًا لخدمة تخزين سحابي (S3-compatible) فور إنشائها.</span></div>
+        </div>
+
+        <div class="card sev-high">
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>لا يوجد Monitoring أو Alerting حقيقي</h3></div>
+          <span class="loc">139 استدعاء console.log/console.error بدون أداة تسجيل مركزية</span>
+          <p class="desc">أي مشكلة (فشل backup، امتلاء القرص، خطأ متكرر) هتتكشف بعد ما تحصل وتأثر على المستخدمين، مش أثناء حدوثها.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">أداة تسجيل مركزية زي Sentry أو Winston + تنبيهات على الأحداث الحرجة.</span></div>
+        </div>
+
+        <div class="card sev-good">
+          <div class="card-top"><span class="badge sev-good">نقطة إيجابية</span><h3>مجلد الرفع (uploads) عنده Docker volume فعلي</h3></div>
+          <span class="loc">docker-compose.yml → lms_uploads</span>
+          <p class="desc">جيد لكن غير كافٍ لوحده — لازم backup منفصل ليه برضه، مش بديل عن نسخ احتياطية حقيقية.</p>
+        </div>
+
+        <div class="card sev-info">
+          <div class="card-top"><span class="badge sev-info">يحتاج تأكيد</span><h3>حالة قاعدة البيانات نفسها غير مؤكدة</h3></div>
+          <span class="loc">Postgres مش جزء من docker-compose.yml — يبدو أنها Managed DB خارجية</span>
+          <p class="desc">خارج نطاق مراجعة الكود، لكنه حرج للاستمرارية: هل عند مزود الاستضافة Point-in-Time Recovery ونسخ احتياطية تلقائية للداتابيز نفسها؟</p>
+          <div class="fix next"><span class="fix-label">التالي</span><span class="fix-text">تأكيد مباشر مع فريق الاستضافة/Dokploy على إعدادات الـ backup الخاصة بالداتابيز المُدارة.</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= FRONTEND ================= -->
+
+    <div class="part-divider alt" id="frontend">
+      <div class="part-eyebrow">الجزء الثاني</div>
+      <h2>مشاكل الفرونت اند</h2>
+      <p>سؤال منطقي كان: "هل الفرونت اند سليم؟" — بعد الفحص: لأ، فيه مشاكل حقيقية، أخطرها ثغرة أمان مباشرة قابلة للربط مع مشاكل الباك اند.</p>
+    </div>
+
+    <section id="frontend-issues">
+      <div class="cards">
+
+        <div class="card sev-critical">
+          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>Stored XSS محتمل — محتوى الدروس بيتعرض بدون تعقيم</h3></div>
+          <span class="loc">HtmlRenderer.tsx:39 · LessonQuestionsBuilder.tsx:521,581 · school-admin/courses/create/page.tsx:1926,1986</span>
+          <p class="desc">محتوى الأسئلة والدروس بيتعرض عبر dangerouslySetInnerHTML بدون أي تعقيم. أي كود HTML/JS داخل محتوى درس هيتنفذ فعليًا في متصفح أي طالب أو معلم بيفتحه.</p>
+          <div class="evidence">
+            <div class="placeholder">مكان مقترح لصورة: تجربة إدخال &lt;script&gt; بسيط داخل محتوى درس وظهور تنفيذه فعليًا</div>
+          </div>
+        </div>
+
+        <div class="card sev-critical">
+          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>مكتبة DOMPurify مركّبة وجاهزة — لكن غير مستخدمة</h3></div>
+          <span class="loc">src/lib/sanitize.ts — الملف الوحيد اللي بيعمل import DOMPurify في كل المشروع</span>
+          <p class="desc">الأداة موجودة وجاهزة للاستخدام، لكنها مش موصولة بأي مكان تاني في الكود — يعني كل أماكن dangerouslySetInnerHTML شغالة من غيرها فعليًا.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">توصيل sanitize.ts الموجود بالفعل مع كل أماكن dangerouslySetInnerHTML — أسرع إصلاح ممكن لأن الأداة جاهزة أصلًا.</span></div>
+        </div>
+
+        <div class="card sev-critical">
+          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>سلسلة خطر مركّبة: التوكن في localStorage + XSS = سرقة حسابات إدارية</h3></div>
+          <span class="loc">src/lib/auth.ts:54-98</span>
+          <p class="desc">توكن تسجيل الدخول (JWT) بيتخزن في localStorage مش في httpOnly cookie. لو حصل XSS من النقطتين فوق، أي سكريبت خبيث جوه محتوى درس يقدر يسرق توكن أي أدمن أو معلم بيفتح الدرس ده — الثغرتين مع بعض يعني احتمال حقيقي للاستيلاء على حسابات إدارية كاملة.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إصلاح الـ XSS يقفل معظم الخطر فورًا. للحماية الإضافية على المدى الأطول: التفكير في نقل التوكن لـ httpOnly cookie بدل localStorage.</span></div>
+        </div>
+
+        <div class="card sev-medium">
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>مفيش استخدام لـ next/image في المشروع كله</h3></div>
+          <span class="loc">17 ملف بيستخدموا &lt;img&gt; عادي</span>
+          <p class="desc">فقدان تحسينات تلقائية (lazy loading, resizing) خصوصًا إن الصور أصلًا بتتخزن base64 من الباك اند — الاثنين مع بعض بيبطّئوا التحميل.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استبدال &lt;img&gt; تدريجيًا بـ next/image، بالتوازي مع نقل الصور لـ Object Storage في الباك اند.</span></div>
+        </div>
+
+        <div class="card sev-medium">
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>أغلب صفحات المشروع معمولة "use client"</h3></div>
+          <span class="loc">بحث شامل في src/app</span>
+          <p class="desc">الاستفادة من الـ Server-Side Rendering في Next.js شبه معدومة، وده بيكبّر حجم الـ JS اللي بينزل لكل مستخدم ويبطئ التحميل الأول، خصوصًا لطلاب بنت اتصال ضعيف.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">مراجعة تدريجية للصفحات اللي مش محتاجة تفاعلية كاملة، وتحويلها لـ Server Components.</span></div>
+        </div>
+
+        <div class="card sev-medium">
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>مسودات الكورس (auto-save) بتتخزن كاملة في localStorage</h3></div>
+          <span class="loc">CourseEditorContext.tsx:260</span>
+          <p class="desc">localStorage عنده حد تخزين صغير (~5-10 ميجا)، ولو الدرس فيه صور أو محتوى كبير، ممكن الحفظ يفشل بصمت من غير ما المعلم ياخد باله.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">التحقق من نجاح الحفظ وإظهار تنبيه واضح عند الفشل، أو الانتقال لحفظ المسودات على السيرفر مباشرة.</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= ACTION PLAN ================= -->
+
+    <section id="plan">
+      <h2>خطة العمل المقترحة</h2>
+      <p class="section-sub">تحليل فقط حتى الآن — لم يتم تنفيذ أي شيء بعد. مقسمة على ثلاث مراحل بحسب الأولوية الزمنية.</p>
+
+      <div class="timeline">
+
+        <div class="tl-item urgent">
+          <div class="tl-dot"></div>
+          <div class="tl-day">مرحلة 1 — إيقاف النزيف (أيام)</div>
+          <div class="tl-body">
+            <h4>إغلاق الثغرات المفتوحة حاليًا</h4>
+            <ul>
+              <li>قفل الـ endpoints المفتوحة (system.ts)</li>
+              <li>تفعيل حماية تسجيل الدخول (rate limiting)</li>
+              <li>إزالة plainPassword وإجبار JWT_SECRET حقيقي</li>
+              <li>ربط الباك اب بتخزين خارجي دائم</li>
+              <li>توصيل dompurify الموجود بالفعل مع كل أماكن dangerouslySetInnerHTML (فرونت اند)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item mid">
+          <div class="tl-dot"></div>
+          <div class="tl-day">مرحلة 2 — الجاهزية للتوسع (أسابيع)</div>
+          <div class="tl-body">
+            <h4>الاستعداد لآلاف المستخدمين</h4>
+            <ul>
+              <li>إضافة Pagination لكل الـ endpoints الأساسية</li>
+              <li>نقل الصور من base64 إلى Object Storage</li>
+              <li>استبدال الكاش الداخلي بـ Redis (يخدم rate limiting والكاش معًا)</li>
+              <li>إعداد Connection Pooling صريح للداتابيز</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-day">مرحلة 3 — الاستقرار طويل المدى (مستمر)</div>
+          <div class="tl-body">
+            <h4>بناء عادات هندسية مستدامة</h4>
+            <ul>
+              <li>بناء test suite أساسي (تسجيل دخول، حفظ درس، استعادة backup على الأقل)</li>
+              <li>إضافة Monitoring/Alerting حقيقي بدل console.log</li>
+              <li>تصميم تحديث جزئي حقيقي للدروس بدل منطق "استبدال الكل + حماية 80%"</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="signature">
+      <div class="avatar-circle">
+        <img src="https://res.cloudinary.com/dnkuwemxn/image/upload/v1784559494/logo_riydzz.png" alt="شعار المنصة">
+      </div>
+      <div class="who">
+        <div class="name">Hesham Ahmed Abdelatty</div>
+        <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
+      </div>
+    </div>
+    <p>هذا التقرير مبني على مراجعة مباشرة للكود الفعلي (باك اند وفرونت اند) وليس تخمينًا عامًا. لا حاجة لإعادة بناء المشروع — الأولوية للمرحلة الأولى فقط، وهي قابلة للإغلاق خلال أيام قليلة دون إعادة تصميم المعمارية.</p>
+    <p class="footer-note">تقرير تحليلي — لم يتم تعديل أي كود بعد.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var links = document.querySelectorAll('nav.toc a');
+  var sections = Array.prototype.map.call(links, function(a){
+    return document.querySelector(a.getAttribute('href'));
+  });
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = 0;
+    sections.forEach(function(sec, i){
+      if(sec && sec.offsetTop <= pos) current = i;
+    });
+    links.forEach(function(a, i){
+      a.classList.toggle('active', i === current);
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
