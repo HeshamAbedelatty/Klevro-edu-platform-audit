@@ -215,6 +215,34 @@
   .rc-block p{margin:0; color:var(--ink-soft); font-size:15px; max-width:none;}
   .rc-block code{font-family:var(--font-m); background:#EEF1F4; padding:1px 6px; border-radius:5px; font-size:13.5px; direction:ltr; display:inline-block; color:var(--navy-2);}
 
+  /* ===== FIX STATUS TRACKER ===== */
+  .status-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:900px){ .status-grid{grid-template-columns:1fr;} }
+  .status-col{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:22px 22px 20px; border-top:4px solid var(--line);
+  }
+  .status-col.done{border-top-color:var(--good);}
+  .status-col.open{border-top-color:var(--danger);}
+  .status-col.new{border-top-color:var(--purple);}
+  .status-head{
+    display:flex; align-items:center; gap:9px; font-weight:700; font-size:15px;
+    margin-bottom:16px;
+  }
+  .status-col.done .status-head{color:var(--good);}
+  .status-col.open .status-head{color:var(--danger);}
+  .status-col.new .status-head{color:var(--purple);}
+  .status-dot{width:9px; height:9px; border-radius:50%; background:currentColor; flex-shrink:0;}
+  .status-col ul{list-style:none; margin:0; padding:0;}
+  .status-col li{
+    position:relative; padding-right:20px; margin-bottom:11px; font-size:13.5px;
+    color:var(--ink-soft); line-height:1.6;
+  }
+  .status-col li:last-child{margin-bottom:0;}
+  .status-col.done li::before{content:"✓"; position:absolute; right:0; color:var(--good); font-weight:700;}
+  .status-col.open li::before{content:"✕"; position:absolute; right:0; color:var(--danger); font-weight:700;}
+  .status-col.new li::before{content:"!"; position:absolute; right:2px; color:var(--purple); font-weight:700;}
+
   /* ===== PROPOSED ARCHITECTURE DIAGRAM ===== */
   .arch-box{
     background:var(--card); border:1px solid var(--line); border-radius:14px;
@@ -395,6 +423,8 @@
       <li><a href="#readiness">لوحة الجاهزية</a></li>
       <li><a href="#database">قاعدة البيانات (ERD)</a></li>
       <li><a href="#rootcause">سبب اختفاء الدروس</a></li>
+      <li><a href="#duplication-cause">سبب تكرار البيانات</a></li>
+      <li><a href="#fix-status">حالة الإصلاحات</a></li>
       <li><a href="#backend" class="nav-h">الباك اند</a></li>
       <li><a href="#security" class="nav-sub">الأمان</a></li>
       <li><a href="#performance" class="nav-sub">الأداء</a></li>
@@ -470,6 +500,69 @@
         <div class="rc-num">السبب الثاني</div>
         <h3>استبدال كامل بدل حذف صريح</h3>
         <p>عند حفظ تعديلات على كورس، يتعامل الخادم مع قائمة الدروس الواردة على أنها "كل الحقيقة" — أي درس غائب عنها يُحذف. أي خلل بسيط في الشبكة أو الواجهة الأمامية يتسبب في حذف دروس حقيقية دون قصد. تعليقات داخل الكود تثبت أن هذا حدث بالفعل من قبل وعولج بحل جزئي فقط (منع الحذف لو تجاوزت نسبته 80%).</p>
+      </div>
+    </section>
+
+    <section id="duplication-cause">
+      <h2>سبب تكرار البيانات (كورسات، دروس، أسئلة)</h2>
+      <p class="section-sub">مشكلة مختلفة عن اختفاء المحتوى، وصلت من العميل بعد أول جولة تعديلات من الديفلوبر. السبب هنا سببان متكاملان — واحد في الكود، وواحد في تصميم الداتابيز نفسها.</p>
+
+      <div class="rc-block">
+        <div class="rc-num">السبب الأول</div>
+        <h3>مفيش فحص "هل ده موجود بالفعل؟" قبل الإنشاء</h3>
+        <p>من أصل ٤ نقاط إنشاء بيانات تمت مراجعتها، ٣ منها مفيهاش أي تحقق من وجود نفس السجل قبل الإنشاء: <code>POST /api/school/courses</code> (إنشاء كورس جديد)، <code>POST /api/exams</code> (إنشاء امتحان بأسئلته)، و<code>POST /api/school/import/json/course</code> (استيراد/استعادة كورس من ملف JSON). أي ضغطة مكررة على "حفظ" — بسبب بطء الشبكة، أو محاولة استعادة نفس النسخة الاحتياطية مرتين — بتنشئ نسخة كاملة تانية من الكورس بكل دروسه وأسئلته وسلايداته دفعة واحدة. النقطة الوحيدة المحمية فعليًا هي استيراد الإكسل (<code>/api/school/import/excel</code>)، اللي فيها فحص صحيح قبل الإنشاء.</p>
+      </div>
+
+      <div class="rc-block second">
+        <div class="rc-num">السبب الثاني</div>
+        <h3>مفيش أي قيد Unique على مستوى الداتابيز</h3>
+        <p>حتى لو الكود فشل في المنع، المفروض قاعدة البيانات نفسها تكون خط الدفاع الأخير. لكن فحص <code>schema.prisma</code> يوضح إن موديلات <code>Course</code> و<code>Lesson</code> و<code>Question</code> مفيهاش أي <code>@@unique</code> بعكس جداول التسجيل زي <code>StudentEnrollment</code> اللي فيها قيد صحيح ومطبّق. يعني حتى بعد إصلاح الكود، لازم قيد إضافي على مستوى الداتابيز كحماية أخيرة.</p>
+      </div>
+
+      <div class="rc-block second" style="border-right-color:var(--info);">
+        <div class="rc-num">دليل إضافي</div>
+        <h3>المشكلة معروفة بالفعل — وفيها أداة ترقيعية جاهزة</h3>
+        <p>لقينا endpoint اسمه <code>/api/run-cleanup-duplicate-questions</code> موجود بالفعل في الكود — أداة بتدور على أسئلة امتحانات مكررة (نفس النص والاختيارات) وتمسحها. ده دليل مباشر إن المشكلة حصلت فعلاً قبل كده، واتحلّت برد فعل بدل معالجة السبب. وطبعًا نفس الـ endpoint ده من غير أي حماية تسجيل دخول برضه.</p>
+      </div>
+    </section>
+
+    <section id="fix-status">
+      <h2>حالة الإصلاحات حتى الآن</h2>
+      <p class="section-sub">بعد أول جولة تعديلات من الديفلوبر، راجعنا الكود تاني بالتفصيل ملف بملف. النتيجة مختلطة: حاجة اتصلحت صح فعلاً وبشكل كامل، وحاجات كتير لسه زي ما هي، وظهرت مشاكل جديدة كليًا مكانتش موجودة وقت المراجعة الأولى.</p>
+
+      <div class="status-grid">
+        <div class="status-col done">
+          <div class="status-head"><span class="status-dot"></span>تم الإصلاح فعلاً</div>
+          <ul>
+            <li>منطق حذف الدروس التلقائي عند تحديث الكورس — اتشال تمامًا، مفيش استبدال كامل تاني</li>
+            <li>Soft Delete — نظام كامل بسلة مهملات واسترجاع، مطبّق على Course وLesson</li>
+            <li>حد حجم الملف المرفوع — كان 10 GB، بقى 100 MB</li>
+            <li>Rate limiting العام على مستوى الـ API — لسه شغال زي ما كان (مفيش تراجع)</li>
+          </ul>
+        </div>
+        <div class="status-col open">
+          <div class="status-head"><span class="status-dot"></span>لسه مش متصلح</div>
+          <ul>
+            <li>Endpoints مفتوحة بدون تسجيل دخول (system.ts)</li>
+            <li>كلمة السر الصريحة (plainPassword) في الاستجابات</li>
+            <li>JWT_SECRET بقيمة احتياطية ثابتة</li>
+            <li>Rate limiting على تسجيل الدخول (لسه معطّل)</li>
+            <li>كلمة السر الافتراضية الثابتة في الاستيراد الجماعي</li>
+            <li>Pagination — لسه شبه معدوم</li>
+            <li>Monitoring/Alerting — لسه console.log بس (زاد العدد مش قلّ)</li>
+            <li>SVG لسه مسموح في رفع الملفات</li>
+            <li>ثغرة الـ XSS في الفرونت اند — لم تُراجع بعد آخر تحديث</li>
+          </ul>
+        </div>
+        <div class="status-col new">
+          <div class="status-head"><span class="status-dot"></span>مشاكل جديدة ظهرت</div>
+          <ul>
+            <li>مفيش فحص تكرار قبل إنشاء الكورس/الامتحان/الاستيراد — السبب المباشر لمشكلة التكرار</li>
+            <li>كلمة سر داتابيز حقيقية مكتوبة صريحة في الكود (backups.ts)</li>
+            <li>نظام Cloud Sync جديد كليًا (db-backup.ts) لسه محتاج مراجعة أمنية كاملة</li>
+            <li>endpoint تنظيف تكرار الأسئلة بدون أي حماية تسجيل دخول</li>
+          </ul>
+        </div>
       </div>
     </section>
 
