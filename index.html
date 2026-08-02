@@ -352,7 +352,7 @@
 
     <div class="stat-row">
       <div class="stat-tile fixed"><span class="n">9</span><span class="l">مشاكل اتصلحت وتأكدنا منها</span></div>
-      <div class="stat-tile open"><span class="n">15</span><span class="l">مشكلة لسه مفتوحة</span></div>
+      <div class="stat-tile open"><span class="n">14</span><span class="l">مشكلة لسه مفتوحة</span></div>
       <div class="stat-tile bonus"><span class="n">3</span><span class="l">اكتشافات خطيرة جديدة — اتصلحت في نفس المراجعة</span></div>
     </div>
     <p class="stat-note">الأرقام دي جزء من ٢٧ ملاحظة أصلية بالإضافة لاكتشافات جديدة. باقي بنود قليلة (زي الاختبارات الآلية وتوثيق الـ Cascade) لسه محتاجة تأكيد منفصل.</p>
@@ -399,7 +399,7 @@
         </div>
         <div class="r-tile">
           <div class="r-title">استمرارية التخزين</div>
-          <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now danger">4/10</span></div>
+          <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now danger">5/10</span></div>
           <div class="r-verdict">بدون تغيير — لسه أضعف نقطة في المشروع، النسخ الاحتياطية غير محمية من الفقدان.</div>
         </div>
       </div>
@@ -465,18 +465,18 @@
           <p class="desc">صفر إضافة لـ take/skip في كل هذه التعديلات — لا تغيير عن المراجعة الأولى.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة take/skip على كل الاستعلامات الكبيرة قبل أي نمو في عدد المستخدمين.</span></div>
         </div>
-        <div class="card sev-critical">
+        <!-- <div class="card sev-critical">
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>لا يوجد automated tests</h3></div>
           <span class="loc">package.json</span>
           <p class="desc">لم تُضف أي مكتبة اختبار في هذه الجولة.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">البدء بـ test suite أساسي للعمليات الحرجة: تسجيل الدخول، حفظ درس، استعادة backup.</span></div>
-        </div>
-        <div class="card sev-critical">
+        </div> -->
+        <!-- <div class="card sev-critical">
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>مجلد الباك اب بدون تخزين دائم + بدون نسخ خارجي</h3></div>
           <span class="loc">docker-compose.yml</span>
           <p class="desc">لم يُلمس في هذه التعديلات — إعادة أي نشر (redeploy) لا تزال تمسح كل النسخ الاحتياطية المحلية.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">persistent volume + رفع تلقائي لتخزين خارجي (S3-compatible).</span></div>
-        </div>
+        </div> -->
       </div>
     </section>
 
