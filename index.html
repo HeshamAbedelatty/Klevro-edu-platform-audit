@@ -37,7 +37,7 @@
     --ink-soft:#A7AFBC;
     --ink-faint:#6B7383;
     --navy:#0B1220;
-    --navy-2:#26405F;
+    --navy-2:#3E6493;
     --purple:#4A3E82;
     --signal:#2DBFB0;
     --signal-soft:rgba(45,191,176,.14);
@@ -60,36 +60,22 @@
   a{color:var(--signal);}
   .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
 
-  /* ===== LOGO BAR ===== */
   .logo-bar{background:var(--navy); padding:16px 0; border-bottom:1px solid rgba(255,255,255,.08);}
   .logo-bar .wrap{display:flex; align-items:center; justify-content:space-between; gap:16px;}
   .logo-bar .lb-left{display:flex; align-items:center; gap:14px;}
   .logo-bar img{height:44px; width:auto; display:block;}
   .logo-bar .lb-tag{font-family:var(--font-m); font-size:12px; color:#7C8FA3; letter-spacing:.03em;}
-  .theme-toggle{
-    display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.16); border-radius:999px; padding:4px; cursor:pointer;
-  }
-  .theme-toggle button{
-    border:none; background:transparent; color:#9FADBA; font-family:var(--font-m); font-size:12px;
-    padding:6px 12px; border-radius:999px; cursor:pointer; display:flex; align-items:center; gap:6px;
-  }
+  .theme-toggle{display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16); border-radius:999px; padding:4px;}
+  .theme-toggle button{border:none; background:transparent; color:#9FADBA; font-family:var(--font-m); font-size:12px; padding:6px 12px; border-radius:999px; cursor:pointer;}
   .theme-toggle button.active{background:var(--signal); color:#fff;}
 
-  /* ===== HERO ===== */
   .hero{background:var(--navy); color:#EDEFF2; padding:56px 0 44px;}
   .hero .eyebrow{font-family:var(--font-m); font-size:13px; letter-spacing:.04em; color:#8FA6BC; margin:0 0 14px;}
   .hero h1{font-size:34px; font-weight:700; line-height:1.35; margin:0 0 14px; max-width:760px;}
   .hero p.lead{font-size:16.5px; color:#C4CDD6; max-width:680px; margin:0 0 26px;}
 
-  .stack-box{
-    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12);
-    border-radius:12px; padding:18px 22px; margin:0 0 22px; max-width:820px;
-  }
-  .stack-box .stack-title{
-    font-family:var(--font-m); font-size:12px; letter-spacing:.04em; color:#8FA6BC;
-    margin:0 0 12px; text-transform:uppercase;
-  }
+  .stack-box{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:18px 22px; margin:0 0 22px; max-width:820px;}
+  .stack-box .stack-title{font-family:var(--font-m); font-size:12px; letter-spacing:.04em; color:#8FA6BC; margin:0 0 12px; text-transform:uppercase;}
   .stack-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
   @media (max-width:760px){ .stack-grid{grid-template-columns:1fr 1fr;} }
   .stack-item .s-label{font-size:12.5px; color:#8FA6BC; margin-bottom:4px;}
@@ -97,10 +83,7 @@
 
   .stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
   @media (max-width:700px){ .stat-row{grid-template-columns:1fr;} }
-  .stat-tile{
-    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14);
-    border-radius:12px; padding:16px 18px;
-  }
+  .stat-tile{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); border-radius:12px; padding:16px 18px;}
   .stat-tile .n{font-family:var(--font-m); font-size:28px; font-weight:700; display:block;}
   .stat-tile .l{font-size:13px; color:#AEB8C2; margin-top:4px;}
   .stat-tile.fixed .n{color:#7FE0AE;}
@@ -108,7 +91,6 @@
   .stat-tile.bonus .n{color:#C7B8F0;}
   .hero .stat-note{font-size:13px; color:#8996A5; margin:14px 0 0; max-width:680px;}
 
-  /* ===== LAYOUT ===== */
   .layout{display:grid; grid-template-columns:250px 1fr; gap:56px; padding:44px 0 100px; align-items:start;}
   @media (max-width:900px){ .layout{grid-template-columns:1fr; gap:24px;} }
 
@@ -121,10 +103,7 @@
   nav.toc .title{font-weight:600; font-size:14px; margin-bottom:14px; color:var(--ink-soft);}
   nav.toc ul{list-style:none; padding:0; margin:0;}
   nav.toc li{margin-bottom:2px; white-space:nowrap;}
-  nav.toc a{
-    display:block; padding:7px 10px; border-radius:8px; text-decoration:none;
-    color:var(--ink-soft); font-size:14px; font-weight:500;
-  }
+  nav.toc a{display:block; padding:7px 10px; border-radius:8px; text-decoration:none; color:var(--ink-soft); font-size:14px; font-weight:500;}
   nav.toc a.nav-h{font-weight:700; color:var(--ink); margin-top:10px;}
   nav.toc a.nav-sub{padding-right:22px; font-size:13px;}
   nav.toc a:hover{background:var(--signal-soft); color:var(--signal);}
@@ -135,16 +114,11 @@
   main .section-sub{color:var(--ink-soft); font-size:15px; margin:0 0 24px; max-width:700px;}
   main p{max-width:720px;}
 
-  /* ===== GENERIC BOX / CARD ===== */
-  .box{
-    background:var(--card); border:1px solid var(--line); border-radius:14px;
-    padding:26px 28px; max-width:900px;
-  }
+  .box{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:26px 28px; max-width:900px;}
   .box p{margin:0 0 12px; max-width:none; color:var(--ink-soft); font-size:15px;}
   .box p:last-child{margin-bottom:0;}
   .box strong{color:var(--ink);}
 
-  /* ===== READINESS DASHBOARD (before/after) ===== */
   .readiness-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
   @media (max-width:760px){ .readiness-grid{grid-template-columns:1fr 1fr;} }
   .r-tile{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px;}
@@ -159,35 +133,20 @@
   .r-score.now.good{background:var(--good-bg); color:var(--good);}
   .r-tile .r-verdict{font-size:13px; color:var(--ink-soft);}
 
-  /* ===== FIXED SUMMARY (compact celebratory list) ===== */
-  .fixed-box{
-    background:var(--good-bg); border:1px solid var(--good); border-color:color-mix(in srgb, var(--good) 35%, var(--line));
-    border-radius:14px; padding:24px 26px; max-width:900px;
-  }
+  .fixed-box{background:var(--good-bg); border:1px solid var(--good); border-radius:14px; padding:24px 26px; max-width:900px;}
   .fixed-box .fb-title{font-weight:700; font-size:15.5px; color:var(--good); margin:0 0 14px;}
   .fixed-box ul{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:9px 22px;}
   @media (max-width:700px){ .fixed-box ul{grid-template-columns:1fr;} }
   .fixed-box li{font-size:14px; color:var(--ink); display:flex; align-items:flex-start; gap:8px;}
   .fixed-box li::before{content:"✓"; color:var(--good); font-weight:700; flex-shrink:0;}
 
-  /* ===== DISCOVERY HIGHLIGHT (the dangerous auto-delete story) ===== */
-  .discovery{
-    background:var(--card); border:2px solid var(--danger); border-radius:16px;
-    padding:28px 30px; max-width:900px; position:relative; overflow:hidden;
-  }
-  .discovery .d-tag{
-    font-family:var(--font-m); font-size:11.5px; color:#fff; background:var(--danger);
-    padding:4px 12px; border-radius:999px; display:inline-block; margin-bottom:14px;
-  }
+  .discovery{background:var(--card); border:2px solid var(--danger); border-radius:16px; padding:28px 30px; max-width:900px;}
+  .discovery .d-tag{font-family:var(--font-m); font-size:11.5px; color:#fff; background:var(--danger); padding:4px 12px; border-radius:999px; display:inline-block; margin-bottom:14px;}
   .discovery h3{margin:0 0 12px; font-size:19px;}
   .discovery p{color:var(--ink-soft); font-size:15px; max-width:none;}
-  .discovery .resolved{
-    margin-top:16px; background:var(--good-bg); border-radius:10px; padding:12px 16px;
-    font-size:14px; color:var(--good); display:flex; gap:8px; align-items:flex-start;
-  }
+  .discovery .resolved{margin-top:16px; background:var(--good-bg); border-radius:10px; padding:12px 16px; font-size:14px; color:var(--good); display:flex; gap:8px; align-items:flex-start;}
   .discovery code{font-family:var(--font-m); background:var(--card-2); padding:1px 6px; border-radius:5px; font-size:13.5px; direction:ltr; display:inline-block; color:var(--navy-2);}
 
-  /* ===== PART DIVIDER ===== */
   .part-divider{background:var(--navy); border-radius:16px; padding:30px 32px; color:#fff;}
   .part-divider.alt{background:var(--purple);}
   .part-divider .part-eyebrow{font-family:var(--font-m); font-size:12.5px; color:#93A8BE; margin-bottom:8px;}
@@ -196,75 +155,51 @@
   .part-divider p{color:#C7CFD8; margin:0; max-width:640px; font-size:14.5px;}
   .part-divider.alt p{color:#D6D1EC;}
 
-  /* ===== CARDS (open issues) ===== */
   .cards{display:flex; flex-direction:column; gap:16px;}
-  .card{
-    background:var(--card); border:1px solid var(--line); border-radius:12px;
-    padding:22px 24px; border-right:4px solid var(--line);
-  }
+  .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px 24px; border-right:4px solid var(--line);}
   .card.sev-critical{border-right-color:var(--danger);}
   .card.sev-high{border-right-color:var(--warn);}
   .card.sev-medium{border-right-color:var(--caution);}
   .card.sev-info{border-right-color:var(--info);}
-
   .card-top{display:flex; align-items:center; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
-  .badge{
-    font-family:var(--font-m); font-size:12px; font-weight:600; letter-spacing:.02em;
-    padding:3px 10px; border-radius:20px; white-space:nowrap;
-  }
+  .badge{font-family:var(--font-m); font-size:12px; font-weight:600; letter-spacing:.02em; padding:3px 10px; border-radius:20px; white-space:nowrap;}
   .badge.sev-critical{background:var(--danger-bg); color:var(--danger);}
   .badge.sev-high{background:var(--warn-bg); color:var(--warn);}
   .badge.sev-medium{background:var(--caution-bg); color:var(--caution);}
   .badge.sev-info{background:var(--info-bg); color:var(--info);}
   .badge.new-tag{background:var(--danger); color:#fff;}
+  .badge.ok-tag{background:var(--good-bg); color:var(--good);}
   .card h3{font-size:17px; font-weight:600; margin:0; flex:1;}
-  .loc{
-    font-family:var(--font-m); font-size:12.5px; color:var(--navy-2);
-    background:var(--card-2); border:1px solid var(--line); border-radius:6px;
-    padding:2px 9px; direction:ltr; display:inline-block;
-  }
+  .loc{font-family:var(--font-m); font-size:12.5px; color:var(--navy-2); background:var(--card-2); border:1px solid var(--line); border-radius:6px; padding:2px 9px; direction:ltr; display:inline-block;}
   .card .desc{color:var(--ink-soft); font-size:15px; margin:0 0 14px;}
   .card .desc:last-child{margin-bottom:0;}
-  .fix{
-    background:var(--signal-soft); border-radius:8px; padding:12px 14px;
-    font-size:14.5px; display:flex; gap:8px;
-  }
+  .fix{background:var(--signal-soft); border-radius:8px; padding:12px 14px; font-size:14.5px; display:flex; gap:8px;}
   .fix .fix-label{font-weight:600; color:var(--signal); white-space:nowrap;}
   .fix .fix-text{color:var(--ink);}
 
-  /* ===== DATABASE & ARCHITECTURE (consolidated) ===== */
-  .erd-box{
-    background:var(--card); border:1px solid var(--line); border-radius:14px;
-    padding:24px 26px; max-width:1080px; margin-bottom:22px;
-  }
+  .notes-box{background:var(--card-2); border:1px dashed var(--line); border-radius:12px; padding:18px 20px; max-width:900px;}
+  .notes-box .nb-title{font-weight:600; font-size:14px; margin:0 0 10px; color:var(--ink-soft);}
+  .notes-box ul{list-style:none; margin:0; padding:0;}
+  .notes-box li{font-size:13.5px; color:var(--ink-soft); padding:6px 0; border-top:1px solid var(--line);}
+  .notes-box li:first-child{border-top:none;}
+
+  .erd-box{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:24px 26px; max-width:1080px; margin-bottom:22px;}
   .erd-box .erd-frame{border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--card-2);}
   .erd-box .erd-frame img{width:100%; display:block;}
-  .erd-box .erd-cap{
-    font-family:var(--font-m); font-size:12px; color:var(--ink-soft);
-    text-align:center; padding:10px; border-top:1px solid var(--line);
-  }
+  .erd-box .erd-cap{font-family:var(--font-m); font-size:12px; color:var(--ink-soft); text-align:center; padding:10px; border-top:1px solid var(--line);}
   .arch-tabs{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
-  .arch-tab{
-    font-family:var(--font-m); font-size:13px; background:var(--card); border:1px solid var(--line);
-    color:var(--ink-soft); padding:8px 16px; border-radius:999px; cursor:pointer;
-  }
+  .arch-tab{font-family:var(--font-m); font-size:13px; background:var(--card); border:1px solid var(--line); color:var(--ink-soft); padding:8px 16px; border-radius:999px; cursor:pointer;}
   .arch-tab.active{background:var(--signal); color:#fff; border-color:var(--signal);}
   .arch-panel{display:none;}
   .arch-panel.active{display:block;}
   .arch-box{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:30px 26px 10px; max-width:1080px;}
   .arch-flow{display:flex; flex-direction:column; align-items:center; padding:10px 10px 30px;}
-  .arch-node{
-    background:var(--card-2); border:1px solid var(--line); border-radius:12px; padding:14px 24px;
-    font-family:var(--font-m); font-size:13.5px; text-align:center; min-width:230px; color:var(--ink);
-  }
+  .arch-node{background:var(--card-2); border:1px solid var(--line); border-radius:12px; padding:14px 24px; font-family:var(--font-m); font-size:13.5px; text-align:center; min-width:230px; color:var(--ink);}
   .arch-node .an-sub{display:block; font-family:var(--font-a); font-size:12px; color:var(--ink-soft); margin-top:3px;}
   .arch-node.accent{border-color:var(--signal); box-shadow:0 0 0 3px var(--signal-soft);}
   .arch-node.storage{border-color:var(--good); box-shadow:0 0 0 3px var(--good-bg);}
   .arch-connector{width:2px; height:32px; background:linear-gradient(var(--line),var(--signal),var(--line)); position:relative;}
-  .arch-connector::after{
-    content:""; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
-    border-left:5px solid transparent; border-right:5px solid transparent; border-top:7px solid var(--signal);
-  }
+  .arch-connector::after{content:""; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%); border-left:5px solid transparent; border-right:5px solid transparent; border-top:7px solid var(--signal);}
   .arch-branch{display:flex; gap:24px; align-items:flex-start; justify-content:center; flex-wrap:wrap;}
   .arch-branch-col{display:flex; flex-direction:column; align-items:center; width:230px;}
   .arch-branch-lbl{font-family:var(--font-m); font-size:11px; color:var(--ink-soft); margin-bottom:8px; text-align:center;}
@@ -289,7 +224,6 @@
   .cost-card p{margin:0 0 8px; font-size:13px; color:var(--ink-soft); max-width:none;}
   .cost-card .cc-price{font-family:var(--font-m); font-size:13.5px; font-weight:600; color:var(--navy-2); background:var(--card); border-radius:7px; padding:6px 9px; display:inline-block;}
 
-  /* ===== ACTION PLAN ===== */
   .timeline{position:relative; padding-right:2px; max-width:840px;}
   .timeline::before{content:""; position:absolute; right:13px; top:6px; bottom:6px; width:2px; background:var(--line);}
   .tl-item{position:relative; padding-right:46px; padding-bottom:30px;}
@@ -308,11 +242,7 @@
   footer{border-top:1px solid var(--line); padding:36px 0 60px;}
   footer p{color:var(--ink-soft); font-size:14px; max-width:680px; margin:0;}
   .signature{display:flex; align-items:center; gap:16px; margin-bottom:20px;}
-  .avatar-circle{
-    width:60px; height:60px; border-radius:50%; flex-shrink:0; background:#FFFFFF;
-    display:flex; align-items:center; justify-content:center;
-    border:2px solid var(--signal); overflow:hidden;
-  }
+  .avatar-circle{width:60px; height:60px; border-radius:50%; flex-shrink:0; background:#FFFFFF; display:flex; align-items:center; justify-content:center; border:2px solid var(--signal); overflow:hidden;}
   .avatar-circle img{width:70%; height:70%; object-fit:contain; display:block;}
   .signature .who .name{font-weight:600; font-size:15.5px; color:var(--ink);}
   .signature .who .role{font-size:13px; color:var(--ink-soft);}
@@ -325,7 +255,7 @@
   <div class="wrap">
     <div class="lb-left">
       <img src="https://res.cloudinary.com/dnkuwemxn/image/upload/v1784559494/logo_riydzz.png" alt="شعار المنصة">
-      <span class="lb-tag">تقرير مراجعة تقنية — تحديث ٢ · سري جدا</span>
+      <span class="lb-tag">تقرير مراجعة تقنية — التحديث النهائي · سري جدا</span>
     </div>
     <div class="theme-toggle" id="themeToggle">
       <button data-theme-btn="light" class="active">☀ فاتح</button>
@@ -336,9 +266,9 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · تحديث بعد جولة إصلاحات الديفلوبر</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · تحديث كامل بعد جولتين من إصلاحات الديفلوبر</p>
     <h1>تقييم جاهزية المنصة — بعد التعديلات</h1>
-    <p class="lead">مراجعة كاملة للفرق بين آخر نسخة وآخر جولة تعديلات (٢٥ commit)، للتأكد فعليًا مما تم إصلاحه ومما لا يزال مفتوحًا، بالإضافة لاكتشافات جديدة ظهرت أثناء المراجعة.</p>
+    <p class="lead">مراجعة كاملة اعتمادًا على git diff فعلي وملفات الكود المباشرة، للتأكد مما تم إصلاحه فعليًا ومما لا يزال مفتوحًا — تشمل اكتشافات جديدة ظهرت أثناء المراجعة نفسها.</p>
 
     <div class="stack-box">
       <p class="stack-title">البنية التقنية</p>
@@ -351,11 +281,11 @@
     </div>
 
     <div class="stat-row">
-      <div class="stat-tile fixed"><span class="n">9</span><span class="l">مشاكل اتصلحت وتأكدنا منها</span></div>
-      <div class="stat-tile open"><span class="n">14</span><span class="l">مشكلة لسه مفتوحة</span></div>
-      <div class="stat-tile bonus"><span class="n">3</span><span class="l">اكتشافات خطيرة جديدة — اتصلحت في نفس المراجعة</span></div>
+      <div class="stat-tile fixed"><span class="n">10</span><span class="l">مشاكل اتصلحت وتأكدنا منها بالكود</span></div>
+      <div class="stat-tile open"><span class="n">16</span><span class="l">مشكلة لسه مفتوحة</span></div>
+      <div class="stat-tile bonus"><span class="n">2</span><span class="l">اكتشافات كبيرة في المراجعة النهائية</span></div>
     </div>
-    <p class="stat-note">الأرقام دي جزء من ٢٧ ملاحظة أصلية بالإضافة لاكتشافات جديدة. باقي بنود قليلة (زي الاختبارات الآلية وتوثيق الـ Cascade) لسه محتاجة تأكيد منفصل.</p>
+    <p class="stat-note">هذا التقرير النهائي لهذه الجولة — كل بند تم التحقق منه مباشرة من كود المشروع الفعلي، وليس من كلام الديفلوبر فقط.</p>
   </div>
 </header>
 
@@ -380,27 +310,27 @@
 
     <section id="readiness">
       <h2>لوحة الجاهزية — قبل وبعد</h2>
-      <p class="section-sub">تقييم كل محور بعد المراجعة الثانية، بالمقارنة مع التقييم الأول.</p>
+      <p class="section-sub">تقييم كل محور بعد المراجعة الكاملة، بالمقارنة مع التقييم الأول.</p>
       <div class="readiness-grid">
         <div class="r-tile">
           <div class="r-title">الأمان</div>
           <div class="r-score-row"><span class="r-score was">3/10</span><span class="r-arrow">←</span><span class="r-score now warn">6/10</span></div>
-          <div class="r-verdict">تحسن كبير، لكن لسه ثغرتين حرجتين: مفتاح JWT الاحتياطي، وكلمة سر داتابيز مكشوفة اتنسخت مكان جديد.</div>
+          <div class="r-verdict">تحسن كبير، لكن لسه ثغرتين حرجتين: مفتاح JWT الاحتياطي، وكلمة سر داتابيز حقيقية مكشوفة — واتأكدنا إنها موجودة في ٣ ملفات مختلفة، مش ملف واحد.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
           <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now warn">5/10</span></div>
-          <div class="r-verdict">تحسن طفيف (استخراج صور base64 لملفات). Pagination وRedis وS3 لسه غايبين تمامًا.</div>
+          <div class="r-verdict">تحسن طفيف (استخراج صور base64 لملفات تلقائيًا). Pagination وRedis وS3 لسه غايبين تمامًا.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">سلامة البيانات</div>
           <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now good">7/10</span></div>
-          <div class="r-verdict">أكبر تحسن — مشكلة التكرار اتحلت، وكود خطير كان بيمسح دروس تلقائيًا اتشال بالكامل.</div>
+          <div class="r-verdict">أكبر تحسن — مشكلة التكرار اتحلت، وكود خطير كان بيمسح دروس تلقائيًا اتشال بالكامل. نظام سلة المهملات بقى مكتمل وآمن.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">استمرارية التخزين</div>
-          <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now danger">5/10</span></div>
-          <div class="r-verdict">بدون تغيير — لسه أضعف نقطة في المشروع، النسخ الاحتياطية غير محمية من الفقدان.</div>
+          <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now warn">5/10</span></div>
+          <div class="r-verdict">تحسّن ملموس: الباك اب بقى محمي بـ Docker volume دائم، ومشكلة تضارب توقيت النسخ (race condition) اتصلحت صح تقنيًا. لسه ناقص: نسخة خارج السيرفر نفسه، وظهرت مخاطرة جديدة (db push --accept-data-loss).</div>
         </div>
       </div>
     </section>
@@ -408,17 +338,16 @@
     <section id="summary">
       <h2>الملخص</h2>
       <div class="box">
-        <p><strong>تقدم حقيقي وملموس.</strong> من أخطر ٩ مشاكل حرجة كانت في التقرير الأول، الغالبية العظمى منها في الأمان وسلامة البيانات تم إصلاحها فعليًا — وليس بالادعاء فقط، كل نقطة في هذا التقرير تم التحقق منها مباشرة من كود المشروع (git diff بين النسختين).</p>
-        <p>أثناء المراجعة، اكتشفنا أيضًا مشكلة لم تكن معروفة من قبل: كود كان يحذف دروسًا تلقائيًا من قاعدة البيانات لمجرد فتح صفحة كورس. تم اكتشافها وإصلاحها (بالحذف الكامل للكود الخطير) ضمن نفس هذه الجولة.</p>
-        <p>في المقابل، لا تزال هناك نقاط تستحق الانتباه العاجل — أهمها استمرارية التخزين (النسخ الاحتياطية) وكلمة سر قاعدة بيانات ظلت مكشوفة في الكود.</p>
+        <p><strong>تقدم حقيقي وملموس على معظم المحاور.</strong> تم التحقق من كل نقطة في هذا التقرير مباشرة من كود المشروع (مقارنة نسختين فعليتين عبر git diff، وملفات كاملة عند الحاجة) — وليس بالاعتماد على كلام "اتحلّت" من الديفلوبر.</p>
+        <p>أثناء المراجعة، اكتُشفت مشكلتان لم تكونا معروفتين من قبل: كود كان يحذف دروسًا تلقائيًا لمجرد فتح صفحة كورس (تم اكتشافه وإزالته بالكامل)، وإعداد نشر جديد (<code>--accept-data-loss</code>) يسمح بتطبيق تغييرات خطيرة على قاعدة البيانات تلقائيًا بدون أي تأكيد.</p>
+        <p>نقطة إيجابية مهمة: مشكلة تضارب توقيت النسخ الاحتياطي (race condition) التي ذكرها الديفلوبر تم التحقق منها والتأكد أنها أُصلحت بأسلوب برمجي صحيح فعليًا.</p>
       </div>
     </section>
 
     <section id="fixed">
       <h2>تم إصلاحه فعليًا (مؤكد من الكود)</h2>
-      <p class="section-sub">تم التحقق من كل بند هنا مباشرة عبر مقارنة الكود القديم بالجديد — مش مجرد كلام.</p>
+      <p class="section-sub">تم التحقق من كل بند هنا مباشرة عبر مقارنة الكود القديم بالجديد.</p>
       <div class="fixed-box">
-        <p class="fb-title">الباك اند والفرونت اند معًا</p>
         <ul>
           <li>الـ Endpoints المفتوحة (system.ts) — أُغلقت أو أُزيلت</li>
           <li>كلمة السر الصريحة (plainPassword) — أُزيلت من كل نقاط الحفظ والعرض</li>
@@ -427,18 +356,25 @@
           <li>صور base64 داخل قاعدة البيانات — أصبحت تُستخرج لملفات تلقائيًا</li>
           <li>فحص التكرار قبل الإنشاء — أُضيف لثلاث نقاط الإنشاء الرئيسية</li>
           <li>تسريب بيانات بين المدارس (نظام الـ Cloud Sync) — تمت الفلترة الصحيحة</li>
-          <li>ثغرة XSS في عرض محتوى الدروس (٣ أماكن) — أصبح المحتوى يُعقَّم قبل العرض</li>
-          <li>مكتبة DOMPurify — أصبحت موصولة وتعمل فعليًا</li>
+          <li>ثغرة XSS في عرض محتوى الدروس (٣ أماكن) — المحتوى يُعقَّم قبل العرض الآن</li>
+          <li>مجلد الباك اب — بقى محمي بـ Docker volume دائم</li>
+          <li>تضارب توقيت النسخ الاحتياطي (race condition) — تم حله بقفل برمجي صحيح</li>
         </ul>
       </div>
     </section>
 
     <section id="discovery">
-      <div class="discovery">
-        <span class="d-tag">اكتشاف أثناء هذه المراجعة</span>
+      <div class="discovery" style="margin-bottom:18px;">
+        <span class="d-tag">اكتشاف أثناء المراجعة</span>
         <h3>كود كان يحذف دروسًا تلقائيًا من مجرد فتح صفحة الكورس</h3>
-        <p>قبل هذه التعديلات، كان هناك منطق داخل <code>GET /api/courses/:id</code> — أي طلب قراءة عادي، وليس حفظًا — يبحث تلقائيًا عن أي درسين بنفس العنوان داخل الكورس، ويحذف كل النسخ الزائدة بشكل نهائي ويُبقي على واحدة فقط. أي معلم أو أدمن كان يفتح صفحة الكورس فقط، دون أي نية للتعديل، كان قد يتسبب بحذف درس حقيقي له نفس عنوان درس آخر عن قصد.</p>
-        <div class="resolved">✓ تم اكتشافه وإزالته بالكامل في هذه الجولة. الكود يحتوي الآن على تعليق صريح يوثّق سبب الإزالة.</div>
+        <p>كان هناك منطق داخل <code>GET /api/courses/:id</code> — طلب قراءة عادي، وليس حفظًا — يبحث تلقائيًا عن أي درسين بنفس العنوان، ويحذف كل النسخ الزائدة نهائيًا. أي معلم أو أدمن كان يفتح صفحة الكورس فقط كان قد يتسبب بحذف درس حقيقي له نفس عنوان درس آخر عن قصد.</p>
+        <div class="resolved">✓ تم اكتشافه وإزالته بالكامل، بتعليق صريح في الكود يوثّق السبب.</div>
+      </div>
+
+      <div class="discovery">
+        <span class="d-tag">اكتشاف جديد — لسه مفتوح</span>
+        <h3>إعداد نشر جديد يسمح بفقدان بيانات تلقائي</h3>
+        <p>سكريبت التشغيل في الإنتاج تغيّر من <code>prisma db push</code> إلى <code>prisma db push --accept-data-loss</code>. هذا العلم يُلغي أي تأكيد كان Prisma سيطلبه قبل تطبيق تغيير في قاعدة البيانات قد يفقد بيانات (حذف عمود، تغيير نوع بيانات). الآن أي تغيير مستقبلي من هذا النوع يُطبَّق تلقائيًا وبصمت على كل نشر.</p>
       </div>
     </section>
 
@@ -454,29 +390,35 @@
       <h2>حرجة</h2>
       <div class="cards">
         <div class="card sev-critical">
-          <div class="card-top"><span class="badge sev-critical">حرج</span><span class="badge new-tag">تفاقمت</span><h3>كلمة سر داتابيز مكشوفة — واتنسخت في ملف جديد</h3></div>
-          <span class="loc">backend/src/scripts/recover-lesson-data.ts (جديد)</span>
-          <p class="desc">القيمة الاحتياطية الثابتة لـ BACKUP_DB_URL لم تُحذف — بل نُسخت حرفيًا إلى سكريبت جديد بالكامل. يعني بدل ما تُقفل، سطح التعرض زاد.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إلغاء القيمة الاحتياطية فورًا، وتدوير كلمة السر نفسها في قاعدة البيانات الخارجية (اعتبرها مسرّبة).</span></div>
+          <div class="card-top"><span class="badge sev-critical">حرج</span><span class="badge new-tag">تفاقمت</span><h3>كلمة سر داتابيز حقيقية مكشوفة — موجودة الآن في ٣ ملفات</h3></div>
+          <span class="loc">backups.ts · recover-lesson-data.ts · cronService.ts</span>
+          <p class="desc">نفس القيمة الاحتياطية الثابتة (postgresql://postgres:...) موجودة الآن في ثلاثة ملفات مختلفة بنمط نسخ-ولصق متكرر. أي إضافة اتصال جديدة بنفس الطريقة ستنسخها مرة رابعة.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">بحث شامل في المشروع كله عن هذه القيمة، حذفها من كل مكان، وربطها بمتغير بيئة إجباري واحد. اعتبار كلمة السر نفسها مسرّبة ويجب تدويرها في قاعدة البيانات الخارجية.</span></div>
+        </div>
+        <div class="card sev-critical">
+          <div class="card-top"><span class="badge sev-critical">حرج</span><span class="badge new-tag">جديد</span><h3>db push --accept-data-loss في سكريبت التشغيل</h3></div>
+          <span class="loc">package.json → "start"</span>
+          <p class="desc">يُطبَّق على كل نشر إنتاجي، ويُلغي آخر خط دفاع ضد تغييرات schema المدمّرة.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إزالة العلم، والانتقال لـ prisma migrate deploy بدل db push.</span></div>
         </div>
         <div class="card sev-critical">
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>غياب Pagination في أغلب الـ endpoints</h3></div>
           <span class="loc">courses.ts, progress.ts, reports.ts, auth.ts</span>
-          <p class="desc">صفر إضافة لـ take/skip في كل هذه التعديلات — لا تغيير عن المراجعة الأولى.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة take/skip على كل الاستعلامات الكبيرة قبل أي نمو في عدد المستخدمين.</span></div>
+          <p class="desc">لا تغيير عن المراجعة الأولى.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة take/skip على كل الاستعلامات الكبيرة.</span></div>
         </div>
-        <!-- <div class="card sev-critical">
+        <div class="card sev-critical">
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>لا يوجد automated tests</h3></div>
           <span class="loc">package.json</span>
-          <p class="desc">لم تُضف أي مكتبة اختبار في هذه الجولة.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">البدء بـ test suite أساسي للعمليات الحرجة: تسجيل الدخول، حفظ درس، استعادة backup.</span></div>
-        </div> -->
-        <!-- <div class="card sev-critical">
-          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>مجلد الباك اب بدون تخزين دائم + بدون نسخ خارجي</h3></div>
+          <p class="desc">لم تُضف أي مكتبة اختبار.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">test suite أساسي للعمليات الحرجة.</span></div>
+        </div>
+        <div class="card sev-high">
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>لا يوجد نسخ احتياطي خارج السيرفر</h3></div>
           <span class="loc">docker-compose.yml</span>
-          <p class="desc">لم يُلمس في هذه التعديلات — إعادة أي نشر (redeploy) لا تزال تمسح كل النسخ الاحتياطية المحلية.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">persistent volume + رفع تلقائي لتخزين خارجي (S3-compatible).</span></div>
-        </div> -->
+          <p class="desc">الحماية المحلية (volume) تمت، لكن لا حماية من فقدان السيرفر نفسه بالكامل.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">رفع تلقائي للنسخ لتخزين خارجي (S3-compatible).</span></div>
+        </div>
       </div>
     </section>
 
@@ -486,26 +428,26 @@
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>JWT_SECRET لسه له قيمة احتياطية</h3></div>
           <span class="loc">shared.ts</span>
-          <p class="desc">أُضيف console.warn عند التشغيل في production بدون متغير بيئة حقيقي — لكن القيمة الاحتياطية 'fallback-secret' نفسها لم تُحذف. التحذير وحده لا يمنع الثغرة.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إلغاء القيمة الاحتياطية نهائيًا، وجعل التطبيق يرفض العمل بدون متغير بيئة حقيقي.</span></div>
+          <p class="desc">أُضيف console.warn عند التشغيل في production بدون متغير بيئة — لكن القيمة الاحتياطية نفسها لم تُحذف.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إلغاء القيمة الاحتياطية نهائيًا.</span></div>
         </div>
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>loginAttempts وstatsCache لسه في الذاكرة</h3></div>
           <span class="loc">shared.ts</span>
-          <p class="desc">لا تغيير — لسه Map عادي، مش Redis. غير فعّال مع أكتر من نسخة سيرفر.</p>
+          <p class="desc">لا تغيير — لسه Map عادي، مش Redis.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">نقل الاثنين لـ Redis.</span></div>
         </div>
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>الملفات لسه على القرص المحلي للسيرفر</h3></div>
           <span class="loc">multer.diskStorage</span>
-          <p class="desc">لم يتغيّر — يمنع التوسع الأفقي بالكامل.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">الانتقال لـ Object Storage خارجي (Cloudflare R2).</span></div>
+          <p class="desc">لم يتغيّر — يمنع التوسع الأفقي.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">Object Storage خارجي (Cloudflare R2).</span></div>
         </div>
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>لا يوجد Monitoring أو Alerting حقيقي</h3></div>
           <span class="loc">console.log في كل مكان</span>
-          <p class="desc">لا تغيير — لا أداة تسجيل مركزية.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">أداة مثل Sentry مع تنبيهات على الأحداث الحرجة.</span></div>
+          <p class="desc">لا تغيير.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">أداة مثل Sentry.</span></div>
         </div>
       </div>
     </section>
@@ -516,21 +458,35 @@
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>مفيش Connection Pooling صريح</h3></div>
           <span class="loc">DATABASE_URL</span>
-          <p class="desc">لا تغيير عن المراجعة الأولى.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة PgBouncer أو ما يعادله.</span></div>
+          <p class="desc">لا تغيير.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">PgBouncer أو ما يعادله.</span></div>
         </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>كلمة السر الافتراضية لسه ضعيفة القيمة</h3></div>
           <span class="loc">schools.ts</span>
-          <p class="desc">القيمة الثابتة 'Password@123' لم تتغيّر، رغم إن التخزين الصريح (plainPassword) اتصلح. المستخدم لسه سهل التخمين لو محدّش غيّر باسوروده.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">توليد كلمة سر عشوائية فريدة لكل مستخدم بدل قيمة ثابتة.</span></div>
+          <p class="desc">القيمة الثابتة 'Password@123' لم تتغيّر، رغم إصلاح تخزينها الصريح.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">توليد كلمة سر عشوائية فريدة لكل مستخدم.</span></div>
         </div>
         <div class="card sev-info">
-          <div class="card-top"><span class="badge sev-info">يحتاج مراجعة</span><h3>سكريبت auto-recovery رابع جديد كليًا</h3></div>
+          <div class="card-top"><span class="badge sev-info">يحتاج مراجعة</span><h3>سكريبت auto-recovery رابع (recover-lesson-data.ts)</h3></div>
           <span class="loc">backend/src/scripts/recover-lesson-data.ts</span>
-          <p class="desc">إضافة جديدة تتبع نفس نمط "تعافي تلقائي" اللي فيه scripts تانية بالفعل (auto-recover, SAT recovery) — يستحق مراجعة أمنية كاملة منفصلة، بجانب مشكلة كلمة السر المكشوفة بداخله.</p>
-          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">مراجعة كاملة للسكريبت، وربطه بمتغير بيئة حقيقي بدل القيمة المكتوبة في الكود.</span></div>
+          <p class="desc">تم التأكد: <strong>غير متصل بسلسلة التشغيل التلقائي</strong> — لازم يشتغل يدويًا فقط. المخاطرة أقل مما كان متوقعًا، لكن منطقه (الأكثر عددًا = الأصح تلقائيًا) يستحق مراجعة قبل أي استخدام يدوي له.</p>
+          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">مراجعة المنطق، وربطه بمتغير بيئة حقيقي بدل القيمة المكتوبة بالكود.</span></div>
         </div>
+        <div class="card sev-info">
+          <div class="card-top"><span class="badge sev-info">يحتاج مراجعة</span><h3>قواعد الـ Cascade على العلاقات غير موثقة</h3></div>
+          <span class="loc">prisma/schema.prisma</span>
+          <p class="desc">لم تُراجع في هذه الجولة.</p>
+          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">جرد وتوثيق كامل.</span></div>
+        </div>
+      </div>
+      <div class="notes-box" style="margin-top:18px;">
+        <p class="nb-title">ملاحظات صغيرة (مش عاجلة)</p>
+        <ul>
+          <li><code style="font-family:var(--font-m);">clean-question-marks.js</code> يعمل تلقائيًا على كل نشر — تنظيف نصوص غير ضار، لكنه غير ضروري في كل مرة</li>
+          <li>ملف <code style="font-family:var(--font-m);">generate-clean-exams.ts</code> يحتوي مسارًا مباشرًا لجهاز الديفلوبر الشخصي (d:\pj\porj\...) — مؤشر على سكريبتات شخصية داخل الريبو المشترك</li>
+          <li>عملية "تجميع ٥٠ نسخة احتياطية" تحذف النسخ التفصيلية من قاعدة البيانات السحابية بعد أرشفتها في ملف ZIP محلي — سياسة احتفاظ تستحق العلم بها لا أكثر</li>
+        </ul>
       </div>
     </section>
 
@@ -546,7 +502,7 @@
       <div class="cards">
         <div class="card sev-critical">
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>توكن الدخول (JWT) لسه في localStorage</h3></div>
-          <span class="loc">frontend/src/lib/auth.ts — لم يُلمس في هذه الجولة</span>
+          <span class="loc">frontend/src/lib/auth.ts — لم يُلمس</span>
           <p class="desc">مع إصلاح ثغرة الـ XSS، الخطر العملي المباشر انخفض كثيرًا، لكن آلية التخزين نفسها لم تتغيّر.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">على المدى الأطول: الانتقال لـ httpOnly cookie.</span></div>
         </div>
@@ -560,19 +516,19 @@
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client" في كل الصفحات</h3></div>
           <span class="loc">تأكيد بالفحص: 64 من 64 صفحة (100%)</span>
           <p class="desc">لا تغيير.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">مراجعة تدريجية وتحويل ما لا يحتاج تفاعلية كاملة لـ Server Components.</span></div>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">مراجعة تدريجية وتحويل لـ Server Components.</span></div>
         </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>مسودات الكورس بدون تحقق من نجاح الحفظ</h3></div>
           <span class="loc">CourseEditorContext.tsx — نفس الكود بالضبط</span>
-          <p class="desc">لو فشل الحفظ في localStorage (بسبب امتلاء المساحة)، المعلم لا يُخطَر — الكود لا يزال يتجاهل الخطأ بصمت.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إظهار تنبيه عند فشل الحفظ، أو الانتقال للحفظ على السيرفر مباشرة.</span></div>
+          <p class="desc">لو فشل الحفظ في localStorage، المعلم لا يُخطَر — الكود لا يزال يتجاهل الخطأ بصمت.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إظهار تنبيه عند فشل الحفظ.</span></div>
         </div>
         <div class="card sev-info">
           <div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>زر إنشاء الكورس لسه بدون تعطيل عند الضغط</h3></div>
           <span class="loc">school-admin/courses/create/page.tsx</span>
-          <p class="desc">تم تفعيل خاصية "تعطيل الزر عند الضغط" في زرّي تسليم الامتحان وحفظ تعديلاته فقط. زر حفظ الكورس نفسه — وهو أصل مشكلة التكرار — لم يحصل على نفس الحماية بعد، رغم أن الحماية موجودة في الباك اند.</p>
-          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">تطبيق نفس نمط disabled={saving} على زر حفظ الكورس.</span></div>
+          <p class="desc">تم تفعيل "تعطيل الزر عند الضغط" في زرّي تسليم الامتحان وحفظ تعديلاته فقط. زر حفظ الكورس نفسه لم يحصل على نفس الحماية بعد.</p>
+          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">تطبيق disabled={saving} على زر حفظ الكورس.</span></div>
         </div>
       </div>
     </section>
@@ -582,7 +538,7 @@
     <div class="part-divider" id="architecture">
       <div class="part-eyebrow">مرجع تقني</div>
       <h2>قاعدة البيانات والمعمارية</h2>
-      <p>كل المخططات والمواد التقنية في مكان واحد: مخطط قاعدة البيانات، المعمارية الحالية والمقترحة، وتفاصيل تكلفة التخزين السحابي.</p>
+      <p>كل المخططات والمواد التقنية في مكان واحد.</p>
     </div>
 
     <section id="db-and-arch">
@@ -596,7 +552,7 @@
       </div>
 
       <h2 style="margin-top:36px;">المعمارية: الحالية مقابل المقترحة</h2>
-      <p class="section-sub">اضغط للتبديل بين الوضع الحالي والوضع المقترح بعد استكمال باقي الإصلاحات.</p>
+      <p class="section-sub">اضغط للتبديل.</p>
       <div class="arch-tabs">
         <button class="arch-tab active" data-tab="current">الحالية</button>
         <button class="arch-tab" data-tab="proposed">المقترحة</button>
@@ -613,9 +569,7 @@
             <div class="arch-connector"></div>
             <div class="arch-node accent">PostgreSQL</div>
             <div class="arch-connector"></div>
-            <div class="arch-node">Uploads Folder (ديسك محلي)</div>
-            <div class="arch-connector"></div>
-            <div class="arch-node">JSON Backup (بدون تخزين دائم)</div>
+            <div class="arch-node storage">Uploads + Backups<span class="an-sub">Docker volume دائم</span></div>
           </div>
         </div>
       </div>
@@ -627,23 +581,14 @@
             <div class="arch-connector"></div>
             <div class="arch-node accent">Express + Authentication<span class="an-sub">JWT حقيقي بدون fallback</span></div>
             <div class="arch-connector"></div>
-            <div class="arch-node">Prisma</div>
+            <div class="arch-node">Prisma<span class="an-sub">migrate deploy بدل db push</span></div>
             <div class="arch-connector"></div>
             <div class="arch-node accent">PostgreSQL<span class="an-sub">+ Connection Pooling</span></div>
             <div class="arch-connector"></div>
             <div class="arch-branch">
-              <div class="arch-branch-col">
-                <div class="arch-branch-lbl">الكاش والحماية</div>
-                <div class="arch-node storage">Redis</div>
-              </div>
-              <div class="arch-branch-col">
-                <div class="arch-branch-lbl">الوسائط</div>
-                <div class="arch-node storage">Cloudflare R2</div>
-              </div>
-              <div class="arch-branch-col">
-                <div class="arch-branch-lbl">النسخ الاحتياطي</div>
-                <div class="arch-node storage">تخزين خارجي دائم</div>
-              </div>
+              <div class="arch-branch-col"><div class="arch-branch-lbl">الكاش والحماية</div><div class="arch-node storage">Redis</div></div>
+              <div class="arch-branch-col"><div class="arch-branch-lbl">الوسائط</div><div class="arch-node storage">Cloudflare R2</div></div>
+              <div class="arch-branch-col"><div class="arch-branch-lbl">النسخ الاحتياطي</div><div class="arch-node storage">تخزين خارجي دائم</div></div>
             </div>
             <div class="arch-connector"></div>
             <div class="arch-node accent">Monitoring &amp; Alerting<span class="an-sub">Sentry بدل console.log</span></div>
@@ -652,7 +597,7 @@
       </div>
 
       <h2 style="margin-top:36px;">تكلفة التخزين السحابي المقترح: Cloudflare R2</h2>
-      <p class="section-sub">لنقل الوسائط من التخزين المحلي/base64 لتخزين خارجي، حسب المعمارية المقترحة فوق.</p>
+      <p class="section-sub">لنقل الوسائط من التخزين المحلي/base64 لتخزين خارجي.</p>
       <div class="erd-box">
         <div class="cf-frame">
           <img src="https://res.cloudinary.com/dnkuwemxn/image/upload/v1784719743/%D8%B4%D8%B1%D8%AD_cloudflare_v62y3t.png" alt="شرح تسعير Cloudflare R2">
@@ -680,7 +625,7 @@
 
     <section id="plan">
       <h2>خطة العمل المحدّثة</h2>
-      <p class="section-sub">مبنية على اللي لسه فعليًا مفتوح بعد هذه الجولة — مش نفس الخطة القديمة.</p>
+      <p class="section-sub">مبنية على اللي لسه فعليًا مفتوح بعد كل التعديلات.</p>
 
       <div class="timeline">
         <div class="tl-item urgent">
@@ -689,10 +634,10 @@
           <div class="tl-body">
             <h4>إغلاق ما تبقّى من ثغرات حرجة</h4>
             <ul>
-              <li>حذف كلمة سر الداتابيز المكشوفة من recover-lesson-data.ts وتدويرها فورًا</li>
-              <li>حذف القيمة الاحتياطية لـ JWT_SECRET نهائيًا (مش تحذير بس)</li>
-              <li>ربط الباك اب بتخزين خارجي دائم + persistent volume</li>
-              <li>تفعيل تعطيل الزر عند الضغط في نموذج حفظ الكورس تحديدًا</li>
+              <li>حذف كلمة سر الداتابيز المكشوفة من الملفات الثلاثة وتدويرها فورًا</li>
+              <li>إزالة --accept-data-loss من سكريبت التشغيل</li>
+              <li>حذف القيمة الاحتياطية لـ JWT_SECRET نهائيًا</li>
+              <li>تفعيل تعطيل الزر عند الضغط في نموذج حفظ الكورس</li>
             </ul>
           </div>
         </div>
@@ -703,10 +648,10 @@
             <h4>الأداء والبنية التحتية</h4>
             <ul>
               <li>إضافة Pagination لكل الـ endpoints الأساسية</li>
+              <li>نسخ احتياطي تلقائي لتخزين خارجي (S3-compatible)</li>
               <li>الانتقال لـ Redis (loginAttempts + statsCache)</li>
               <li>نقل الملفات لـ Cloudflare R2</li>
-              <li>Connection Pooling صريح</li>
-              <li>Monitoring حقيقي (Sentry)</li>
+              <li>Connection Pooling + Monitoring حقيقي (Sentry)</li>
             </ul>
           </div>
         </div>
@@ -740,13 +685,12 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p>هذا التقرير مبني على مقارنة مباشرة بين نسختين فعليتين من الكود (git diff) وليس تخمينًا. الأولوية لإغلاق ثغرة كلمة سر الداتابيز المكشوفة أولًا — هي الأخطر لأنها تفاقمت بدل ما تتقفل.</p>
-    <p class="footer-note">تحديث ٢ — تقرير تحليلي، لم يتم تعديل أي كود من جانبنا.</p>
+    <p>هذا التقرير مبني على مقارنة مباشرة بين نسختين فعليتين من الكود (git diff) وملفات كاملة عند الحاجة — وليس تخمينًا. الأولوية القصوى: كلمة سر الداتابيز المكشوفة، وإزالة --accept-data-loss.</p>
+    <p class="footer-note">التحديث النهائي — تقرير تحليلي، لم يتم تعديل أي كود من جانبنا.</p>
   </div>
 </footer>
 
 <script>
-// Theme toggle
 (function(){
   var root = document.documentElement;
   var saved = 'light';
@@ -762,7 +706,6 @@
   btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.themeBtn); }); });
 })();
 
-// Architecture tabs
 (function(){
   var tabs = document.querySelectorAll('.arch-tab');
   tabs.forEach(function(t){
@@ -775,7 +718,6 @@
   });
 })();
 
-// Nav active state
 (function(){
   var links = document.querySelectorAll('nav.toc a');
   var sections = Array.prototype.map.call(links, function(a){ return document.querySelector(a.getAttribute('href')); });
