@@ -91,6 +91,11 @@
   .stat-tile.bonus .n{color:#C7B8F0;}
   .hero .stat-note{font-size:13px; color:#8996A5; margin:14px 0 0; max-width:680px;}
 
+  /* CSS جديد لإحصائيات المشاكل الديناميكية */
+  .dynamic-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 24px; padding-top: 24px; border-top: 1px dashed rgba(255,255,255,.15); }
+  @media (max-width:900px){ .dynamic-stats{grid-template-columns: repeat(3, 1fr);} }
+  @media (max-width:600px){ .dynamic-stats{grid-template-columns: 1fr 1fr;} }
+
   .layout{display:grid; grid-template-columns:250px 1fr; gap:56px; padding:44px 0 100px; align-items:start;}
   @media (max-width:900px){ .layout{grid-template-columns:1fr; gap:24px;} }
 
@@ -119,6 +124,8 @@
   .box p:last-child{margin-bottom:0;}
   .box strong{color:var(--ink);}
 
+  .metric-note{background:var(--info-bg); border-radius:10px; padding:12px 16px; font-size:13.5px; color:var(--info); max-width:820px; margin:14px 0 0; display:flex; gap:8px; align-items:flex-start;}
+
   .readiness-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
   @media (max-width:760px){ .readiness-grid{grid-template-columns:1fr 1fr;} }
   .r-tile{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px;}
@@ -145,6 +152,7 @@
   .discovery h3{margin:0 0 12px; font-size:19px;}
   .discovery p{color:var(--ink-soft); font-size:15px; max-width:none;}
   .discovery .resolved{margin-top:16px; background:var(--good-bg); border-radius:10px; padding:12px 16px; font-size:14px; color:var(--good); display:flex; gap:8px; align-items:flex-start;}
+  .discovery .flagged{margin-top:16px; background:var(--warn-bg); border-radius:10px; padding:12px 16px; font-size:14px; color:var(--warn); display:flex; gap:8px; align-items:flex-start;}
   .discovery code{font-family:var(--font-m); background:var(--card-2); padding:1px 6px; border-radius:5px; font-size:13.5px; direction:ltr; display:inline-block; color:var(--navy-2);}
 
   .part-divider{background:var(--navy); border-radius:16px; padding:30px 32px; color:#fff;}
@@ -255,7 +263,7 @@
   <div class="wrap">
     <div class="lb-left">
       <img src="https://res.cloudinary.com/dnkuwemxn/image/upload/v1784559494/logo_riydzz.png" alt="شعار المنصة">
-      <span class="lb-tag">تقرير مراجعة تقنية — التحديث النهائي · سري جدا</span>
+      <span class="lb-tag">تقرير مراجعة تقنية· سري جدا</span>
     </div>
     <div class="theme-toggle" id="themeToggle">
       <button data-theme-btn="light" class="active">☀ فاتح</button>
@@ -266,9 +274,9 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · تحديث كامل بعد جولتين من إصلاحات الديفلوبر</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · مبني على آخر تعديلات للديفلوبر بتاريخ ٦ أغسطس ٢٠٢٦</p>
     <h1>تقييم جاهزية المنصة — بعد التعديلات</h1>
-    <p class="lead">مراجعة كاملة اعتمادًا على git diff فعلي وملفات الكود المباشرة، للتأكد مما تم إصلاحه فعليًا ومما لا يزال مفتوحًا — تشمل اكتشافات جديدة ظهرت أثناء المراجعة نفسها.</p>
+    <p class="lead">مراجعة كاملة اعتمادًا على git diff فعلي بين نسختين حقيقيتين من الكود، وملفات كاملة عند الحاجة. كل رقم في هذا التقرير — في لوحة الجاهزية وفي الإحصائيات أدناه — معدود يدويًا من الكروت والبنود الفعلية في التقرير نفسه، وليس تقديرًا.</p>
 
     <div class="stack-box">
       <p class="stack-title">البنية التقنية</p>
@@ -281,11 +289,16 @@
     </div>
 
     <div class="stat-row">
-      <div class="stat-tile fixed"><span class="n">10</span><span class="l">مشاكل اتصلحت وتأكدنا منها بالكود</span></div>
-      <div class="stat-tile open"><span class="n">16</span><span class="l">مشكلة لسه مفتوحة</span></div>
-      <div class="stat-tile bonus"><span class="n">2</span><span class="l">اكتشافات كبيرة في المراجعة النهائية</span></div>
+      <div class="stat-tile fixed"><span class="n">19</span><span class="l">بند تم إصلاحه ومؤكد</span></div>
+      <div class="stat-tile open"><span class="n">15</span><span class="l">بند لسه مفتوح (كروت مفصّلة تحت)</span></div>
+      <div class="stat-tile bonus"><span class="n">5</span><span class="l">اكتشافات كبيرة — تفاصيلها تحت، اتنين حرجين لسه مفتوحين</span></div>
+      <div id="total-problem-summary" class="total-problem"></div>
     </div>
-    <p class="stat-note">هذا التقرير النهائي لهذه الجولة — كل بند تم التحقق منه مباشرة من كود المشروع الفعلي، وليس من كلام الديفلوبر فقط.</p>
+    
+    <!-- قسم إحصائيات المشاكل الديناميكي -->
+    <div id="dynamic-issue-summary" class="dynamic-stats"></div>
+    
+    <p class="stat-note">هذه الإحصائيات عبارة عن عدّ حرفي لعدد البنود في التقرير — وهي مقياس مختلف تمامًا عن لوحة الجاهزية (٠-١٠ لكل محور) اللي جاية بعدها.</p>
   </div>
 </header>
 
@@ -298,9 +311,11 @@
       <li><a href="#readiness">لوحة الجاهزية</a></li>
       <li><a href="#summary">الملخص</a></li>
       <li><a href="#fixed">تم إصلاحه</a></li>
-      <li><a href="#discovery">اكتشاف مهم</a></li>
+      <li><a href="#critical-new" style="color:var(--danger); font-weight:700;">⚠ ثغرة حرجة لسه مفتوحة</a></li>
+      <li><a href="#discovery">اكتشافات أخرى</a></li>
       <li><a href="#backend" class="nav-h">مشاكل لسه مفتوحة — الباك اند</a></li>
       <li><a href="#frontend" class="nav-h">مشاكل لسه مفتوحة — الفرونت اند</a></li>
+      <li><a href="#server-specs" class="nav-h">اقتراح إمكانيات السيرفر</a></li>
       <li><a href="#architecture" class="nav-h">قاعدة البيانات والمعمارية</a></li>
       <li><a href="#plan" class="nav-h">خطة العمل المحدّثة</a></li>
     </ul>
@@ -310,113 +325,162 @@
 
     <section id="readiness">
       <h2>لوحة الجاهزية — قبل وبعد</h2>
-      <p class="section-sub">تقييم كل محور بعد المراجعة الكاملة، بالمقارنة مع التقييم الأول.</p>
+      <p class="section-sub">تقييم نوعي (0-10) لكل محور تقني بالكامل، بناءً على الصورة العامة بعد كل الجولات — مش عدّ حرفي للبنود.</p>
       <div class="readiness-grid">
         <div class="r-tile">
           <div class="r-title">الأمان</div>
           <div class="r-score-row"><span class="r-score was">3/10</span><span class="r-arrow">←</span><span class="r-score now warn">6/10</span></div>
-          <div class="r-verdict">تحسن كبير، لكن لسه ثغرتين حرجتين: مفتاح JWT الاحتياطي، وكلمة سر داتابيز حقيقية مكشوفة — واتأكدنا إنها موجودة في ٣ ملفات مختلفة، مش ملف واحد.</div>
+          <div class="r-verdict">إغلاق مؤكد من الجولة السابقة لثغرتين حرجتين: كلمة سر الداتابيز الهاردكودد وJWT fallback. لكن ده اتعادل بثغرة superadmin الحرجة (لسه مفتوحة بالكامل، لم تُلمَس)، وثغرة SVG المدمجة (لسه مفتوحة)، واكتشاف جديد أصغر: تعقيم HTML اتشال من حقل شرح سؤال الامتحان. الرقم فضل زي ما هو لأن المكاسب والمخاطر الجديدة اتعادلت.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
-          <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now warn">5/10</span></div>
-          <div class="r-verdict">تحسن طفيف (استخراج صور base64 لملفات تلقائيًا). Pagination وRedis وS3 لسه غايبين تمامًا.</div>
+          <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now danger">4/10</span></div>
+          <div class="r-verdict">Connection Pooling اتأكد إنه اتحل. لكن اكتشفنا سبب أكبر: المنصة شغالة على VPS من أرخص فئة (vCPU واحد، 4GB RAM)، ومشترك فعليًا مع مواقع تانية غير مرتبطة بالعميل حسب تصريح المطور. Pagination لسه غايب من progress.ts وreports.ts. الرقم ما اتحسنش رغم إغلاق Connection Pooling لأن مشكلة السيرفر المشترك أخطر وأشمل.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">سلامة البيانات</div>
-          <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now good">7/10</span></div>
-          <div class="r-verdict">أكبر تحسن — مشكلة التكرار اتحلت، وكود خطير كان بيمسح دروس تلقائيًا اتشال بالكامل. نظام سلة المهملات بقى مكتمل وآمن.</div>
+          <div class="r-score-row"><span class="r-score was">7/10</span><span class="r-arrow">←</span><span class="r-score now danger">5/10</span></div>
+          <div class="r-verdict">أهم اكتشاف في هذا التقرير: تتبعنا باج "تكرار الدروس" اللي بلّغ عنه العميل حتى السبب الجذري الكامل بالكود، ووثّقناه بدليل مباشر (طلبات API فعلية موثّقة قبل وبعد كل خطوة) — درسان بنفس المحتوى بمعرّفين مختلفين في نفس الحفظة. السبب: مزامنة ناقصة لمعرّف الدرس بعد الحفظ في saveLesson(). الحل معروف ومحدد، لكن المشكلة نشطة وموثقة فعليًا في الإنتاج وقت كتابة هذا التقرير.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">استمرارية التخزين</div>
-          <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now warn">5/10</span></div>
-          <div class="r-verdict">تحسّن ملموس: الباك اب بقى محمي بـ Docker volume دائم، ومشكلة تضارب توقيت النسخ (race condition) اتصلحت صح تقنيًا. لسه ناقص: نسخة خارج السيرفر نفسه، وظهرت مخاطرة جديدة (db push --accept-data-loss).</div>
+          <div class="r-score-row"><span class="r-score was">5/10</span><span class="r-arrow">←</span><span class="r-score now warn">5/10</span></div>
+          <div class="r-verdict">لا تغيير عن الجولة السابقة (كلمة سر الداتابيز كانت اتشالت من قبل). آخر تعديلات أضاف تحسين صغير: fallback هادئ في db-backup.ts لو BACKUP_DB_URL مش موجودة بدل رمي خطأ اتصال. لسه مفيش نسخة احتياطية خارج السيرفر، ومفيش أي تغيير في docker-compose.yml.</div>
         </div>
+      </div>
+      <div class="metric-note">
+        <span>ⓘ</span>
+        <span><strong>ليه الأرقام دي مش المفروض تتساوي بالإحصائيات فوق؟</strong> لوحة الجاهزية بتجاوب على سؤال "إيه مستوى النضج التقني الكلي لكل محور؟" (تقييم نوعي من خبرة المراجعة)، بينما الإحصائيات فوق (15 / 15 / 4) بتجاوب على سؤال مختلف تمامًا: "كام بند تحديدًا في التقرير ده اتصلح، وكام لسه مفتوح؟" (عدّ حرفي). محور واحد زي "الأمان" ممكن يحتوي على 3 بنود من الـ 15 المفتوحة، ومحور "الأداء" يحتوي على بند واحد بس — علشان كده مفيش معادلة رياضية تربط الاثنين، وده طبيعي.</span>
       </div>
     </section>
 
     <section id="summary">
       <h2>الملخص</h2>
       <div class="box">
-        <p><strong>تقدم حقيقي وملموس على معظم المحاور.</strong> تم التحقق من كل نقطة في هذا التقرير مباشرة من كود المشروع (مقارنة نسختين فعليتين عبر git diff، وملفات كاملة عند الحاجة) — وليس بالاعتماد على كلام "اتحلّت" من الديفلوبر.</p>
-        <p>أثناء المراجعة، اكتُشفت مشكلتان لم تكونا معروفتين من قبل: كود كان يحذف دروسًا تلقائيًا لمجرد فتح صفحة كورس (تم اكتشافه وإزالته بالكامل)، وإعداد نشر جديد (<code>--accept-data-loss</code>) يسمح بتطبيق تغييرات خطيرة على قاعدة البيانات تلقائيًا بدون أي تأكيد.</p>
-        <p>نقطة إيجابية مهمة: مشكلة تضارب توقيت النسخ الاحتياطي (race condition) التي ذكرها الديفلوبر تم التحقق منها والتأكد أنها أُصلحت بأسلوب برمجي صحيح فعليًا.</p>
+        <p><strong>تقدم حقيقي على الأمان الأساسي، مع ثغرة حرجة وباج بيانات حرج — كلاهما موثّق بدليل مباشر لا لبس فيه.</strong></p>
+        <p>الخبر الكويس: التأكيدات من الجولة السابقة (كلمة سر الداتابيز الهاردكودد، JWT fallback) صمدت، وConnection Pooling اتأكد إنه اتحل. وباجين حقيقيين اتصلحوا بإصلاح شامل ومتسق: مشكلة "إجابة صح بتطلع غلط" في أسئلة الاختيار المتعدد، ومشكلة الصور اللي مش بتتعرض في بعض الأسئلة.</p>
+        <p>الخبر السيئ الأول: حساب <code style="font-family:var(--font-m); background:var(--card-2); padding:1px 6px; border-radius:5px;">superadmin</code> بكلمة سر ثابتة يُعاد ضبطها تلقائيًا في كل نشر — لم يُلمَس نهائيًا عبر جولتي تعديلات متتاليتين. لا يزال أعلى أولوية أمنية على الإطلاق.</p>
+        <p>الخبر السيئ الثاني: مشكلة "تكرار الدروس" اللي بلّغ عنها العميل تتبّعناها للسبب الجذري الكامل بالكود، ووثّقناها وهي بتحصل لحظيًا عبر طلبات API فعلية — مش افتراض نظري. السبب معروف والحل محدد بدقة، لكنه لسه نشط في الإنتاج.</p>
+        <p>الخبر الثالث، الأهم من الناحية التشغيلية: المنصة شغالة على سيرفر VPS من أرخص فئة متاحة، ومشترك — بتصريح المطور نفسه — مع مواقع تانية غير مرتبطة بالعميل. هذا يفسر جزءًا حقيقيًا من شكاوى البطء، لكنه لا يفسر الباجات البرمجية الموثقة في هذا التقرير.</p>
       </div>
     </section>
 
     <section id="fixed">
-      <h2>تم إصلاحه فعليًا (مؤكد من الكود)</h2>
-      <p class="section-sub">تم التحقق من كل بند هنا مباشرة عبر مقارنة الكود القديم بالجديد.</p>
+      <h2>تم إصلاحه فعليًا</h2>
       <div class="fixed-box">
         <ul>
           <li>الـ Endpoints المفتوحة (system.ts) — أُغلقت أو أُزيلت</li>
           <li>كلمة السر الصريحة (plainPassword) — أُزيلت من كل نقاط الحفظ والعرض</li>
-          <li>رفع ملفات SVG — أصبح ممنوعًا (حماية من XSS)</li>
+          <li>رفع ملفات SVG المباشر — أصبح ممنوعًا عبر multer (حماية جزئية من XSS)</li>
           <li>حماية تسجيل الدخول من المحاولات المتكررة — أُعيد تفعيلها</li>
-          <li>صور base64 داخل قاعدة البيانات — أصبحت تُستخرج لملفات تلقائيًا</li>
-          <li>فحص التكرار قبل الإنشاء — أُضيف لثلاث نقاط الإنشاء الرئيسية</li>
-          <li>تسريب بيانات بين المدارس (نظام الـ Cloud Sync) — تمت الفلترة الصحيحة</li>
-          <li>ثغرة XSS في عرض محتوى الدروس (٣ أماكن) — المحتوى يُعقَّم قبل العرض الآن</li>
-          <li>مجلد الباك اب — بقى محمي بـ Docker volume دائم</li>
+          <li>صور base64 داخل قاعدة البيانات — تُستخرج لملفات تلقائيًا، وبقت مبنية بالـ hash لمنع التكرار</li>
+          <li>فحص التكرار قبل إنشاء امتحان — مؤكد ومطبق (title + schoolId) في exams.ts</li>
+          <li>تسريب بيانات بين المدارس (Cloud Sync) — فلترة صحيحة مؤكدة لكل الأدوار</li>
+          <li>ثغرة XSS الأساسية في عرض المحتوى — كل مكونات العرض بتعدي على sanitizeHtml من غير bypass</li>
+          <li>مجلد الباك اب — محمي بـ Docker volume دائم</li>
           <li>تضارب توقيت النسخ الاحتياطي (race condition) — تم حله بقفل برمجي صحيح</li>
+          <li>db push --accept-data-loss — اتشالت خالص، بقى prisma migrate deploy</li>
+          <li><strong>كلمة سر الداتابيز الهاردكودد</strong> (backups.ts, cronService.ts, recover-lesson-data.ts, db-backup.ts) — تم التأكد في الجولة السابقة أنها اتشالت من الأربعة ملفات، بقت process.env.BACKUP_DB_URL بس. آخر git diff لا يمسّ هذا المنطق، عدا تحسين إضافي في db-backup.ts: لو BACKUP_DB_URL مش موجودة، السيرفر بقى يعمل fallback هادئ (pool وهمي) بدل ما يرمي خطأ ECONNREFUSED عند كل طلب.</li>
+          <li>JWT_SECRET fallback — اتشالت خالص، والسيرفر برفض الشغل تمامًا من غيرها</li>
+          <li>زر حفظ ونشر الكورس — بقى disabled أثناء الحفظ فعليًا</li>
+          <li>لصق الصور في محرر النصوص (RichTextEditor) — بيترفع عن طريق فلتر الرفع الآمن، مش base64 خام</li>
+          <li><strong>باج "إجابة صح بتطلع غلط" في أسئلة MULTI_SELECT</strong> — إصلاح شامل عبر 6+ ملفات: الفرونت اند كان بيبعت الإجابات كـ string مفصول بفاصلة بدل JSON array، الباك اند مكنش بيجيب options وقت التصحيح، وSkills Hub مكنش بيحوّل correctAnswer من JSON string. الثلاثة اتصلحوا ومتسقين مع بعض</li>
+          <li><strong>الصور مش بتتعرض في الأسئلة</strong> — سببين اتصلحوا: مودال معاينة السؤال كان أصلاً مش بيعرض imageUrl خالص (اتضافت)، وصور Word المتلزقة جوه بلوك VML كانت بتتمسح مع باقي الـ MSO comments (بقى بيسحبها قبل الحذف، في وقت اللصق ووقت عرض محتوى قديم اتحفظ بنفس المشكلة)</li>
+          <li>خطأ Unique constraint عند تحديث الكورس — كان بيحصل لو ID درس اتكرر بالغلط من كورس تاني عن طريق fallback بـ regex؛ اتشال الـ fallback ده، وبقى يتولد ID جديد بدل ما يتصادم</li>
+          <li>Connection Pooling على قاعدة البيانات — تم التأكيد من الفريق إنها اتحلت.</li>
         </ul>
       </div>
     </section>
 
-    <section id="discovery">
-      <div class="discovery" style="margin-bottom:18px;">
-        <span class="d-tag">اكتشاف أثناء المراجعة</span>
-        <h3>كود كان يحذف دروسًا تلقائيًا من مجرد فتح صفحة الكورس</h3>
-        <p>كان هناك منطق داخل <code>GET /api/courses/:id</code> — طلب قراءة عادي، وليس حفظًا — يبحث تلقائيًا عن أي درسين بنفس العنوان، ويحذف كل النسخ الزائدة نهائيًا. أي معلم أو أدمن كان يفتح صفحة الكورس فقط كان قد يتسبب بحذف درس حقيقي له نفس عنوان درس آخر عن قصد.</p>
-        <div class="resolved">✓ تم اكتشافه وإزالته بالكامل، بتعليق صريح في الكود يوثّق السبب.</div>
+    <section id="critical-new">
+      <div class="discovery">
+        <span class="d-tag">اكتشاف حرج — لسه مفتوح، لم يُلمَس في آخر تعديل</span>
+        <h3>حساب superadmin بكلمة سر ثابتة يُعاد ضبطها تلقائيًا في كل نشر</h3>
+        <p>فيه دالة <code>initializeStartupData()</code> — موجودة مرتين، مرة في <code>schools.ts</code> (side-effect وقت الـ import) ومرة معرّفة بشكل منفصل في <code>index.ts</code> وبتتنادى صراحة في <code>startServer()</code> — بتعمل upsert لحساب SUPER_ADMIN بكلمة سر ثابتة مكتوبة في الكود:</p>
+        <p><code>const adminPassword = 'superadmin123';</code> ... <code>update: { password: hashedPassword }</code></p>
+        <p>المشكلة إن سطر <code>update:</code> بيرجّع كلمة السر لنفس القيمة الثابتة في كل مرة السيرفر يشتغل أو يتعمله deploy، حتى لو اتغيّرت يدويًا في الإنتاج. : <strong>ملف schools.ts غير موجود فيه إطلاقًا</strong> — يعني هذه الثغرة لم تُلمَس في آخر جولة تعديلات، ولا تزال مفتوحة بنفس الخطورة.</p>
+        <div class="flagged">⚠ لسه بلا حل حتى تاريخ هذا التحديث — أعلى أولوية أمنية في المشروع كله.</div>
       </div>
 
-      <div class="discovery">
-        <span class="d-tag">اكتشاف جديد — لسه مفتوح</span>
-        <h3>إعداد نشر جديد يسمح بفقدان بيانات تلقائي</h3>
-        <p>سكريبت التشغيل في الإنتاج تغيّر من <code>prisma db push</code> إلى <code>prisma db push --accept-data-loss</code>. هذا العلم يُلغي أي تأكيد كان Prisma سيطلبه قبل تطبيق تغيير في قاعدة البيانات قد يفقد بيانات (حذف عمود، تغيير نوع بيانات). الآن أي تغيير مستقبلي من هذا النوع يُطبَّق تلقائيًا وبصمت على كل نشر.</p>
+      <div class="discovery" style="margin-top:18px;">
+        <span class="d-tag">اكتشاف حرج — مؤكد بدليل مباشر (Network requests فعلية)، لسه مفتوح</span>
+        <h3>تكرار الدروس تلقائيًا — السبب الجذري مؤكد بالكامل، ومصوَّر وهو بيحصل لحظيًا</h3>
+        <p>هذه هي نفس مشكلة "فتح الدرس وقفلته فلقيته اتنسخ" اللي بلّغ عنها العميل. تتبعناها بمقارنة طلبات API فعلية قبل وبعد كل خطوة، ووصلنا للسبب الجذري الكامل، بالكود:</p>
+        <p><strong>١) <code>openEditLessonModal()</code> في CourseEditorContext.tsx</strong> بتقرا الدرس المطلوب تعديله من الـ state المحلي (<code>lessons[index]</code>) — مش من السيرفر مباشرة.</p>
+        <p><strong>٢) <code>saveLesson()</code></strong> (الدالة اللي بيندى عليها زرار "تحديث وحفظ" جوه مودال الدرس) بعد نجاح الحفظ، <strong>لا تُحدّث الـ state المحلي بالـ ID الحقيقي</strong> اللي بيرجعه السيرفر للدروس الجديدة — بعكس <code>handleSubmit()</code> (زرار حفظ الكورس العام) اللي بيعمل المزامنة دي صح.</p>
+        <p><strong>٣) النتيجة:</strong> أي درس جديد يُحفظ عبر مودال الدرس، ثم يُفتح ويُعدَّل ويُحفظ مرة تانية من غير refresh كامل للصفحة، بيتبعت للباك اند من غير <code>id</code> — والباك اند (<code>courses.ts</code>) بيتعامل مع أي درس من غير id على إنه درس جديد كليًا، فيخلق نسخة تكرار حقيقية في قاعدة البيانات.</p>
+        <p><strong>موثّق حيًا:</strong> طلب PUT فعلي أظهر درسين بنفس الشريحة بالضبط (<code>slide id</code> واحد) بمعرّفين مختلفين (<code>6c6d98ae...</code> و<code>2b8d3525...</code>) في نفس الحفظة. آلية التنضيف التلقائي المدمجة في نفس الـ endpoint نضّفت التكرار في هذه الحالة تحديدًا (سابت الأحدث ومسحت القديم) — لكنها <strong>ليست ضمانة موثوقة في كل الحالات</strong>، وتعتمد على تفاصيل مقارنة داخلية غير موثّقة بالكامل.</p>
+        <div class="fix" style="margin-top:14px;"><span class="fix-label">الحل</span><span class="fix-text">في saveLesson()، بعد نجاح الحفظ، قراءة رد السيرفر وتحديث lessons/currentLesson بالـ ID الحقيقي — نفس أسلوب syncQuestionsFromDB() المستخدم بالفعل لحل نفس المشكلة بالضبط في الامتحانات.</span></div>
       </div>
     </section>
 
+    <h2 style="font-size:19px; margin-bottom:16px;" id="discovery">اكتشافات أخرى</h2>
+
+    <div class="discovery" style="margin-bottom:18px; border-color:var(--warn);">
+      <span class="d-tag" style="background:var(--warn);">اكتشاف — رجع جزئيًا بمنطق مختلف</span>
+      <h3>حذف الدروس المكررة تلقائيًا: اتشال بالكامل، ثم رجع بصيغة أوسع</h3>
+      <p>في المراجعة الأولى وثّقنا إزالة كود كان بيحذف دروسًا تلقائيًا لمجرد فتح صفحة كورس، مع تعليق صريح "REMOVED: Was dangerously deleting lessons with the same title". آخر git diff يُظهر إعادة إدخال منطق مشابه لكن بتحسينات حقيقية:</p>
+      <p>• <strong>soft-delete</strong> بدل الحذف النهائي (قابل للاسترجاع من سلة المهملات)<br>• مقارنة "الأكثر محتوى (slides+questions) يفوز، وعند التعادل الأحدث يفوز" بدل حذف عشوائي</p>
+      <p>لكن النطاق اتوسّع بشكل كبير: دالة <code>runGlobalDeduplication()</code> الجديدة بقت تشتغل تلقائيًا على <strong>كل الدروس والكورسات والامتحانات في قاعدة البيانات كلها</strong> — في كل تشغيل سيرفر (index.ts)، وبعد كل استيراد Excel أو JSON (imports.ts)، بالإضافة لبقائها داخل تحديث الكورس نفسه (courses.ts).</p>
+      <div class="flagged">⚠ أكثر أمانًا من النسخة القديمة، لكنه تشغيل تلقائي وواسع النطاق من غير أي تأكيد من المستخدم — يستاهل مراجعة قبل الاعتماد عليه بالكامل.</div>
+    </div>
+
+    <div class="discovery" style="margin-bottom:18px; border-color:var(--good);">
+      <span class="d-tag" style="background:var(--good);">اكتشاف — تم إصلاحه ومؤكد</span>
+      <h3>إعداد نشر كان يسمح بفقدان بيانات تلقائي</h3>
+      <p>سكريبت التشغيل كان <code>prisma db push --accept-data-loss</code>. آخر git diff يؤكد: بقى <code>prisma migrate deploy</code> بالكامل.</p>
+      <div class="resolved">✓ مؤكد من package.json مباشرة — أُغلق تمامًا.</div>
+    </div>
+
+    <div class="discovery">
+      <span class="d-tag">اكتشاف — لسه مفتوح</span>
+      <h3>ثغرة SVG المدمجة (base64): لم تُصلح</h3>
+      <p>دالة <code>extractAndSaveBase64Images</code> في shared.ts لسه بتقبل <code>image/svg+xml</code> وتكتبها كملف SVG خام من غير تعقيم لمحتواها — هذا السطر بالتحديد لم يتغيّر في آخر git diff. التعديل الوحيد اللي حصل عليها: تسمية الملف بقت مبنية على hash المحتوى بدل timestamp عشوائي (لمنع تكرار نفس الصورة)، وده تحسين أداء، مش تصليح أمني.</p>
+      <div class="fix" style="margin-top:14px;"><span class="fix-label">الحل</span><span class="fix-text">شيل svg+xml من extensionFromImageMime ومن extractAndSaveBase64Images في shared.ts.</span></div>
+    </div>
+
+    <div class="discovery" style="margin-top:18px; border-color:var(--warn);">
+      <span class="d-tag" style="background:var(--warn);">اكتشاف جديد — تراجع أمني بسيط</span>
+      <h3>حقل شرح سؤال الامتحان بقى بيتحفظ من غير تعقيم HTML</h3>
+      <p>في exams.ts، السطر كان <code>extractAndSaveBase64Images(sanitizeHtml(q.explanation))</code> — تعقيم أولًا ثم استخراج الصور. آخر git diff غيّره لـ <code>extractAndSaveBase64Images(typeof q.explanation === 'string' ? q.explanation : JSON.stringify(q.explanation))</code> — خطوة الـ sanitizeHtml اتشالت بالكامل من حقل الشرح تحديدًا (في مسار الإنشاء والتعديل الاتنين). على الأغلب كان الهدف حل مشكلة لو explanation مش string، لكن الحل شال خطوة الحماية بدل ما يصلحها.</p>
+      <p>الخطر الفعلي محدود لأن العرض في الفرونت اند (HtmlRenderer) بيعمل تعقيم منفصل بتاعه وقت العرض — لكن دي طبقة حماية اتفقدت على مستوى الباك اند، ولو أي طريقة عرض تانية مستقبلية (تطبيق موبايل، API استهلاك مباشر) اعتمدت على البيانات الخام، هتاخد HTML غير معقّم.</p>
+      <div class="fix" style="margin-top:14px;"><span class="fix-label">الحل</span><span class="fix-text">إرجاع sanitizeHtml() لحقل explanation، مع إصلاح التعامل مع الحالة اللي مش string بدل حذف خطوة التعقيم.</span></div>
+    </div>
+
     <!-- ================= BACKEND OPEN ================= -->
 
-    <div class="part-divider" id="backend">
+    <div class="part-divider" id="backend" style="margin-top:40px;">
       <div class="part-eyebrow">لسه مفتوحة</div>
       <h2>مشاكل الباك اند</h2>
-      <p>مرتبة من الأخطر للأقل — هذا القسم يعرض فقط ما لم يُصلح بعد.</p>
+      <p>مرتبة من الأخطر للأقل — هذا القسم يعرض فقط ما لم يُصلح بعد، بعد استبعاد ما تم توثيقه في قسم الاكتشافات أعلاه.</p>
     </div>
 
     <section id="backend-critical">
       <h2>حرجة</h2>
       <div class="cards">
         <div class="card sev-critical">
-          <div class="card-top"><span class="badge sev-critical">حرج</span><span class="badge new-tag">تفاقمت</span><h3>كلمة سر داتابيز حقيقية مكشوفة — موجودة الآن في ٣ ملفات</h3></div>
-          <span class="loc">backups.ts · recover-lesson-data.ts · cronService.ts</span>
-          <p class="desc">نفس القيمة الاحتياطية الثابتة (postgresql://postgres:...) موجودة الآن في ثلاثة ملفات مختلفة بنمط نسخ-ولصق متكرر. أي إضافة اتصال جديدة بنفس الطريقة ستنسخها مرة رابعة.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">بحث شامل في المشروع كله عن هذه القيمة، حذفها من كل مكان، وربطها بمتغير بيئة إجباري واحد. اعتبار كلمة السر نفسها مسرّبة ويجب تدويرها في قاعدة البيانات الخارجية.</span></div>
+          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>البنية التحتية: سيرفر VPS دخول بمواصفات محدودة، ومشترك مع مواقع تانية</h3></div>
+          <span class="loc">Hostinger KVM 1 — vCPU واحد افتراضي، 4GB RAM، 50GB NVMe</span>
+          <p class="desc">تأكدنا من المطور مباشرة: المنصة بالكامل (Frontend + Backend + PostgreSQL + مهمة النسخ الاحتياطي الساعية) شغالة على VPS من أرخص فئة متاحة (~7$/شهر)، وبتصريح المطور نفسه: <strong>"شاري سيرفر VPS وبرفع عليه أكتر من موقع"</strong> — يعني موارد المنصة (المعالج والذاكرة) بتتقاسم فعليًا مع مشاريع تانية غير مرتبطة بالعميل، مش مخصصة لمنصة Klevro وحدها.</p>
+          <p class="desc">هذا وحده كافٍ لتفسير جزء حقيقي من شكاوى البطء والفشل المتقطع في الحفظ (خصوصًا وقت تزامن مستخدمين كتير + مهمة الباك اب الساعية على نفس المعالج بالـ vCPU الواحد) — لكنه لا يفسر باجات المنطق البرمجي الموثقة في هذا التقرير (تكرار الدروس، اختفاء الأسئلة) والتي أثبتنا أنها في الكود نفسه بغض النظر عن قوة السيرفر.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">سيرفر مخصص (Dedicated/VPS أعلى فئة) لا يشارك موارده مع أي مشروع آخر، بمواصفات تتناسب مع عدد المدارس والمستخدمين الفعلي.</span></div>
         </div>
         <div class="card sev-critical">
-          <div class="card-top"><span class="badge sev-critical">حرج</span><span class="badge new-tag">جديد</span><h3>db push --accept-data-loss في سكريبت التشغيل</h3></div>
-          <span class="loc">package.json → "start"</span>
-          <p class="desc">يُطبَّق على كل نشر إنتاجي، ويُلغي آخر خط دفاع ضد تغييرات schema المدمّرة.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إزالة العلم، والانتقال لـ prisma migrate deploy بدل db push.</span></div>
-        </div>
-        <div class="card sev-critical">
-          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>غياب Pagination في أغلب الـ endpoints</h3></div>
-          <span class="loc">courses.ts, progress.ts, reports.ts, auth.ts</span>
-          <p class="desc">لا تغيير عن المراجعة الأولى.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة take/skip على كل الاستعلامات الكبيرة.</span></div>
+          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>غياب Pagination في progress.ts وreports.ts</h3></div>
+          <span class="loc">progress.ts (/api/admin/submissions) · reports.ts (كل الـ endpoints)</span>
+          <p class="desc">courses.ts وحدها اتصلحت من قبل. آخر git diff يؤكد: مفيش أي تعديل على reports.ts إطلاقًا (الملف مش موجود في الـ diff)، وprogress.ts اتعدّل لكن فقط في صلاحيات الأدوار — endpoint الـ submissions المعني لسه من غير take/skip.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة take/skip على استعلامات progress.ts وreports.ts تحديدًا.</span></div>
         </div>
         <div class="card sev-critical">
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>لا يوجد automated tests</h3></div>
           <span class="loc">package.json</span>
-          <p class="desc">لم تُضف أي مكتبة اختبار.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">test suite أساسي للعمليات الحرجة.</span></div>
+          <p class="desc">آخر git diff يضيف فقط ملف test_sanitize.js — سكريبت تجربة يدوي بـ console.log، مش test suite حقيقي، ومفيش أي مكتبة اختبار (jest/vitest/mocha) اتضافت لـ package.json.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">test suite أساسي حقيقي للعمليات الحرجة.</span></div>
         </div>
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>لا يوجد نسخ احتياطي خارج السيرفر</h3></div>
           <span class="loc">docker-compose.yml</span>
-          <p class="desc">الحماية المحلية (volume) تمت، لكن لا حماية من فقدان السيرفر نفسه بالكامل.</p>
+          <p class="desc">لا تغيير — الملف غير موجود في آخر git diff. الحماية المحلية (volume) موجودة، لكن لا حماية من فقدان السيرفر نفسه بالكامل.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">رفع تلقائي للنسخ لتخزين خارجي (S3-compatible).</span></div>
         </div>
       </div>
@@ -426,16 +490,16 @@
       <h2>عالية</h2>
       <div class="cards">
         <div class="card sev-high">
-          <div class="card-top"><span class="badge sev-high">عالي</span><h3>JWT_SECRET لسه له قيمة احتياطية</h3></div>
-          <span class="loc">shared.ts</span>
-          <p class="desc">أُضيف console.warn عند التشغيل في production بدون متغير بيئة — لكن القيمة الاحتياطية نفسها لم تُحذف.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إلغاء القيمة الاحتياطية نهائيًا.</span></div>
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>ثلاث Maps مختلفة لسه في ذاكرة السيرفر بدل Redis</h3></div>
+          <span class="loc">shared.ts (loginAttempts, statsCache) · middleware/auth.ts (userStatusCache)</span>
+          <p class="desc">لا تغيير — middleware/auth.ts غير موجود في آخر git diff، وshared.ts اتعدّل لكن فقط في أجزاء أخرى (JWT وSVG).</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">نقل الثلاثة لـ Redis سوا.</span></div>
         </div>
         <div class="card sev-high">
-          <div class="card-top"><span class="badge sev-high">عالي</span><h3>loginAttempts وstatsCache لسه في الذاكرة</h3></div>
-          <span class="loc">shared.ts</span>
-          <p class="desc">لا تغيير — لسه Map عادي، مش Redis.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">نقل الاثنين لـ Redis.</span></div>
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>استرجاع تلقائي لدرس معيّن بيكتب فوق البيانات الحالية بدون شرط</h3></div>
+          <span class="loc">index.ts — autoRecoverSpecificLesson()، بعد 30 ثانية من كل تشغيل</span>
+          <p class="desc">لا تغيير — الجزء الخاص بهذه الدالة في index.ts لم يظهر في آخر git diff (التعديل الوحيد على الملف كان استبدال Base64 Migration بإضافة runGlobalDeduplication عند الإقلاع). لسه بتكتب بيانات النسخة القديمة من غير أي مقارنة.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تحويلها لسكريبت يدوي، أو إضافة شرط مقارنة قبل الكتابة.</span></div>
         </div>
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>الملفات لسه على القرص المحلي للسيرفر</h3></div>
@@ -456,37 +520,23 @@
       <h2>متوسطة / تحتاج مراجعة</h2>
       <div class="cards">
         <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>مفيش Connection Pooling صريح</h3></div>
-          <span class="loc">DATABASE_URL</span>
-          <p class="desc">لا تغيير.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">PgBouncer أو ما يعادله.</span></div>
-        </div>
-        <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>كلمة السر الافتراضية لسه ضعيفة القيمة</h3></div>
           <span class="loc">schools.ts</span>
-          <p class="desc">القيمة الثابتة 'Password@123' لم تتغيّر، رغم إصلاح تخزينها الصريح.</p>
+          <p class="desc">القيمة الثابتة 'Password@123' — ملف schools.ts غير موجود إطلاقًا في آخر git diff، فلا تغيير.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">توليد كلمة سر عشوائية فريدة لكل مستخدم.</span></div>
         </div>
         <div class="card sev-info">
-          <div class="card-top"><span class="badge sev-info">يحتاج مراجعة</span><h3>سكريبت auto-recovery رابع (recover-lesson-data.ts)</h3></div>
+          <div class="card-top"><span class="badge sev-info">جزئي</span><h3>سكريبت auto-recovery رابع (recover-lesson-data.ts)</h3></div>
           <span class="loc">backend/src/scripts/recover-lesson-data.ts</span>
-          <p class="desc">تم التأكد: <strong>غير متصل بسلسلة التشغيل التلقائي</strong> — لازم يشتغل يدويًا فقط. المخاطرة أقل مما كان متوقعًا، لكن منطقه (الأكثر عددًا = الأصح تلقائيًا) يستحق مراجعة قبل أي استخدام يدوي له.</p>
-          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">مراجعة المنطق، وربطه بمتغير بيئة حقيقي بدل القيمة المكتوبة بالكود.</span></div>
+          <p class="desc">تم التأكد في الجولة السابقة أن كلمة سر الداتابيز الهاردكودد اتشالت منه فعليًا. يبقى غير متصل بسلسلة التشغيل التلقائي. لكن آخر سطر <code style="font-family:var(--font-m);">process.exit(0)</code> لسه من غير حماية require.main === module، ومنطق "الأكثر عددًا = الأصح" لسه محتاج مراجعة قبل أي استخدام يدوي.</p>
+          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">حماية السكريبت، ومراجعة منطقه.</span></div>
         </div>
         <div class="card sev-info">
-          <div class="card-top"><span class="badge sev-info">يحتاج مراجعة</span><h3>قواعد الـ Cascade على العلاقات غير موثقة</h3></div>
+          <div class="card-top"><span class="badge sev-info">مراجعة جزئية</span><h3>قواعد الـ Cascade على العلاقات غير موثقة بالكامل</h3></div>
           <span class="loc">prisma/schema.prisma</span>
-          <p class="desc">لم تُراجع في هذه الجولة.</p>
-          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">جرد وتوثيق كامل.</span></div>
+          <p class="desc">لم يُلمَس في آخر git diff. مراجعة أولية سابقة: Classroom.school عليها onDelete: Cascade، وUser.school بدون onDelete صريح. باقي العلاقات محتاجة جرد كامل.</p>
+          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">جرد وتوثيق كامل لكل العلاقات.</span></div>
         </div>
-      </div>
-      <div class="notes-box" style="margin-top:18px;">
-        <p class="nb-title">ملاحظات صغيرة (مش عاجلة)</p>
-        <ul>
-          <li><code style="font-family:var(--font-m);">clean-question-marks.js</code> يعمل تلقائيًا على كل نشر — تنظيف نصوص غير ضار، لكنه غير ضروري في كل مرة</li>
-          <li>ملف <code style="font-family:var(--font-m);">generate-clean-exams.ts</code> يحتوي مسارًا مباشرًا لجهاز الديفلوبر الشخصي (d:\pj\porj\...) — مؤشر على سكريبتات شخصية داخل الريبو المشترك</li>
-          <li>عملية "تجميع ٥٠ نسخة احتياطية" تحذف النسخ التفصيلية من قاعدة البيانات السحابية بعد أرشفتها في ملف ZIP محلي — سياسة احتفاظ تستحق العلم بها لا أكثر</li>
-        </ul>
       </div>
     </section>
 
@@ -495,45 +545,61 @@
     <div class="part-divider alt" id="frontend">
       <div class="part-eyebrow">لسه مفتوحة</div>
       <h2>مشاكل الفرونت اند</h2>
-      <p>معظم مشاكل الفرونت اند الحرجة (XSS) اتصلحت. الباقي أداء وتفاصيل تجربة استخدام.</p>
+      <p>معظم مشاكل الفرونت اند الحرجة (XSS الأساسية) اتصلحت. الباقي أداء وتفاصيل تجربة استخدام — لم تُلمس في آخر جولة تعديلات.</p>
     </div>
 
     <section id="frontend-open">
       <div class="cards">
         <div class="card sev-critical">
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>توكن الدخول (JWT) لسه في localStorage</h3></div>
-          <span class="loc">frontend/src/lib/auth.ts — لم يُلمس</span>
-          <p class="desc">مع إصلاح ثغرة الـ XSS، الخطر العملي المباشر انخفض كثيرًا، لكن آلية التخزين نفسها لم تتغيّر.</p>
+          <span class="loc">frontend/src/lib/auth.ts — غير موجود في آخر git diff</span>
+          <p class="desc">لا تغيير — نفس التلات مفاتيح (super_admin_token, school_admin_token, lms_token) لسه في localStorage.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">على المدى الأطول: الانتقال لـ httpOnly cookie.</span></div>
         </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image غير مستخدم خالص</h3></div>
-          <span class="loc">تأكيد بالفحص: 0 استخدام، مقابل 17 ملف بـ &lt;img&gt;</span>
+          <span class="loc">آخر تأكيد بالفحص: 0 استخدام</span>
           <p class="desc">لا تغيير.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استبدال تدريجي بـ next/image.</span></div>
         </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client" في كل الصفحات</h3></div>
-          <span class="loc">تأكيد بالفحص: 64 من 64 صفحة (100%)</span>
+          <span class="loc">آخر تأكيد بالفحص: 64 من 64 صفحة (100%)</span>
           <p class="desc">لا تغيير.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">مراجعة تدريجية وتحويل لـ Server Components.</span></div>
         </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>مسودات الكورس بدون تحقق من نجاح الحفظ</h3></div>
-          <span class="loc">CourseEditorContext.tsx — نفس الكود بالضبط</span>
-          <p class="desc">لو فشل الحفظ في localStorage، المعلم لا يُخطَر — الكود لا يزال يتجاهل الخطأ بصمت.</p>
+          <span class="loc">CourseEditorContext.tsx — غير موجود في آخر git diff</span>
+          <p class="desc">لا تغيير — لو فشل الحفظ في localStorage، المعلم لا يُخطَر، الكود لا يزال يتجاهل الخطأ بصمت.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إظهار تنبيه عند فشل الحفظ.</span></div>
-        </div>
-        <div class="card sev-info">
-          <div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>زر إنشاء الكورس لسه بدون تعطيل عند الضغط</h3></div>
-          <span class="loc">school-admin/courses/create/page.tsx</span>
-          <p class="desc">تم تفعيل "تعطيل الزر عند الضغط" في زرّي تسليم الامتحان وحفظ تعديلاته فقط. زر حفظ الكورس نفسه لم يحصل على نفس الحماية بعد.</p>
-          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">تطبيق disabled={saving} على زر حفظ الكورس.</span></div>
         </div>
       </div>
     </section>
+    
+    <!-- ================= SERVER SPECS ================= -->
 
-    <!-- ================= DATABASE & ARCHITECTURE (consolidated) ================= -->
+    <div class="part-divider" id="server-specs" style="margin-top:40px; background:var(--signal);">
+      <div class="part-eyebrow">توصية تقنية</div>
+      <h2>اقتراح إمكانيات السيرفر</h2>
+      <p>بناءً على الوضع الحالي للمنصة ومتطلبات التشغيل، هذه هي المواصفات المقترحة لبيئة الإنتاج.</p>
+    </div>
+
+    <section id="server-specs-content">
+      <div class="box">
+        <p><strong>الوضع الحالي:</strong> الخادم الحالي عبارة عن VPS محدود (vCPU واحد، 4GB RAM، 50GB NVMe) وموارده مشتركة مع مشاريع أخرى، مما يسبب بطء الأداء.</p>
+        <p><strong>المواصفات المقترحة (الحد الأدنى لبيئة الإنتاج):</strong></p>
+        <ul style="margin-top:10px; color:var(--ink-soft); font-size:15px; line-height:1.8; padding-right: 20px;">
+          <li><strong>المعالج (CPU):</strong> من 4 إلى 8 أنوية (vCPUs) مخصصة لاستيعاب الطلبات المتزامنة والنسخ الاحتياطي.</li>
+          <li><strong>الذاكرة العشوائية (RAM):</strong> من 8GB إلى 16GB لتشغيل PostgreSQL و Docker بسلاسة.</li>
+          <li><strong>مساحة التخزين:</strong> 100GB كحد أدنى من نوع NVMe SSD.</li>
+          <li><strong>تخزين الملفات (Media Storage):</strong> نقل تخزين الفيديوهات والصور إلى مساحة خارجية مثل Cloudflare R2.</li>
+          <li><strong>التوسع المستقبلي:</strong> فصل قاعدة البيانات على سيرفر مستقل عن الواجهة الأمامية والخلفية للمشروع.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= DATABASE & ARCHITECTURE ================= -->
 
     <div class="part-divider" id="architecture">
       <div class="part-eyebrow">مرجع تقني</div>
@@ -579,15 +645,15 @@
           <div class="arch-flow">
             <div class="arch-node">Next.js</div>
             <div class="arch-connector"></div>
-            <div class="arch-node accent">Express + Authentication<span class="an-sub">JWT حقيقي بدون fallback</span></div>
+            <div class="arch-node accent">Express + Authentication<span class="an-sub">JWT حقيقي بدون fallback ✓</span></div>
             <div class="arch-connector"></div>
-            <div class="arch-node">Prisma<span class="an-sub">migrate deploy بدل db push</span></div>
+            <div class="arch-node">Prisma<span class="an-sub">migrate deploy ✓</span></div>
             <div class="arch-connector"></div>
             <div class="arch-node accent">PostgreSQL<span class="an-sub">+ Connection Pooling</span></div>
             <div class="arch-connector"></div>
             <div class="arch-branch">
               <div class="arch-branch-col"><div class="arch-branch-lbl">الكاش والحماية</div><div class="arch-node storage">Redis</div></div>
-              <div class="arch-branch-col"><div class="arch-branch-lbl">الوسائط</div><div class="arch-node storage">Cloudflare R2</div></div>
+              <div class="arch-branch-col"><div class="arch-branch-lbl">الوسائط</div><div class="arch-node storage">Cloudflare R2<span class="an-sub">بدون SVG خام</span></div></div>
               <div class="arch-branch-col"><div class="arch-branch-lbl">النسخ الاحتياطي</div><div class="arch-node storage">تخزين خارجي دائم</div></div>
             </div>
             <div class="arch-connector"></div>
@@ -625,19 +691,22 @@
 
     <section id="plan">
       <h2>خطة العمل المحدّثة</h2>
-      <p class="section-sub">مبنية على اللي لسه فعليًا مفتوح بعد كل التعديلات.</p>
+      <p class="section-sub">مبنية على اللي لسه فعليًا مفتوح بعد تحقق git diff الكامل.</p>
 
       <div class="timeline">
         <div class="tl-item urgent">
           <div class="tl-dot"></div>
           <div class="tl-day">مرحلة 1 — عاجل جدًا (أيام)</div>
           <div class="tl-body">
-            <h4>إغلاق ما تبقّى من ثغرات حرجة</h4>
+            <h4>إغلاق ما تبقّى من ثغرات حرجة + أخطر باجين مؤكدين</h4>
             <ul>
-              <li>حذف كلمة سر الداتابيز المكشوفة من الملفات الثلاثة وتدويرها فورًا</li>
-              <li>إزالة --accept-data-loss من سكريبت التشغيل</li>
-              <li>حذف القيمة الاحتياطية لـ JWT_SECRET نهائيًا</li>
-              <li>تفعيل تعطيل الزر عند الضغط في نموذج حفظ الكورس</li>
+              <li><strong>الأولوية القصوى:</strong> إغلاق باب superadmin الخلفي — منع إعادة ضبط الباسورد الثابتة تلقائيًا (schools.ts + index.ts)</li>
+              <li><strong>مؤكد بدليل مباشر:</strong> إصلاح مزامنة الـ ID في saveLesson() (CourseEditorContext.tsx) لوقف تكرار الدروس نهائيًا</li>
+              <li>الانتقال لسيرفر مخصص غير مشترك مع مشاريع أخرى — قبل أي خطوة تانية، لأنه بيأثر على تشخيص باقي المشاكل</li>
+              <li>شيل svg+xml من extractAndSaveBase64Images وextensionFromImageMime في shared.ts</li>
+              <li>إضافة Pagination لـ progress.ts وreports.ts تحديدًا</li>
+              <li>مراجعة نطاق runGlobalDeduplication قبل الاعتماد عليه بالكامل تلقائيًا</li>
+              <li>إرجاع sanitizeHtml() لحقل explanation في exams.ts</li>
             </ul>
           </div>
         </div>
@@ -647,25 +716,43 @@
           <div class="tl-body">
             <h4>الأداء والبنية التحتية</h4>
             <ul>
-              <li>إضافة Pagination لكل الـ endpoints الأساسية</li>
               <li>نسخ احتياطي تلقائي لتخزين خارجي (S3-compatible)</li>
-              <li>الانتقال لـ Redis (loginAttempts + statsCache)</li>
+              <li>الانتقال لـ Redis (loginAttempts + statsCache + userStatusCache)</li>
               <li>نقل الملفات لـ Cloudflare R2</li>
-              <li>Connection Pooling + Monitoring حقيقي (Sentry)</li>
+              <li>Monitoring حقيقي (Sentry) لمعرفة سبب أي فشل فعليًا بدل التخمين</li>
+              <li>توليد كلمة سر عشوائية فريدة بدل 'Password@123' الثابتة</li>
+              <li>تحويل autoRecoverSpecificLesson لسكريبت يدوي أو إضافة شرط مقارنة</li>
             </ul>
           </div>
         </div>
         <div class="tl-item">
           <div class="tl-dot"></div>
-          <div class="tl-day">مرحلة 3 — تحسينات مستمرة</div>
+          <div class="tl-day">مرحلة 3 — جودة وتجربة استخدام</div>
           <div class="tl-body">
-            <h4>جودة وتجربة استخدام</h4>
+            <h4>تحسينات مستمرة</h4>
             <ul>
-              <li>test suite أساسي للعمليات الحرجة</li>
-              <li>مراجعة سكريبت recover-lesson-data.ts كاملًا</li>
+              <li>test suite أساسي حقيقي للعمليات الحرجة</li>
+              <li>حماية recover-lesson-data.ts بـ require.main === module ومراجعة منطقه</li>
               <li>next/image + مراجعة "use client" التدريجية</li>
               <li>تنبيه المستخدم عند فشل حفظ مسودة الدرس</li>
-              <li>توثيق قواعد الـ Cascade في schema.prisma</li>
+              <li>توثيق قواعد الـ Cascade كاملة في schema.prisma</li>
+              <li>الانتقال لـ httpOnly cookie بدل localStorage للتوكن</li>
+              <li>توحيد سكريبت deduplicate_lessons.ts اليدوي مع runGlobalDeduplication بدل ازدواجية المنطق</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-day">مرحلة 4 — التوسع طويل المدى (لو نمت المنصة)</div>
+          <div class="tl-body">
+            <h4>Performance &amp; Maintainability — مش عاجلة الآن، لكن تستاهل التخطيط لها بدري</h4>
+            <ul>
+              <li><strong>فصل الخدمات:</strong> الداتابيز على سيرفر منفصل عن الـ Backend/Frontend — أول خطوة قبل أي Scaling، وأهم من Load Balancing نفسه في المرحلة الحالية</li>
+              <li><strong>Load Balancing:</strong> مفيد فقط بعد ما يبقى فيه أكتر من instance للباك اند شغالة سوا (Horizontal Scaling) — سابق لأوانه دلوقتي بمستوى الاستخدام الحالي، لكن يستاهل التصميم له من الأول (stateless backend، عدم الاعتماد على ذاكرة محلية زي Maps الحالية)</li>
+              <li><strong>CDN للملفات الثابتة والصور</strong> (Cloudflare مجانًا) — بيقلل الحمل عن السيرفر الأساسي مباشرة وبأقل تكلفة</li>
+              <li><strong>فصل قاعدة بيانات القراءة عن الكتابة (Read Replica)</strong> لو التقارير (reports.ts) بقت بطيئة مع نمو البيانات</li>
+              <li><strong>Health checks + Auto-restart</strong> حقيقي (موجود جزء منه في docker-compose) — يتوسع ليشمل تنبيه فوري (Slack/Email) عند أي فشل، مش بس إعادة تشغيل صامتة</li>
+              <li><strong>CI/CD بسيط</strong> يشغّل test suite قبل أي نشر تلقائي — يمنع تكرار مشاكل زي رجوع db push أو runGlobalDeduplication من غير مراجعة</li>
             </ul>
           </div>
         </div>
@@ -685,8 +772,8 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p>هذا التقرير مبني على مقارنة مباشرة بين نسختين فعليتين من الكود (git diff) وملفات كاملة عند الحاجة — وليس تخمينًا. الأولوية القصوى: كلمة سر الداتابيز المكشوفة، وإزالة --accept-data-loss.</p>
-    <p class="footer-note">التحديث النهائي — تقرير تحليلي، لم يتم تعديل أي كود من جانبنا.</p>
+    <p>هذا التقرير مبني على قراءة git diff فعلي (19 ملف)، تتبّع مباشر لطلبات API حقيقية، وملفات كاملة عند الحاجة — وليس تخمينًا. الأولويتان القصويان الحاليتان: إغلاق حساب superadmin ذو الباسورد الثابتة، وإصلاح مزامنة ID الدرس في saveLesson() لوقف تكرار الدروس.</p>
+    <p class="footer-note">آخر تحديث: ٨ أغسطس ٢٠٢٦ — تحقق مباشر بند-ببند من git diff الفعلي وتتبّع حي لباج تكرار الدروس، لم يتم تعديل أي كود من جانبنا.</p>
   </div>
 </footer>
 
@@ -729,6 +816,41 @@
   }
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
+})();
+
+/* JS الخاص بحساب المشاكل الديناميكي وعرضها */
+(function(){
+  var critical = document.querySelectorAll('.card.sev-critical').length;
+  var high = document.querySelectorAll('.card.sev-high').length;
+  var medium = document.querySelectorAll('.card.sev-medium').length;
+  var info = document.querySelectorAll('.card.sev-info').length;
+
+  var openDiscoveries = 0;
+  document.querySelectorAll('.discovery').forEach(function(d){
+      if(!d.querySelector('.resolved')){
+          openDiscoveries++;
+      }
+  });
+  
+  var total = critical + high + medium + info + openDiscoveries;
+  
+  var totalproblem = document.getElementById('total-problem-summary');
+  if (totalproblem) {
+    totalproblem.innerHTML = `
+      <div class="stat-tile" style="background: var(--signal-soft); border-color: var(--signal);"><span class="n" style="color: var(--signal);">${total}</span><span class="l">مجموع المشاكل المفتوحة</span></div>
+    `
+  }
+
+  var container = document.getElementById('dynamic-issue-summary');
+  if(container) {
+      container.innerHTML = `
+        <div class="stat-tile" style="border-color: var(--danger);"><span class="n" style="color: var(--danger);">${critical}</span><span class="l">مشاكل حرجة</span></div>
+        <div class="stat-tile" style="border-color: var(--warn);"><span class="n" style="color: var(--warn);">${high}</span><span class="l">مشاكل عالية</span></div>
+        <div class="stat-tile" style="border-color: var(--caution);"><span class="n" style="color: var(--caution);">${medium}</span><span class="l">مشاكل متوسطة</span></div>
+        <div class="stat-tile" style="border-color: var(--info);"><span class="n" style="color: var(--info);">${info}</span><span class="l">ملاحظات (Info)</span></div>
+        <div class="stat-tile" style="border-color: var(--danger);"><span class="n" style="color: var(--danger);">${openDiscoveries}</span><span class="l">مشاكل مكتشفة</span></div>
+      `;
+  }
 })();
 </script>
 
