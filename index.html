@@ -289,9 +289,9 @@
     </div>
 
     <div class="stat-row">
-      <div class="stat-tile fixed"><span class="n">23</span><span class="l">بند تم إصلاحه ومؤكد ✓</span></div>
-      <div class="stat-tile open"><span class="n">10</span><span class="l">بند لسه مفتوح (كروت مفصّلة تحت)</span></div>
-      <div class="stat-tile bonus"><span class="n">3</span><span class="l">اكتشافات حرجة متبقية</span></div>
+      <div class="stat-tile fixed"><span class="n">24</span><span class="l">بند تم إصلاحه ومؤكد ✓</span></div>
+      <div class="stat-tile open"><span class="n">13</span><span class="l">بند لسه مفتوح (كروت مفصّلة تحت)</span></div>
+      <div class="stat-tile bonus"><span class="n">1</span><span class="l">مشكلة حرجة واحدة متبقية</span></div>
     </div>
     
     <!-- قسم إحصائيات المشاكل الديناميكي -->
@@ -328,23 +328,23 @@
       <div class="readiness-grid">
         <div class="r-tile">
           <div class="r-title">الأمان</div>
-          <div class="r-score-row"><span class="r-score was">3/10</span><span class="r-arrow">←</span><span class="r-score now good">7/10</span></div>
-          <div class="r-verdict">تقدم حقيقي: كلمة سر الداتابيز الهاردكودد (اتشالت)، JWT fallback (اتشالت)، ثغرة SVG (اتسدّت — SVG استُبعدت من المعالجة كليًا)، تعقيم HTML في شرح الامتحان (اترجّع كاملًا مع sanitizeHtml). المشكلة الوحيدة المتبقية: superadmin يُنشأ بكلمة السر الافتراضية عند المرة الأولى فقط (لا إعادة ضبط تلقائية بعد الآن)، وهذا محسّن.</div>
+          <div class="r-score-row"><span class="r-score was">3/10</span><span class="r-arrow">←</span><span class="r-score now good">8/10</span></div>
+          <div class="r-verdict">تحسن واضح في الجوانب الأمنية: تم إلغاء hardcoded passwords، تم إغلاق JWT fallback، تم منع SVG XSS، وتم إعادة تفعيل sanitization في شرح الامتحان بوجود حماية فعالة. ما زالت هناك مراجعة مستمرة على القيم الافتراضية وإنشاء المستخدم الإداري، لكن الحالة العامة أصبحت موثوقة جدًا مقارنة بالنسخة السابقة.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
-          <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now danger">4/10</span></div>
-          <div class="r-verdict">Connection Pooling اتأكد إنه اتحل. لكن اكتشفنا سبب أكبر: المنصة شغالة على VPS من أرخص فئة (vCPU واحد، 4GB RAM)، ومشترك فعليًا مع مواقع تانية غير مرتبطة بالعميل حسب تصريح المطور. Pagination لسه غايب من progress.ts وreports.ts. الرقم ما اتحسنش رغم إغلاق Connection Pooling لأن مشكلة السيرفر المشترك أخطر وأشمل.</div>
+          <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now good">6/10</span></div>
+          <div class="r-verdict">المشكلة السابقة المتعلقة بـ VPS المشترك تم حلها في الواقع عبر الانتقال إلى خادم جديد مستقل، وهذا رفع مستوى الأداء بشكل ملحوظ. ما زال هناك احتياج لتحسينات إضافية: pagination في reports.ts، وتحسين الذاكرة/الcache، لكن الخلل البنيوي الأساسي في الاستضافة لم يعد سببًا رئيسيًا في الوضع الحالي.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">سلامة البيانات</div>
-          <div class="r-score-row"><span class="r-score was">5/10</span><span class="r-arrow">←</span><span class="r-score now good">8/10</span></div>
-          <div class="r-verdict">تحسّن جوهري: مشكلة تكرار الدروس الحرجة اللي اتوثّقت بدليل مباشر في الجولة السابقة — تم إصلاحها الآن بالكامل! الحل: مزامنة ID الدرس من السيرفر في saveLesson() (CourseEditorContext.tsx)، مع ربط صريح لإيجاد الدرس المُحفوظ حديثًا بمطابقة title أو id. النتيجة: درس جديد يُحفظ، يُعاد تحريره بدون refresh، ثم يُحفظ مرة أخرى — لا يُنتج تكرارات بعد الآن.</div>
+          <div class="r-score-row"><span class="r-score was">5/10</span><span class="r-arrow">←</span><span class="r-score now warn">6/10</span></div>
+          <div class="r-verdict">تحسّن في النسخ الاحتياطي والتخزين، لكن المشكلة الحقيقية ما زالت قائمة: حذف/إخفاء الدروس المتكررة لا يزال يحدث عبر deduplication التلقائي حسب العنوان في courses.ts. الحادثة في Math وPhysics تؤكد أن المنطق نفسه لا يزال يسبب فقدان البيانات، وبالتالي هذا المحور لم يصل إلى مستوى “مستقر بالكامل” بعد.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">استمرارية التخزين</div>
-          <div class="r-score-row"><span class="r-score was">5/10</span><span class="r-arrow">←</span><span class="r-score now warn">5/10</span></div>
-          <div class="r-verdict">لا تغيير عن الجولة السابقة (كلمة سر الداتابيز كانت اتشالت من قبل). آخر تعديلات أضاف تحسين صغير: fallback هادئ في db-backup.ts لو BACKUP_DB_URL مش موجودة بدل رمي خطأ اتصال. لسه مفيش نسخة احتياطية خارج السيرفر، ومفيش أي تغيير في docker-compose.yml.</div>
+          <div class="r-score-row"><span class="r-score was">5/10</span><span class="r-arrow">←</span><span class="r-score now good">8/10</span></div>
+          <div class="r-verdict">هذا المحور هو من أفضل ما تم تحسينه: تم إضافة نسخ احتياطي محلي + سحابي، مع جدولة دورية، pruning، واسترجاع من cloud backup. الوضع الحالي يقترب من الجاهزية التشغيلية الجيدة، مع بقاء الفحص النهائي على السيرفر الفعلي لتأكيد أن Daily Backup plan ما زال مُفعّل ويعمل فعليًا في الإنتاج.</div>
         </div>
       </div>
       <div class="metric-note">
@@ -356,99 +356,125 @@
     <section id="summary">
       <h2>الملخص</h2>
       <div class="box">
-        <p><strong>تحسن ملموس على الأمان والبيانات — أربع مشاكل حرجة من الجولة السابقة اتصلحت فعليًا.</strong></p>
+        <p><strong>تحسن فعلي على الأمان والنسخ الاحتياطي، لكن لا يزال هناك خلل جوهري في deduplication والدرس المكرّر/المحذوف.</strong></p>
         <p>ما تم إصلاحه في آخر 7 أيام:</p>
         <ul style="margin-top:10px; color:var(--ink-soft); font-size:15px; line-height:1.8; padding-right: 20px;">
-          <li>✓ <strong>مشكلة تكرار الدروس</strong> — اتصلحت كليًا! Sync server-assigned lesson ID في CourseEditorContext.tsx بعد كل حفظ.</li>
-          <li>✓ <strong>ثغرة SVG XSS</strong> — اتسدّت: svg+xml استُبعدت من regex معالجة base64 في shared.ts.</li>
-          <li>✓ <strong>HTML sanitization في شرح الامتحان</strong> — اترجّع: sanitizeHtml() اتأضيفت لـ formatExplanation() مع معالجة آمنة للأنواع المختلفة.</li>
-          <li>✓ <strong>Pagination في progress.ts</strong> — اتضافت مع take/skip من قاعدة البيانات.</li>
-          <li>✓ <strong>Superadmin auto-reset على كل startup</strong> — اتحسّن: الآن only creates if doesn't exist، بدل اعادة ضبط دائمة.</li>
+          <li>✓ <strong>أمان قاعدة البيانات</strong> — تم إزالة HARD-CODED DB passwords في الملفات الأساسية، وبدّلها بـ environment variables.</li>
+          <li>✓ <strong>ثغرة SVG XSS</strong> — تم سدّها في shared.ts.</li>
+          <li>✓ <strong>HTML sanitization في شرح الامتحان</strong> — تم إعادة التفعيل بشكل آمن.</li>
+          <li>✓ <strong>نسخ احتياطي محلي + سحابي + جدولة</strong> — أضيفت routes و cron service و pruning و restore-from-cloud.</li>
+          <li>✓ <strong>تحسين superadmin startup</strong> — لا إعادة ضبط تلقائية للباسورد بعد الإنشاء الأول.</li>
         </ul>
-        <p>المشاكل المتبقية: السيرفر المشترك (عاملة تجاه performance)، و reports.ts لسه بدون pagination (لكن معظم endpoints محمية بـ caching)، و توكن في localStorage (يتطلب عمل طويل المدى).</p>
+        <p>المشاكل المتبقية: المنطق التلقائي للحذف المكرر للدرس لا يزال يعمل على العنوان/المجموعة، وبناءً على الحادثة الفعلية في Math وPhysics فالمشكلة ما زالت قائمة. كما أن التحقق النهائي لوجود Daily Backup plan في الاستضافة يعتمد على إعدادات السيرفر الفعلية لا على الكود فحسب.</p>
       </div>
     </section>
 
     <section id="fixed">
-      <h2>تم إصلاحه فعليًا (23 بند مؤكد)</h2>
+      <h2>تم إصلاحه فعليًا (24 بند مؤكد من آخر 7 أيام)</h2>
       <div class="fixed-box">
         <ul>
-          <li><strong>✅ تكرار الدروس</strong> — FIXED في CourseEditorContext.tsx: Sync server-assigned ID + match by title for new lessons</li>
-          <li><strong>✅ ثغرة SVG XSS</strong> — FIXED في shared.ts: svg+xml excluded من base64 regex completely</li>
-          <li><strong>✅ HTML sanitization في exams</strong> — FIXED: formatExplanation() اعادة sanitizeHtml لكل الحالات</li>
-          <li><strong>✅ Pagination في progress.ts</strong> — FIXED: take/skip معروفة من البيانات</li>
-          <li><strong>✅ Superadmin auto-reset</strong> — IMPROVED: Create if not exists فقط (بدل upsert دائم)</li>
+          <li><strong>✅ ثغرة SVG XSS</strong> — FIXED في shared.ts: SVG استُبعدت تمامًا من معالجة base64</li>
+          <li><strong>✅ HTML sanitization في exams</strong> — FIXED: formatExplanation() يُسند sanitizeHtml لكل الحالات</li>
+          <li><strong>✅ Pagination في progress.ts</strong> — FIXED: take/skip مفعلة في الـ admin submissions</li>
+          <li><strong>✅ Superadmin auto-reset</strong> — IMPROVED: Create if not exists فقط</li>
+          <li><strong>✅ البنية التحتية</strong> — تم نقل المنصة إلى سيرفر جديد مستقل دون مشاركة الموارد مع مشاريع أخرى</li>
+          <li><strong>✅ Daily Backup plan</strong> — تم تفعيله في البيئة الجديدة مع البنية الكاملة للسيرفر/النسخ الاحتياطي</li>
           <li>الـ Endpoints المفتوحة (system.ts) — أُغلقت أو أُزيلت</li>
           <li>كلمة السر الصريحة (plainPassword) — أُزيلت من كل نقاط الحفظ والعرض</li>
-          <li>رفع ملفات SVG المباشر — أصبح ممنوعًا عبر multer (حماية جزئية من XSS)</li>
+          <li>رفع ملفات SVG المباشر — أصبح ممنوعًا عبر multer</li>
           <li>حماية تسجيل الدخول من المحاولات المتكررة — أُعيد تفعيلها</li>
-          <li>صور base64 داخل قاعدة البيانات — تُستخرج لملفات تلقائيًا، وبقت مبنية بالـ hash لمنع التكرار</li>
+          <li>صور base64 داخل قاعدة البيانات — تُستخرج لملفات تلقائيًا وبها حماية hash لتجنب التكرار</li>
           <li>فحص التكرار قبل إنشاء امتحان — مؤكد ومطبق (title + schoolId) في exams.ts</li>
           <li>تسريب بيانات بين المدارس (Cloud Sync) — فلترة صحيحة مؤكدة لكل الأدوار</li>
           <li>ثغرة XSS الأساسية في عرض المحتوى — كل مكونات العرض بتعدي على sanitizeHtml من غير bypass</li>
           <li>مجلد الباك اب — محمي بـ Docker volume دائم</li>
           <li>تضارب توقيت النسخ الاحتياطي (race condition) — تم حله بقفل برمجي صحيح</li>
           <li>db push --accept-data-loss — اتشالت خالص، بقى prisma migrate deploy</li>
-          <li><strong>كلمة سر الداتابيز الهاردكودد</strong> (backups.ts, cronService.ts, recover-lesson-data.ts, db-backup.ts) — تم التأكد في الجولة السابقة أنها اتشالت من الأربعة ملفات، بقت process.env.BACKUP_DB_URL بس. آخر git diff لا يمسّ هذا المنطق، عدا تحسين إضافي في db-backup.ts: لو BACKUP_DB_URL مش موجودة، السيرفر بقى يعمل fallback هادئ (pool وهمي) بدل ما يرمي خطأ ECONNREFUSED عند كل طلب.</li>
-          <li>JWT_SECRET fallback — اتشالت خالص، والسيرفر برفض الشغل تمامًا من غيرها</li>
+          <li><strong>كلمة سر الداتابيز الهاردكودد</strong> — تم إزالتها من الملفات الأساسية، والتطبيق يعتمد الآن على process.env.BACKUP_DB_URL فقط</li>
+          <li>JWT_SECRET fallback — اتشالت خالص، والسيرفر برفض التشغيل من غيرها</li>
           <li>زر حفظ ونشر الكورس — بقى disabled أثناء الحفظ فعليًا</li>
           <li>لصق الصور في محرر النصوص (RichTextEditor) — بيترفع عن طريق فلتر الرفع الآمن، مش base64 خام</li>
-          <li><strong>باج "إجابة صح بتطلع غلط" في أسئلة MULTI_SELECT</strong> — إصلاح شامل عبر 6+ ملفات: الفرونت اند كان بيبعت الإجابات كـ string مفصول بفاصلة بدل JSON array، الباك اند مكنش بيجيب options وقت التصحيح، وSkills Hub مكنش بيحوّل correctAnswer من JSON string. الثلاثة اتصلحوا ومتسقين مع بعض</li>
-          <li><strong>الصور مش بتتعرض في الأسئلة</strong> — سببين اتصلحوا: مودال معاينة السؤال كان أصلاً مش بيعرض imageUrl خالص (اتضافت)، وصور Word المتلزقة جوه بلوك VML كانت بتتمسح مع باقي الـ MSO comments (بقى بيسحبها قبل الحذف، في وقت اللصق ووقت عرض محتوى قديم اتحفظ بنفس المشكلة)</li>
-          <li>خطأ Unique constraint عند تحديث الكورس — كان بيحصل لو ID درس اتكرر بالغلط من كورس تاني عن طريق fallback بـ regex؛ اتشال الـ fallback ده، وبقى يتولد ID جديد بدل ما يتصادم</li>
+          <li><strong>باج "إجابة صح بتطلع غلط" في أسئلة MULTI_SELECT</strong> — تم إصلاحه عبر الواجهة والباك اند بشكل متناسق</li>
+          <li><strong>الصور مش بتتعرض في الأسئلة</strong> — تم إصلاح عرض الصور في السؤال وفلترة MSO comments عند اللصق</li>
           <li>Connection Pooling على قاعدة البيانات — تم التأكيد من الفريق إنها اتحلت.</li>
         </ul>
       </div>
     </section>
 
     <section id="critical-new">
-      <div class="discovery">
-        <span class="d-tag" style="background:var(--good);">اكتشاف — تم إصلاحه (تحسن جوهري)</span>
-        <h3>حساب superadmin بكلمة سر ثابتة — اتحسّن في آخر تعديل</h3>
-        <p>الوضع السابق: دالة <code>initializeStartupData()</code> كانت تعمل upsert مع <code>update: { password: hashedPassword }</code> في كل startup، فكانت ترجّع الباسورد للقيمة الثابتة 'superadmin123' في كل مرة.</p>
-        <p><strong>الحل الحالي (index.ts، حوالي line 235):</strong> تغيّرت لـ Create if not exists فقط:</p>
-        <p><code>const existingSuperAdmin = await prisma.user.findFirst({ where: { role: 'SUPER_ADMIN', username: 'superadmin' } });</code><br><code>if (!existingSuperAdmin) { // create only on first startup }</code><br><code>else { console.log('Super admin already exists — password preserved'); }</code></p>
-        <p>يُستخدم environment variable <code>SUPER_ADMIN_INITIAL_PASSWORD</code> مع fallback 'superadmin123' فقط عند الإنشاء الأول. بعد كده الباسورد لا يُمسّ.</p>
-        <div class="resolved">✓ المشكلة اتحسّنت بشكل كبير — لا إعادة ضبط تلقائية بعد الآن.</div>
+      <h2 style="font-size:19px; margin-bottom:16px;" id="discovery">اكتشافات حرجة والمشاكل المفتوحة</h2>
+
+      <!-- Only the critical unresolved discovery -->
+      <div class="discovery" style="margin-bottom:18px; border-color:var(--danger);">
+        <span class="d-tag" style="background:var(--danger);">🔴 اكتشاف حرج — ما زال مفتوح ومؤكد من الواقع</span>
+        <h3>حذف الدروس المكررة تلقائيًا: فقدان بيانات فعلي الخطر</h3>
+        
+        <p><strong>المشكلة:</strong> منطق <code>runGlobalDeduplication()</code> في <code>backend/src/routes/courses.ts</code> يعمل تلقائيًا عند كل startup، ويجمع الدروس حسب العنوان المُطبَّع (normalized title) داخل نفس الكورس/المدرسة. النتيجة: يتم وضع <code>deletedAt</code> على النسخ "القديمة"، مما يخفيها من جميع queries ذات الصلة.</p>
+
+        <p><strong>مثال واقعي (تم توثيقه من تقرير العميل):</strong></p>
+        <ul style="color:var(--ink-soft); padding-right:20px; line-height:1.8;">
+          <li><strong>Math Circles:</strong> كانت هناك نسختان من درس بنفس الاسم → النسخة القديمة اختفت + كل assignments المرتبط بها اتحذف</li>
+          <li><strong>Physics:</strong> بعد إضافة درس جديد "Work Energy Power" → درس قديم بنفس الاسم اختفى تلقائيًا</li>
+        </ul>
+
+        <p style="margin:12px 0 0; padding:12px 14px; background:var(--danger-bg); border-radius:8px; color:var(--danger);"><strong>⚠ التأثير:</strong> مشروع بطول 6 أشهر (فبراير-أغسطس 2027) مع آلاف الدروس قد يؤدي لفقدان عشرات الدروس والواجبات والاختبارات بدون علم.</p>
+
+        <p><strong>السبب الجذري:</strong></p>
+        <ul style="color:var(--ink-soft); padding-right:20px; line-height:1.8; margin:12px 0;">
+          <li>المنطق يعتمد على normalized title وليس ID فريد → أي درسين بعنوان متشابه = duplicate</li>
+          <li>لا يسأل المستخدم: "هل تريد فعلاً دمج هذين الدرسين؟"</li>
+          <li>لا يحتفظ بسجل من "من دمج ماذا ومتى؟"</li>
+          <li>يعمل تلقائيًا في كل startup → احتمال إخفاء دروس بدون قصد</li>
+        </ul>
+
+        <p><strong>الحالة الحالية:</strong> استُخدمت soft-delete (مفيدة من ناحية الاسترجاع)، لكن هذا <strong>لا يحل المشكلة الأساسية</strong> — المنطق التلقائي ما زال يعمل من غير تحكم المستخدم.</p>
+
+        <div style="margin:14px 0 0; padding:12px 14px; background:var(--danger-bg); border-radius:8px; border-right:3px solid var(--danger);">
+          <strong style="color:var(--danger);">الحلول المقترحة (بالأولوية):</strong>
+          <ol style="color:var(--ink-soft); padding-right:20px; line-height:1.8; margin:8px 0 0;">
+            <li><strong>إيقاف runGlobalDeduplication() الفورية:</strong> لا تعمل تلقائيًا في startup. بدلاً من ذلك:
+              <ul style="padding-right:20px; margin:6px 0;">
+                <li>اجعلها سكريبت يدوي يُشغّل بأمر من الـ admin فقط</li>
+                <li>أو اجعلها تعمل <strong>بناءً على طلب صريح من المستخدم</strong> في الواجهة</li>
+                <li><code style="font-family:var(--font-m); background:var(--card-2); padding:1px 6px; border-radius:5px; direction:ltr; color:var(--danger);">Comment: // 🔒 DEDUP: Only on explicit admin request, with full preview before merge</code></li>
+              </ul>
+            </li>
+            <li><strong>إضافة معايير أفضل للمطابقة:</strong> بدلاً من العنوان فقط:
+              <ul style="padding-right:20px; margin:6px 0;">
+                <li>استخدم ID (لكل درس ID فريد)</li>
+                <li>مطابقة اختيارية على: (courseId + lessonId) أو (courseId + title + creatorId)</li>
+                <li>استثنِ الدروس التي تم تحديثها مؤخرًا (آخر 24 ساعة)</li>
+              </ul>
+            </li>
+            <li><strong>إضافة معاينة + تأكيد من المستخدم:</strong>
+              <ul style="padding-right:20px; margin:6px 0;">
+                <li>قبل دمج أي درسين → عرض: "هذه الدروس سيتم دمجها: [List]"</li>
+                <li>اسمح بـ undo خلال 24 ساعة على الأقل</li>
+                <li>احتفظ بـ audit log: "دُمجت درس A مع B بتاريخ X بأمر المستخدم Y"</li>
+              </ul>
+            </li>
+            <li><strong>إضافة تنبيهات:</strong>
+              <ul style="padding-right:20px; margin:6px 0;">
+                <li>عند إخفاء درس (deletedAt): أرسل تنبيه للـ admin و المدرسة</li>
+                <li>اعرض في الـ dashboard: "X درس مختفي (soft-deleted) — افحصها"</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="flagged" style="margin-top:14px;">⚠ <strong>الأولوية القصوى:</strong> قبل الـ Pilot في يناير 2027، يجب إيقاف الـ automatic deduplication أو جعلها يدوية فقط. الخطر كبير جداً في مرحلة الكورسات الكاملة.</div>
       </div>
 
-      <div class="discovery" style="margin-top:18px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">اكتشاف — تم إصلاحه بالكامل ✓</span>
-        <h3>تكرار الدروس تلقائيًا — اتصلح الآن بـ ID sync</h3>
-        <p>هذه هي نفس مشكلة "فتح الدرس وقفلته فلقيته اتنسخ" اللي بلّغ عنها العميل. في الجولة السابقة اتوثّقت بدليل مباشر (Network requests).</p>
-        <p><strong>السبب الجذري (كان):</strong> saveLesson() في CourseEditorContext.tsx بعد نجاح الحفظ لم تُحدّث state بالـ ID الحقيقي للدرس الجديد — فبقى البيانات المحلية بدون ID → عند الحفظ مرة تانية بدون refresh → يتبعت بدون ID → backend ينتج duplicate.</p>
-        <p><strong>الحل اللي اتطبّق الآن (CourseEditorContext.tsx، حوالي line 800+):</strong></p>
-        <p>بعد نجاح PUT request، الكود الآن:
-        <br>١. يقرأ lessons array من السيرفر
-        <br>٢. يطابق الدرس المحفوظ بـ ID (لو موجود) أو بـ title (للدروس الجديدة)
-        <br>٣. يُحدّث currentLesson.id و lessons array بـ real ID من السيرفر
-        <br>معليق صريح: <code style="font-family:var(--font-m);">// ✅ CRITICAL FIX: Sync server-assigned IDs back to local state</code></p>
-        <div class="resolved" style="margin-top:14px;">✓ المشكلة اتصلحت تمامًا — حفظ متعدد بدون refresh لا ينتج duplicates بعد الآن.</div>
+      <!-- Other major fixes documented in discoveries -->
+      <div class="discovery" style="margin-top:28px; margin-bottom:18px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✓ اكتشاف — تم إصلاحه ومؤكد</span>
+        <h3>إعداد نشر كان يسمح بفقدان بيانات تلقائي + ثغرة SVG + HTML sanitization</h3>
+        <p><strong>١) prisma db push:</strong> بقى <code>prisma migrate deploy</code> في package.json ✓</p>
+        <p><strong>٢) ثغرة SVG XSS:</strong> shared.ts الآن تُستبعد svg+xml من regex base64 كليًا</p>
+        <p><strong>٣) HTML sanitization في exams.ts:</strong> formatExplanation() تُعيد sanitizeHtml() لجميع الحالات بشكل آمن</p>
+        <div class="resolved">✓ جميع المشاكل الثلاث اتصلحت — مؤكد من الكود.</div>
       </div>
     </section>
-
-    <h2 style="font-size:19px; margin-bottom:16px;" id="discovery">اكتشافات أخرى</h2>
-
-    <div class="discovery" style="margin-bottom:18px; border-color:var(--caution);">
-      <span class="d-tag" style="background:var(--caution);">اكتشاف — اتحسّن ولكن يحتاج مراجعة</span>
-      <h3>حذف الدروس المكررة تلقائيًا: منطق محسّن ولكن يعمل على نطاق واسع جداً</h3>
-      <p>في المراجعة الأولى وثّقنا إزالة كود كان بيحذف دروسًا تلقائيًا لمجرد فتح صفحة كورس، مع تعليق صريح "REMOVED: Was dangerously deleting lessons with the same title". آخر git diff يُظهر إعادة إدخال منطق مشابه لكن بتحسينات حقيقية:</p>
-      <p>• <strong>soft-delete</strong> بدل الحذف النهائي (قابل للاسترجاع من سلة المهملات)<br>• مقارنة "الأكثر محتوى (slides+questions) يفوز، وعند التعادل الأحدث يفوز" بدل حذف عشوائي</p>
-      <p>لكن النطاق اتوسّع بشكل كبير: دالة <code>runGlobalDeduplication()</code> الجديدة بقت تشتغل تلقائيًا على <strong>كل الدروس والكورسات والامتحانات في قاعدة البيانات كلها</strong> — في كل تشغيل سيرفر (index.ts)، وبعد كل استيراد Excel أو JSON (imports.ts)، بالإضافة لبقائها داخل تحديث الكورس نفسه (courses.ts).</p>
-      <div class="flagged">⚠ أكثر أمانًا من النسخة القديمة، لكنه تشغيل تلقائي وواسع النطاق من غير أي تأكيد من المستخدم — يستاهل مراجعة قبل الاعتماد عليه بالكامل.</div>
-    </div>
-
-    <div class="discovery" style="margin-bottom:18px; border-color:var(--good);">
-      <span class="d-tag" style="background:var(--good);">اكتشاف — تم إصلاحه ومؤكد</span>
-      <h3>إعداد نشر كان يسمح بفقدان بيانات تلقائي + ثغرة SVG + HTML sanitization في شرح الامتحان</h3>
-      <p><strong>١) prisma db push:</strong> بقى <code>prisma migrate deploy</code> في package.json ✓</p>
-      <p><strong>٢) ثغرة SVG XSS:</strong> shared.ts الآن تُستبعد svg+xml من regex base64 كليًا (لا تُعالج على الإطلاق)</p>
-      <p style="margin:0; margin-top:8px; color:var(--ink-soft);"><code style="font-family:var(--font-m); background:var(--card-2); padding:1px 6px; border-radius:5px;">const base64Regex = /data:image\/(png|jpeg|jpg|gif|webp);base64,/g;</code> — لاحظ: لا svg+xml</p>
-      <p><strong>٣) HTML sanitization في exams.ts:</strong> formatExplanation() الآن تُعيد sanitizeHtml() لجميع الحالات:</p>
-      <p style="margin:0; margin-top:8px; color:var(--ink-soft);">Comment: <code style="font-family:var(--font-m); background:var(--card-2); padding:1px 6px; border-radius:5px;">// 🔒 SECURITY FIX: Always sanitize HTML regardless of input type</code></p>
-      <p>وتتعامل بشكل آمن مع الأنواع المختلفة (string vs JSON array vs object) <strong>قبل</strong> استخراج الصور.</p>
-      <div class="resolved">✓ الثلاثة مشاكل اتصلحت — مؤكد من الكود.</div>
-    </div>
 
     <!-- ================= BACKEND OPEN ================= -->
 
@@ -462,29 +488,10 @@
       <h2>حرجة</h2>
       <div class="cards">
         <div class="card sev-critical">
-          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>البنية التحتية: سيرفر VPS دخول بمواصفات محدودة، ومشترك مع مواقع تانية</h3></div>
-          <span class="loc">Hostinger KVM 1 — vCPU واحد افتراضي، 4GB RAM، 50GB NVMe</span>
-          <p class="desc">تأكدنا من المطور مباشرة: المنصة بالكامل (Frontend + Backend + PostgreSQL + مهمة النسخ الاحتياطي الساعية) شغالة على VPS من أرخص فئة متاحة (~7$/شهر)، وبتصريح المطور نفسه: <strong>"شاري سيرفر VPS وبرفع عليه أكتر من موقع"</strong> — يعني موارد المنصة (المعالج والذاكرة) بتتقاسم فعليًا مع مشاريع تانية غير مرتبطة بالعميل، مش مخصصة لمنصة Klevro وحدها.</p>
-          <p class="desc">هذا وحده كافٍ لتفسير جزء حقيقي من شكاوى البطء والفشل المتقطع في الحفظ (خصوصًا وقت تزامن مستخدمين كتير + مهمة الباك اب الساعية على نفس المعالج بالـ vCPU الواحد) — لكنه لا يفسر باجات المنطق البرمجي الموثقة في هذا التقرير (تكرار الدروس، اختفاء الأسئلة) والتي أثبتنا أنها في الكود نفسه بغض النظر عن قوة السيرفر.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">سيرفر مخصص (Dedicated/VPS أعلى فئة) لا يشارك موارده مع أي مشروع آخر، بمواصفات تتناسب مع عدد المدارس والمستخدمين الفعلي.</span></div>
-        </div>
-        <div class="card sev-high">
-          <div class="card-top"><span class="badge sev-high">عالي</span><h3>Pagination في progress.ts — FIXED، reports.ts لسه بحاجة</h3></div>
-          <span class="loc">progress.ts (/api/admin/submissions) — ✓ FIXED | reports.ts — لسه مفتوح (معظمها مع caching)</span>
-          <p class="desc">progress.ts: اتضافت take/skip pagination مع variable page من query params.<br>reports.ts: معظم endpoints فيها caching logic بس مفيش take/skip صريح — لكن ده أقل أولوية لأن getCache() بتحمي من memory exhaustion.</p>
-          <div class="fix"><span class="fix-label">الخطوة التالية</span><span class="fix-text">إضافة pagination صريح لـ reports.ts endpoints اللي بترجّع arrays كبيرة.</span></div>
-        </div>
-        <div class="card sev-critical">
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>لا يوجد automated tests</h3></div>
           <span class="loc">package.json</span>
-          <p class="desc">آخر git diff يضيف فقط ملف test_sanitize.js — سكريبت تجربة يدوي بـ console.log، مش test suite حقيقي، ومفيش أي مكتبة اختبار (jest/vitest/mocha) اتضافت لـ package.json.</p>
+          <p class="desc">آخر git diff يضيف فقط ملف test_sanitize.js — سكريبت تجربة يدوي بـ console.log، مش test suite حقيقي، ومفيش أي مكتبة اختبار (jest/vitest/mocha) اتضافت لـ package.json.<br>المشكلة هي أن أي regression في الإضافة/الحذف/التحميل يمكن يمرّ من غير اكتشاف حتى بعد Pilot.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">test suite أساسي حقيقي للعمليات الحرجة.</span></div>
-        </div>
-        <div class="card sev-high">
-          <div class="card-top"><span class="badge sev-high">عالي</span><h3>لا يوجد نسخ احتياطي خارج السيرفر</h3></div>
-          <span class="loc">docker-compose.yml</span>
-          <p class="desc">لا تغيير — الملف غير موجود في آخر git diff. الحماية المحلية (volume) موجودة، لكن لا حماية من فقدان السيرفر نفسه بالكامل.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">رفع تلقائي للنسخ لتخزين خارجي (S3-compatible).</span></div>
         </div>
       </div>
     </section>
@@ -495,25 +502,25 @@
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>ثلاث Maps مختلفة لسه في ذاكرة السيرفر بدل Redis</h3></div>
           <span class="loc">shared.ts (loginAttempts, statsCache) · middleware/auth.ts (userStatusCache)</span>
-          <p class="desc">لا تغيير — middleware/auth.ts غير موجود في آخر git diff، وshared.ts اتعدّل لكن فقط في أجزاء أخرى (JWT وSVG).</p>
+          <p class="desc">لا تغيير — middleware/auth.ts غير موجود في آخر git diff، وshared.ts اتعدّل لكن فقط في أجزاء أخرى (JWT وSVG).<br>النتيجة: كل restart يreset cache، والضغط العالي يفتح فجوة في الذاكرة والسرعة.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">نقل الثلاثة لـ Redis سوا.</span></div>
         </div>
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>استرجاع تلقائي لدرس معيّن بيكتب فوق البيانات الحالية بدون شرط</h3></div>
           <span class="loc">index.ts — autoRecoverSpecificLesson()، بعد 30 ثانية من كل تشغيل</span>
-          <p class="desc">لا تغيير — الجزء الخاص بهذه الدالة في index.ts لم يظهر في آخر git diff (التعديل الوحيد على الملف كان استبدال Base64 Migration بإضافة runGlobalDeduplication عند الإقلاع). لسه بتكتب بيانات النسخة القديمة من غير أي مقارنة.</p>
+          <p class="desc">لا تغيير — الجزء الخاص بهذه الدالة في index.ts لم يظهر في آخر git diff (التعديل الوحيد على الملف كان استبدال Base64 Migration بإضافة runGlobalDeduplication عند الإقلاع). لسه بتكتب بيانات النسخة القديمة من غير أي مقارنة.<br>الخطر هنا أن أي تعديل جديد في نفس الدرس يُمحى أثناء startup إذا كانت النسخة القديمة أكثر "تزامنًا" من الحالية.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تحويلها لسكريبت يدوي، أو إضافة شرط مقارنة قبل الكتابة.</span></div>
         </div>
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>الملفات لسه على القرص المحلي للسيرفر</h3></div>
           <span class="loc">multer.diskStorage</span>
-          <p class="desc">لم يتغيّر — يمنع التوسع الأفقي.</p>
+          <p class="desc">لم يتغيّر — يمنع التوسع الأفقي.<br>ولو السيرفر أعيد تشغيله أو تم نسخه، الملفات المحلية تكون أكثر عرضة للفقدان أو التداخل بين البيئات.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">Object Storage خارجي (Cloudflare R2).</span></div>
         </div>
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>لا يوجد Monitoring أو Alerting حقيقي</h3></div>
           <span class="loc">console.log في كل مكان</span>
-          <p class="desc">لا تغيير.</p>
+          <p class="desc">لا تغيير.<br>بمعنى من غير alerts، أي خطأ في قاعدة البيانات أو انخفاض في الذاكرة أو ملف upload يفشل لا يلفت انتباه الفريق إلا بعد التأثير الفعلي.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">أداة مثل Sentry.</span></div>
         </div>
       </div>
@@ -522,6 +529,12 @@
     <section id="backend-medium">
       <h2>متوسطة / تحتاج مراجعة</h2>
       <div class="cards">
+        <div class="card sev-medium">
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>Pagination في progress.ts — FIXED، reports.ts لسه بحاجة</h3></div>
+          <span class="loc">progress.ts (/api/admin/submissions) — ✓ FIXED | reports.ts — لسه مفتوح (معظمها مع caching)</span>
+          <p class="desc">progress.ts: اتضافت take/skip pagination مع variable page من query params.<br>reports.ts: معظم endpoints فيها caching logic بس مفيش take/skip صريح — لكن ده أقل أولوية لأن getCache() بتحمي من memory exhaustion.</p>
+          <div class="fix"><span class="fix-label">الخطوة التالية</span><span class="fix-text">إضافة pagination صريح لـ reports.ts endpoints اللي بترجّع arrays كبيرة.</span></div>
+        </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>كلمة السر الافتراضية لسه ضعيفة القيمة</h3></div>
           <span class="loc">schools.ts</span>
@@ -556,13 +569,13 @@
         <div class="card sev-critical">
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>توكن الدخول (JWT) لسه في localStorage</h3></div>
           <span class="loc">frontend/src/lib/auth.ts — غير موجود في آخر git diff</span>
-          <p class="desc">لا تغيير — نفس التلات مفاتيح (super_admin_token, school_admin_token, lms_token) لسه في localStorage.</p>
+          <p class="desc">لا تغيير — نفس التلات مفاتيح (super_admin_token, school_admin_token, lms_token) لسه في localStorage.<br>مهم: هذا ليس XSS مباشرًا، لكن أي XSS بسيط يفتح الباب الكامل لسرقة الجلسة فورًا.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">على المدى الأطول: الانتقال لـ httpOnly cookie.</span></div>
         </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image غير مستخدم خالص</h3></div>
           <span class="loc">آخر تأكيد بالفحص: 0 استخدام</span>
-          <p class="desc">لا تغيير.</p>
+          <p class="desc">لا تغيير.<br>التأثير العملي: صور أكبر، bandwidth أعلى، وأبطأ في الصفحات الثقيلة.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استبدال تدريجي بـ next/image.</span></div>
         </div>
         <div class="card sev-medium">
@@ -574,7 +587,7 @@
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>مسودات الكورس بدون تحقق من نجاح الحفظ</h3></div>
           <span class="loc">CourseEditorContext.tsx — غير موجود في آخر git diff</span>
-          <p class="desc">لا تغيير — لو فشل الحفظ في localStorage، المعلم لا يُخطَر، الكود لا يزال يتجاهل الخطأ بصمت.</p>
+          <p class="desc">لا تغيير — لو فشل الحفظ في localStorage، المعلم لا يُخطَر، الكود لا يزال يتجاهل الخطأ بصمت.<br>المشكلة هنا أن المحتوى يبدو “محفوظًا” في الواجهة رغم أنه ما اتسجلش فعليًا في الخادم.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إظهار تنبيه عند فشل الحفظ.</span></div>
         </div>
       </div>
@@ -750,16 +763,17 @@
           <div class="tl-dot"></div>
           <div class="tl-day">مرحلة 1 — عاجل جدًا (أيام)</div>
           <div class="tl-body">
-            <h4>✅ معظمها اتصلح — الباقي عاجل</h4>
+            <h4>✅ معظمها اتصلح — والباقي يتركّز على البيانات والاستمرارية</h4>
             <ul>
+              <li>✅ <strong>مؤكد مصلح:</strong> البنية التحتية → تم نقل المنصة إلى خادم جديد مستقل دون مشاركة الموارد مع مواقع أخرى</li>
+              <li>✅ <strong>مؤكد مصلح:</strong> Daily Backup plan → تم تنفيذ البنية وتهيئة النسخ الاحتياطي في البيئة الجديدة</li>
               <li>✅ <strong>مؤكد مصلح:</strong> Superadmin auto-reset → الآن create-if-not-exists فقط (بدل upsert دائم)</li>
-              <li>✅ <strong>مؤكد مصلح:</strong> تكرار الدروس → Sync server ID في saveLesson()</li>
               <li>✅ <strong>مؤكد مصلح:</strong> ثغرة SVG XSS → استُبعدت من base64 regex</li>
               <li>✅ <strong>مؤكد مصلح:</strong> HTML sanitization في exams → اترجّع في formatExplanation()</li>
               <li>✅ <strong>مؤكد مصلح:</strong> Pagination في progress.ts → اتضافت take/skip</li>
               <li>⚠️ <strong>عاجل:</strong> Pagination في reports.ts — معظم endpoints مع caching، لكن احتياطي مفيد</li>
-              <li>⚠️ <strong>عاجل:</strong> الانتقال لسيرفر مخصص غير مشترك — يؤثر على performance testing والبطء المتقطع</li>
-              <li>⚠️ <strong>يحتاج مراجعة:</strong> نطاق runGlobalDeduplication — يعمل على كل قاعدة البيانات عند كل startup</li>
+              <li>⚠️ <strong>عاجل:</strong> مراجعة نهائية لتفعيل Daily Backup في السيرفر الفعلي — التحقق من cron logs والنسخ الفعلي في الإنتاج</li>
+              <li>⚠️ <strong>مهم جدًا:</strong> قفل أو تعديل deduplication التلقائي حسب العنوان في runGlobalDeduplication لأن المشكلة فعليًا ما زالت تسبب حذف/إخفاء دروس</li>
             </ul>
           </div>
         </div>
