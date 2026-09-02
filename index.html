@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تقييم جاهزية منصة Klevro — بعد مراجعة ديفّين جدد (16-17 أغسطس)</title>
+<title>تقييم جاهزية منصة Klevro — تراجع جماعي عن إصلاحات أمنية مؤكدة (30 أغسطس)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -274,8 +274,9 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · تحديث ثانٍ ١٨ أغسطس ٢٠٢٦ — مراجعة كودية مباشرة لـ diff 16 أغسطس + diff 17 أغسطس (76 + 54 ملف)</p>
-    <h1>تقييم جاهزية المنصة — بعد ديفّين جديدين</h1>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · تحديث خامس ٣٠ أغسطس ٢٠٢٦ — مراجعة git diff (118 ملف، diff_30_aug.diff)</p>
+    <h1 style="color:var(--danger);">⚠ تراجع جماعي — 5 إصلاحات أمنية مؤكدة رجعت في ديف واحد</h1>
+    <p class="lead"><strong>هذا التحديث مختلف عن كل اللي فات:</strong> مفيش اكتشافات جديدة تقريبًا هذه المرة — الديف الجديد (118 ملف، إعادة هيكلة كبيرة لصفحات الامتحانات) بيرجّع 5 إصلاحات أمنية كنا أكدناها بمراجعة كود مباشرة في الجولة اللي فاتت: تحقق الملكية (IDOR) في 4 مجموعات endpoints، وendpoint-ين كانوا اتقفلوا رجعوا مفتوحين، وتأكيد الحذف الجماعي اتشال، وprisma db push رجعت للمرة التالتة. حاجة كويسة واحدة: فيه شغل هندسي حقيقي لحل مشكلة "الأسئلة مش بتتزامن بعد الحفظ" (اللي اكتشفناها من بلاغ عميل)، لكنه غير فعّال لسه بسبب سطر واحد ناقص في الباك اند. باقي القائمة (Zip Slip، الـ Maps، أسئلة الـ JWT secret والباسورد) متلمستش خالص.</p>
 
     <div class="stack-box">
       <p class="stack-title">البنية التقنية</p>
@@ -288,9 +289,9 @@
     </div>
 
     <div class="stat-row">
-      <div class="stat-tile fixed"><span class="n">28</span><span class="l">بند تم إصلاحه ومؤكد ✓</span></div>
-      <div class="stat-tile open"><span class="n">15</span><span class="l">بند لسه مفتوح (كروت مفصّلة تحت)</span></div>
-      <div class="stat-tile bonus"><span class="n">4</span><span class="l">اكتشافات حرجة جديدة (IDOR × 3 + رجوع db push)</span></div>
+      <div class="stat-tile fixed"><span class="n">36</span><span class="l">بند تم إصلاحه عبر تاريخ المراجعة (4 منهم رجعوا لاحقًا)</span></div>
+      <div class="stat-tile open"><span class="n">14</span><span class="l">بند لسه مفتوح (كروت مفصّلة تحت)</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#FF8A80;">11</span><span class="l">اكتشافات حرجة مفتوحة (منها 4 تراجعات مؤكدة عن إصلاحات كانت موجودة)</span></div>
     </div>
     
     <!-- قسم إحصائيات المشاكل الديناميكي -->
@@ -309,7 +310,7 @@
       <li><a href="#readiness">لوحة الجاهزية</a></li>
       <li><a href="#summary">الملخص</a></li>
       <li><a href="#fixed">تم إصلاحه</a></li>
-      <li><a href="#critical-new" style="color:var(--danger); font-weight:700;">⚠ 3 ثغرات IDOR جديدة + رجوع db push</a></li>
+      <li><a href="#critical-new" style="color:var(--danger); font-weight:700;">⚠⚠ تراجع جماعي — 5 إصلاحات رجعت للخلف</a></li>
       <li><a href="#discovery">اكتشافات أخرى</a></li>
       <li><a href="#backend" class="nav-h">مشاكل لسه مفتوحة — الباك اند</a></li>
       <li><a href="#frontend" class="nav-h">مشاكل لسه مفتوحة — الفرونت اند</a></li>
@@ -327,61 +328,72 @@
       <div class="readiness-grid">
         <div class="r-tile">
           <div class="r-title">الأمان</div>
-          <div class="r-score-row"><span class="r-score was">3/10</span><span class="r-arrow">←</span><span class="r-score now warn">5/10</span></div>
-          <div class="r-verdict">تحسّن حقيقي في جوانب (hardcoded passwords، SVG XSS، sanitization)، لكن فيتشر Exam Modules/Folders الجديد (ديف 17) فتح 3 ثغرات IDOR (Broken Access Control) حقيقية — أخطرها POST /move-to-module اللي بيسمح لأي معلم يمسح/يسرق محتوى امتحان تبع مدرسة تانية بمجرد معرفة الـ ID. بالإضافة لـ endpoints قديمة لسه من غير أي حماية auth خالص (force-inject-factors، force-restore-work). التقييم رجع للخلف عن الجولة اللي فاتت بسبب الاكتشافات دي، وده لازم يتصلح قبل أي pilot.</div>
+          <div class="r-score-row"><span class="r-score was">3/10</span><span class="r-arrow">←</span><span class="r-score now danger">3/10</span></div>
+          <div class="r-verdict"><strong>رجع لنفس نقطة البداية تقريبًا.</strong> الجولة اللي فاتت (24 أغسطس) وصلت لـ 6/10 بعد إصلاح IDOR بإتقان. ديف 30 أغسطس رجّع نفس الثغرة بالظبط (22 سطر تحقق ملكية اتشالوا)، وقفل endpoints المفتوحة (force-restore-work، force-inject-factors) رجع يتفتح، وwipe-all-dummy-data-danger فقد التأكيد. الأسئلة المعلّقة من الجولة اللي فاتت (سر JWT في generate_test_token.js، باسورد superadmin في reset_pass.js) لسه من غير رد. النتيجة العملية: أي معلم دلوقتي يقدر يمسح/يسرق امتحان مدرسة تانية بمجرد معرفة الـ ID، بالظبط زي أول مرة اكتشفنا فيها المشكلة دي. التقييم رجع لنقطة البداية لأن الحماية الفعلية رجعت لنقطة البداية.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
           <div class="r-score-row"><span class="r-score was">4/10</span><span class="r-arrow">←</span><span class="r-score now good">6/10</span></div>
-          <div class="r-verdict">المشكلة السابقة المتعلقة بـ VPS المشترك تم حلها فعليًا عبر الانتقال لسيرفر مستقل، وديف 16 فعّل PM2 cluster mode (كل الأنوية) — تحسّن حقيقي في الاستفادة من المعالج. لكن ده كشف مشكلة تانية: الـ 3 Maps في الذاكرة (rate-limiting/caching) لسه مش على Redis، فبقت منفصلة لكل worker بدل ما تكون مشتركة — أولوية النقل لـ Redis ارتفعت فعليًا بسبب التغيير ده.</div>
+          <div class="r-verdict">لم يتأثر بديف 30 أغسطس — shared.ts وauth.ts (فيهم الـ 3 Maps) مش موجودين في الديف الجديد. المشكلة السابقة المتعلقة بـ VPS المشترك لسه متحلولة عبر سيرفر مستقل، وPM2 cluster mode شغال. أولوية نقل الـ Maps لـ Redis لسه مرتفعة زي ما كانت.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">سلامة البيانات</div>
-          <div class="r-score-row"><span class="r-score was">5/10</span><span class="r-arrow">←</span><span class="r-score now good">7/10</span></div>
-          <div class="r-verdict">تحسّن جوهري ومؤكد: المشكلة الحرجة الأساسية (حذف الدروس تلقائيًا حسب العنوان) اتصلحت فعليًا — الاستدعاء التلقائي اتشال من 3 نقاط، وبقى فيه preview + موافقة صريحة قبل أي دمج. لكن ديف 16 رجّع مشكلة كانت اتقفلت قبل كده: <code style="font-family:var(--font-m);">prisma db push</code> بقت جزء من كل تشغيل للـ container تاني بدل migrate deploy — ده لازم يتراجع عنه المطوّر فورًا قبل ما يوصل التقييم لمستوى "مستقر بالكامل".</div>
+          <div class="r-score-row"><span class="r-score was">5/10</span><span class="r-arrow">←</span><span class="r-score now danger">4/10</span></div>
+          <div class="r-verdict"><strong>تراجع.</strong> <code style="font-family:var(--font-m);">prisma db push</code> رجعت للمرة التالتة (بدل migrate deploy) — نمط متكرر بيصاحب كل عملية إعادة هيكلة كبيرة، مش حادثة منفردة. المشكلة الأصلية (deduplication) لسه مصلحة (الملفات المسؤولة عنها مش في هذا الديف)، لكن <code style="font-family:var(--font-m);">cleanup_duplicates_dokploy.ts</code> (hard delete، سؤال Dokploy hook لسه معلّق) برضه لسه موجود زي ما هو. اكتشفنا كمان في نفس الجولة دي مشكلة حقيقية من بلاغ عميل (أسئلة مش بتتزامن بعد الحفظ) — فيها شغل إصلاح جاد بس غير فعّال لسه بسبب سطر ناقص في الباك اند.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">استمرارية التخزين</div>
           <div class="r-score-row"><span class="r-score was">5/10</span><span class="r-arrow">←</span><span class="r-score now good">8/10</span></div>
-          <div class="r-verdict">هذا المحور هو من أفضل ما تم تحسينه: تم إضافة نسخ احتياطي محلي + سحابي، مع جدولة دورية، pruning، واسترجاع من cloud backup. ديف 17 كمان أضاف modules وquestions لحمولة الباك أب الدوري في cronService.ts (كانت ناقصة) — يعني فيتشر الـ Exam Modules الجديد بقى محمي بالنسخ الاحتياطي زي باقي البيانات. الوضع الحالي يقترب من الجاهزية التشغيلية الجيدة، مع بقاء الفحص النهائي على السيرفر الفعلي لتأكيد أن Daily Backup plan ما زال مُفعّل ويعمل فعليًا في الإنتاج.</div>
+          <div class="r-verdict">لم يتأثر بديف 30 أغسطس — backups_controller.ts (فيه Zip Slip) مش موجود في الديف الجديد، الملف اللي اتلمس (routes/backups.ts) كان بس عشان يشيل الـ auth من force-restore-work. النسخ الاحتياطي المحلي + السحابي لسه قائم ومستقر، لكن Zip Slip لسه من غير حل.</div>
         </div>
       </div>
       <div class="metric-note">
         <span>ⓘ</span>
-        <span><strong>ليه الأرقام دي مش المفروض تتساوي بالإحصائيات فوق؟</strong> لوحة الجاهزية بتجاوب على سؤال "إيه مستوى النضج التقني الكلي لكل محور؟" (تقييم نوعي من خبرة المراجعة)، بينما الإحصائيات فوق (28 / 15 / 4) بتجاوب على سؤال مختلف تمامًا: "كام بند تحديدًا في التقرير ده اتصلح، وكام لسه مفتوح؟" (عدّ حرفي). محور واحد زي "الأمان" ممكن يحتوي على أكتر من بند من الـ 15 المفتوحة والـ 4 الاكتشافات الحرجة، ومحور "الأداء" يحتوي على بند واحد بس — علشان كده مفيش معادلة رياضية تربط الاثنين، وده طبيعي.</span>
+        <span><strong>ليه الأرقام دي مش المفروض تتساوي بالإحصائيات فوق؟</strong> لوحة الجاهزية بتجاوب على سؤال "إيه مستوى النضج التقني الكلي لكل محور؟" (تقييم نوعي من خبرة المراجعة)، بينما الإحصائيات فوق (36 / 14 / 11) بتجاوب على سؤال مختلف تمامًا: "كام بند تحديدًا في التقرير ده اتصلح، وكام لسه مفتوح؟" (عدّ حرفي). محور واحد زي "الأمان" ممكن يحتوي على أكتر من بند من الـ 14 المفتوحة والـ 11 الاكتشافات الحرجة، ومحور "الأداء" يحتوي على بند واحد بس — علشان كده مفيش معادلة رياضية تربط الاثنين، وده طبيعي.</span>
       </div>
     </section>
 
     <section id="summary">
       <h2>الملخص</h2>
       <div class="box">
-        <p><strong>المشكلة الحرجة الأساسية (deduplication) اتصلحت فعليًا وبجدية. لكن فيتشر جديد (Exam Modules/Folders) فتح 3 ثغرات IDOR حقيقية، وفيه رجوع محتمل لمشكلة كانت مؤكد إصلاحها (prisma db push).</strong></p>
-        <p>ما تم إصلاحه في ديف 16 + 17 أغسطس:</p>
+        <p><strong>هذا التحديث عكس اتجاه التقرير كله: إعادة هيكلة كبيرة (118 ملف) رجّعت 5 إصلاحات أمنية كنا أكدناها بمراجعة كود مباشرة الجولة اللي فاتت — بلا أي إصلاح جديد بدلها. الأولوية دلوقتي مش اكتشاف حاجات جديدة، الأولوية إرجاع اللي اتشال.</strong></p>
+        <p>🔴 تراجعات مؤكدة (كانت مصلحة يوم 24 أغسطس، رجعت في ديف 30 أغسطس):</p>
         <ul style="margin-top:10px; color:var(--ink-soft); font-size:15px; line-height:1.8; padding-right: 20px;">
-          <li>✓ <strong>مشكلة حذف الدروس المكررة تلقائيًا</strong> — اتصلحت من جذرها: preview + موافقة يدوية بدل حذف تلقائي، والاستدعاء التلقائي اتشال من 3 نقاط.</li>
-          <li>✓ <strong>كلمة السر الثابتة Password@123</strong> — بقت عشوائية فريدة لكل مستخدم في كل الأماكن.</li>
-          <li>✓ <strong>حماية سكريبت recover-lesson-data.ts</strong> — require.main === module اتضافت.</li>
-          <li>✓ <strong>بداية test suite حقيقي</strong> — Jest اتضاف فعليًا، مش console.log.</li>
+          <li>🔴🔴 <strong>IDOR في move-to-module، move-standalone-questions، exam-modules CRUD، exam-folders</strong> — 22 سطر تحقق ملكية اتشالوا، صفر اتضاف. أي معلم يقدر يمسح/يسرق امتحان مدرسة تانية تاني.</li>
+          <li>🔴 <strong>Endpoints بدون auth (force-restore-work، force-inject-factors)</strong> — الـ middleware اتشال، رجعوا مفتوحين خالص.</li>
+          <li>🔴 <strong>wipe-all-dummy-data-danger</strong> — فقد dryRun والتأكيد الصريح، رجع ينفذ فورًا.</li>
+          <li>🔴 <strong>رجوع prisma db push</strong> — للمرة التالتة عبر تاريخ هذا التقرير، نمط متكرر مش حادثة منفردة.</li>
         </ul>
-        <p>المشاكل الجديدة اللي اتفتحت مع فيتشر Exam Modules/Folders (ديف 17):</p>
+        <p>🟡 حاجة كويسة واحدة — لكن مش شغالة لسه:</p>
         <ul style="margin-top:10px; color:var(--ink-soft); font-size:15px; line-height:1.8; padding-right: 20px;">
-          <li>🔴 <strong>IDOR في POST /api/exams/:id/move-to-module</strong> — أي معلم يقدر يمسح/يسرق محتوى امتحان مدرسة تانية بمجرد معرفة الـ ID (أخطر بند في التقرير حاليًا).</li>
-          <li>🔴 <strong>IDOR في PUT/DELETE /api/exam-folders/:id</strong> — من غير فلترة مدرسة.</li>
-          <li>🟠 <strong>نفس النمط في /api/exams/:id/modules</strong> (من ديف 16، لسه مفتوح).</li>
-          <li>🔴 <strong>رجوع prisma db push</strong> في Dockerfile بدل migrate deploy — عكس ما تم تأكيده سابقًا.</li>
+          <li>🟡 <strong>مشكلة "الأسئلة مش بتتزامن بعد الحفظ"</strong> (من بلاغ عميل حقيقي — رد المطوّر "الفرونت مش عارضهم" كان غلط، السبب مزامنة IDs مكسورة) — فيها شغل هندسي جاد وtests مخصصة، لكن استجابة الباك اند لسه ناقصها modules، فالمنطق الجديد كله معطّل عمليًا.</li>
         </ul>
-        <p>المشاكل المتبقية القديمة: الـ 3 Maps في الذاكرة لسه مش على Redis (وأولويتها ارتفعت بسبب تفعيل PM2 cluster mode)، الملفات لسه على القرص المحلي، ومفيش monitoring حقيقي. تفاصيل الكل تحت.</p>
+        <p>ثابت — لسه بنفس الحالة، لم تُلمس في ديف 30 أغسطس:</p>
+        <ul style="margin-top:10px; color:var(--ink-soft); font-size:15px; line-height:1.8; padding-right: 20px;">
+          <li>🔴 <strong>generate_test_token.js</strong> — سر JWT صريح، محتاج تأكيدك.</li>
+          <li>🔴 <strong>reset_pass.js</strong> — باسورد superadmin محتمل "123456"، محتاج تأكيدك.</li>
+          <li>🔴 <strong>Zip Slip</strong> في رفع الباك أب، و<strong>XSS مخزّن</strong> في StandaloneQuestions.tsx.</li>
+          <li>🟠 <strong>cleanup_duplicates_dokploy.ts</strong> — سؤال Dokploy hook لسه بلا إجابة.</li>
+        </ul>
+        <p>المشاكل المتبقية القديمة: الـ 3 Maps في الذاكرة لسه مش على Redis، الملفات لسه على القرص المحلي، ومفيش monitoring حقيقي. تفاصيل الكل تحت.</p>
       </div>
     </section>
 
     <section id="fixed">
-      <h2>تم إصلاحه فعليًا (28 بند مؤكد — بعد مراجعة ديف 16 + 17 أغسطس)</h2>
+      <h2>تم إصلاحه عبر تاريخ المراجعة (36 بند) — <span style="color:var(--danger);">4 منها رجعوا لاحقًا، متعلّمين بالأحمر تحت</span></h2>
       <div class="fixed-box">
         <ul>
+          <li><strong>✅ IDOR في نقل/دمج الامتحانات (أهم ثغرة في التقرير) — اتصلحت بإتقان في 24 أغسطس</strong> — راجعت move-to-module و move-standalone-questions و modules CRUD (POST/PUT/DELETE) و exam-folders (PUT/DELETE) سطر بسطر في الكود الفعلي، وكانت متسقة على كل الـ endpoints. <span style="color:var(--danger); font-weight:700;">⚠ رجعت خالص في ديف 30 أغسطس — 22 سطر تحقق ملكية اتشالوا من الكود، صفر اتضاف بدالهم. شوف قسم الاكتشافات فوق.</span></li>
+          <li><strong>✅ رجوع prisma db push — اتصلحت تاني في 24 أغسطس</strong> — الـ Dockerfile CMD وpackage.json start script الاتنين رجعوا لـ prisma migrate deploy. <span style="color:var(--danger); font-weight:700;">⚠ رجعت للمرة التالتة في ديف 30 أغسطس — db push تاني في المكانين. دي بقت نمط متكرر عبر كل عملية إعادة هيكلة كبيرة.</span></li>
+          <li><strong>✅ Endpoints المفتوحة من غير auth — اتصلحوا في 24 أغسطس</strong> — force-restore-work وforce-inject-factors الاتنين بقى عندهم verifyToken + checkRole(['SUPER_ADMIN']). <span style="color:var(--danger); font-weight:700;">⚠ رجعوا مفتوحين خالص في ديف 30 أغسطس — الـ middleware اتشال من الاتنين.</span></li>
+          <li><strong>✅ wipe-all-dummy-data-danger — بقى فيه أمان حقيقي في 24 أغسطس</strong> — dryRun mode بيرجع عدد السجلات من غير حذف، ولازم confirm: 'WIPE_EVERYTHING' صريح قبل التنفيذ. <span style="color:var(--danger); font-weight:700;">⚠ اتشالت الحماية دي بالكامل في ديف 30 أغسطس — رجع ينفذ فورًا بمجرد الدخول كـ SUPER_ADMIN، من غير تأكيد.</span></li>
           <li><strong>✅ حذف الدروس المكرر تلقائيًا (المشكلة الحرجة الأساسية)</strong> — runGlobalDeduplication() اتشالت خالص من الكود، ومحولة لـ previewDeduplication() (preview بس، من غير حذف) + endpoint منفصل POST /merge بياخد موافقة صريحة بـ IDs محددة. اتأكد إن الاستدعاء التلقائي اتشال من 3 أماكن مش مكان واحد: startup، استيراد Excel، استيراد JSON course</li>
-          <li><strong>✅ كلمة السر الثابتة Password@123</strong> — اتشالت خالص من schools.ts (bulk user creation) ومن index.ts (seed)، وبقت crypto.randomBytes(10) عشوائية فريدة لكل مستخدم، مع إرجاع الباسورد المؤقت للـ admin ليشاركه</li>
-          <li><strong>✅ حماية recover-lesson-data.ts</strong> — اتضافت require.main === module فعليًا، مع تعليق تحذيري صريح إن "عدد أكبر في الباك أب مش معناه الأصح"</li>
-          <li><strong>✅ Test suite حقيقي (بداية فعلية)</strong> — Jest + ts-jest اتضافوا لـ package.json فعليًا (مش console.log)، وأول ملف اختبار حقيقي lesson-dedup-safety.test.ts بيغطي بالظبط سيناريو الحادثة (Math/Physics)</li>
+          <li><strong>✅ كلمة السر الثابتة Password@123</strong> — اتشالت خالص من schools.ts (bulk user creation) ومن index.ts (seed)، وبقت crypto.randomBytes(10) عشوائية فريدة لكل مستخدم، مع إرجاع الباسورد المؤقت للـ admin ليشاركه. <span style="color:var(--warn);">⚠ ده بس للمستخدمين الجدد — شوف قسم الاكتشافات تحت بخصوص حسابات قديمة محتمل تكون لسه بباسورد ضعيف</span></li>
+          <li><strong>✅ حماية recover-lesson-data.ts و auto-recover.ts</strong> — الاتنين اتضافلهم require.main === module فعليًا، مع تعليق تحذيري صريح إن "عدد أكبر في الباك أب مش معناه الأصح" وتعليق "Must NEVER run automatically on server startup or when imported"</li>
+          <li><strong>✅ Test suite حقيقي (بداية فعلية)</strong> — Jest + ts-jest اتضافوا لـ package.json فعليًا (مش console.log)، وأول ملف اختبار حقيقي lesson-dedup-safety.test.ts بيغطي بالظبط سيناريو الحادثة (Math/Physics)، بالإضافة لـ security.test.cjs جديد (headers، anonymous access، error leaks)</li>
+          <li><strong>✅ تنظيف system-audit-report.json</strong> — ملف كان متسيب في جذر الريبو وفيه محتوى أسئلة امتحانات حقيقي، اتمسح خالص</li>
+          <li><strong>✅ فحص تكرار عنوان الامتحان بقى مايتفعّلش على المسودات</strong> — POST /api/exams بقى بيتجاهل exams بحالة DRAFT من فحص التكرار (منطقي، بيمنع false-positive وانت لسه بتسوّد)</li>
+          <li><strong>✅ ربط الأسئلة بموديولاتها بقى أدق</strong> — إنشاء الامتحان بقى بيستخدم moduleIdMap لربط الـ ID المؤقت من الفرونت بالـ ID الحقيقي من قاعدة البيانات بعد الإنشاء، بدل الاعتماد على nested create اللي كان ممكن يفشل الربط</li>
           <li><strong>✅ ثغرة SVG XSS</strong> — FIXED في shared.ts: SVG استُبعدت تمامًا من معالجة base64</li>
           <li><strong>✅ HTML sanitization في exams</strong> — FIXED: formatExplanation() يُسند sanitizeHtml لكل الحالات</li>
           <li><strong>✅ Pagination في progress.ts</strong> — FIXED: take/skip مفعلة في الـ admin submissions</li>
@@ -406,76 +418,118 @@
           <li><strong>باج "إجابة صح بتطلع غلط" في أسئلة MULTI_SELECT</strong> — تم إصلاحه عبر الواجهة والباك اند بشكل متناسق</li>
           <li><strong>الصور مش بتتعرض في الأسئلة</strong> — تم إصلاح عرض الصور في السؤال وفلترة MSO comments عند اللصق</li>
           <li>Connection Pooling على قاعدة البيانات — تم التأكيد من الفريق إنها اتحلت.</li>
+          <li><strong>✅ توضيح: صلاحيات المعلم (creatorId scoping) — مؤكدة إنها تصميم مقصود ومتسق</strong> — راجعت GET /api/courses وGET /api/exams وGET /api/exam-folders في الكود الفعلي — الثلاثة بيطبقوا نفس المنطق بالظبط (creatorId = المعلم أو معيّن على الكورس). مش باج، ومتسق بالكامل الآن، مش زي ما كانت الجولة اللي فاتت شايفاه كسؤال مفتوح</li>
         </ul>
       </div>
     </section>
 
-    <section id="critical-new">
-      <h2 style="font-size:19px; margin-bottom:16px;" id="discovery">اكتشافات حرجة جديدة — من مراجعة ديف 17 أغسطس (فيتشر Exam Modules/Folders)</h2>
-      <p class="section-sub">المشكلة الحرجة القديمة (deduplication) اتقفلت فعليًا — تفاصيلها تحت في قسم "تم إصلاحه". لكن الديف الجديد اللي ضاف فيتشر الـ Exam Modules/Folders فتح <strong>3 ثغرات IDOR (Broken Access Control)</strong> حقيقية، بالإضافة لرجوع محتمل لمشكلة كانت اتقفلت. دي أخطر اكتشافات الجولة دي.</p>
+<section id="critical-new">
+      <h2 style="font-size:19px; margin-bottom:16px;" id="discovery">⚠ تراجع جماعي — إصلاحات مؤكدة رجعت في ديف 30 أغسطس (118 ملف)</h2>
+      <p class="section-sub">الجولة اللي فاتت (24 أغسطس) أكدت بمراجعة كود مباشرة إن أهم ثغرة في التقرير كله (IDOR) اتصلحت بإتقان. ديف 30 أغسطس — إعادة هيكلة كبيرة لصفحات الامتحانات (118 ملف) — <strong>بيرجّع 5 من هذه الإصلاحات لنفس حالتها المكسورة الأصلية</strong>، بلا أي إصلاح جديد بدلها. الترتيب تحت من الأخطر للأقل، والتراجعات مفصولة بوضوح عن الحاجات اللي لسه زي ما هي.</p>
 
-      <div class="discovery" style="margin-bottom:18px; border-color:var(--danger);">
-        <span class="d-tag" style="background:var(--danger);">🔴 اكتشاف حرج جديد — IDOR كامل + تلف بيانات عبر المدارس</span>
-        <h3>POST /api/exams/:id/move-to-module — أي معلم يقدر يمسح امتحان مدرسة تانية ويسرق محتواه</h3>
+      <div class="discovery" style="margin-bottom:18px; border-color:var(--danger); background:var(--danger-bg);">
+        <span class="d-tag" style="background:var(--danger);">🔴🔴 النمط العام — قبل التفاصيل</span>
+        <h3>الأربعة تراجعات دي حصلوا في ديف واحد، ومفيش أي test بيتكلم عن ownership/access-control في الـ 118 ملف</h3>
+        <p>عددنا الأسطر بدقة: <strong>22 سطر تحقق ملكية اتشالوا من الكود، صفر اتضاف بدالهم.</strong> السبب الأرجح مش تعمّد — الحجم الضخم لإعادة الهيكلة (118 ملف) بيوحي إن ده ناتج عن دمج/rebase مع نسخة قديمة من الكود بدل تحديث فعلي. لكن النية مش الفيصل هنا: النتيجة العملية واحدة. ومهم جدًا: مراجعنا كل الـ tests الجديدة في الديف (وفيه كتير — <code style="font-family:var(--font-m);">exam-autosave-id-sync.test.ts</code>، <code style="font-family:var(--font-m);">module-creation-policy.test.ts</code>، إلخ) ومفيش ولا test واحد بيتحقق من تحقق الملكية — يعني مفيش أي حماية تلقائية تمنع التراجع ده يحصل تاني في المستقبل.</p>
+      </div>
 
-        <p><strong>المشكلة:</strong> الـ endpoint ده (<code>backend/src/routes/exams.ts</code>) بياخد <code>sourceExam</code> من الـ URL و<code>targetExamId</code> من الـ body، وينفذ من غير أي تحقق ملكية خالص — مفيش تأكد إن الامتحانين دول تبع مدرسة المستخدم أو إنه هو منشئهم. الحماية الوحيدة هي <code>checkRole(['SUPER_ADMIN', 'SCHOOL_ADMIN', 'TEACHER'])</code> — يعني role check بس، من غير tenant scoping.</p>
+      <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--danger);">
+        <span class="d-tag" style="background:var(--danger);">🔴 تراجع مؤكد — أهم ثغرة في التقرير كله رجعت</span>
+        <h3>IDOR في move-to-module، move-standalone-questions، exam-modules CRUD، exam-folders — رجعت بالكامل</h3>
+        <p>الجولة اللي فاتت أكدت إن <code>exams_controller.ts</code> فيه تحقق ملكية موحّد (<code>schoolId === user.schoolId || isCentral || creatorId === user.id</code>) في كل الـ endpoints دي. ديف 30 أغسطس بيمسح كل التحقق ده — بما فيه التعليق الصريح <code style="font-family:var(--font-m);">// Ownership check on SOURCE exam — prevent stealing/deleting another school's exam</code> اللي كان موجود قبل كده.</p>
+        <p style="margin:12px 0 0; padding:12px 14px; background:var(--danger-bg); border-radius:8px; color:var(--danger);"><strong>⚠ يعني رجعنا بالظبط لنقطة البداية:</strong> أي TEACHER يقدر يمسح/يسرق امتحان مدرسة تانية بمعرفة الـ ID بس، زي ما كان قبل 6 أيام.</p>
+        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إرجاع نفس الـ 22 سطر بالظبط. النسخة الصحيحة موثقة بالكامل في قسم "تم إصلاحه" تحت لو المطوّر محتاج يرجع لها.</span></div>
+      </div>
 
-        <p><strong>اللي بيحصل فعليًا في الكود:</strong></p>
-        <ul style="color:var(--ink-soft); padding-right:20px; line-height:1.8;">
-          <li>بينقل كل أسئلة <code>sourceExam</code> لموديول جديد جوه <code>targetExam</code> (اللي المستخدم بيتحكم فيه بالكامل)</li>
-          <li>بعدين بيعمل <code>deletedAt</code> (soft-delete) على <code>sourceExam</code> بالكامل — من غير أي إذن من صاحبه</li>
-        </ul>
+      <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--danger);">
+        <span class="d-tag" style="background:var(--danger);">🔴 تراجع مؤكد</span>
+        <h3>force-restore-work و force-inject-factors — رجعوا مفتوحين من غير auth خالص</h3>
+        <p>الاتنين كان عندهم <code>verifyToken, checkRole(['SUPER_ADMIN'])</code>. ديف 30 أغسطس بيمسح الـ middleware ده من الاتنين:</p>
+        <p><code style="direction:ltr; display:block; background:var(--card-2); padding:10px 14px; border-radius:8px; font-size:13px;">- router.get('/api/admin/force-restore-work', verifyToken, checkRole(['SUPER_ADMIN']), ...);<br>+ router.get('/api/admin/force-restore-work', ...);</code></p>
+        <p style="color:var(--ink-soft);"><strong>ملاحظة إضافية:</strong> تأكدنا هذه المرة إن payload الـ force-inject-factors فعلاً فيه النص المقطوع <code style="font-family:var(--font-m);">"...the rest of the b64Payload..."</code> بشكل حرفي في الكود المصدري (مش مجرد اقتطاع وقت اللصق لينا) — يعني الـ endpoint ده كان غالبًا معطّل وظيفيًا طول الوقت، بس كان برضه مفتوح من غير حماية.</p>
+        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إرجاع verifyToken + checkRole(['SUPER_ADMIN']) للاتنين فورًا.</span></div>
+      </div>
 
-        <p style="margin:12px 0 0; padding:12px 14px; background:var(--danger-bg); border-radius:8px; color:var(--danger);"><strong>⚠ التأثير:</strong> أي <strong>TEACHER</strong> (أقل صلاحية في النظام) يقدر — بمجرد معرفة/تخمين ID امتحان تاني (تبع مدرسة تانية أو مركزي central) — إنه: (1) يسرق أسئلته وينقلها لامتحان هو مالكه، و(2) يمسح الامتحان الأصلي بالكامل تبع مدرسة تانية. ده مش تسريب بيانات بس، ده تخريب متعمد ممكن يحصل بضغطة واحدة.</p>
+      <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--danger);">
+        <span class="d-tag" style="background:var(--danger);">🔴 تراجع مؤكد</span>
+        <h3>wipe-all-dummy-data-danger — فقد الـ dryRun والتأكيد الصريح</h3>
+        <p>الكود القديم كان بيرفض التنفيذ من غير <code>confirm: 'WIPE_EVERYTHING'</code>. ديف 30 أغسطس بيمسح الشرط ده بالكامل — رجع ينفذ المسح فورًا بمجرد إن الطلب جاي من SUPER_ADMIN authenticated، من غير أي خطوة تأكيد ثانية.</p>
+        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إرجاع فحص dryRun/confirm زي ما كان.</span></div>
+      </div>
 
+      <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--danger);">
+        <span class="d-tag" style="background:var(--danger);">🔴 تراجع مؤكد — للمرة التالتة عبر تاريخ هذا التقرير</span>
+        <h3>prisma db push رجعت تالت مرة — نمط متكرر مش حادثة منفردة</h3>
+        <p>Dockerfile CMD وpackage.json start script الاتنين رجعوا من <code>migrate deploy</code> لـ <code>db push</code>. دي المرة التالتة بالظبط اللي التراجع ده بيحصل فيها عبر تاريخ المراجعة — كل مرة بيصاحب عملية إعادة هيكلة كبيرة. النمط ده أوضح دليل على إن السبب على الأغلب عملية دمج/rebase مع نسخة قديمة محفوظة محليًا، مش قرار متعمد في كل مرة.</p>
+        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إرجاع migrate deploy، وبعدين مراجعة سير عمل الـ branching/merging بتاع المطوّر نفسه لمنع تكرار النمط ده — المشكلة مش في السطر، المشكلة في العملية اللي بترجّعه كل مرة.</span></div>
+      </div>
+
+      <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--warn);">
+        <span class="d-tag" style="background:var(--warn); color:#fff;">🟡 شغل حقيقي — لكن غير فعّال لسه</span>
+        <h3>إصلاح مشكلة "الأسئلة مش بتتزامن بعد الحفظ" (بلاغ عميل) — هندسة كويسة، ناقصها سطر واحد في الباك اند</h3>
+        <p>ده اكتشاف من بلاغ عميل حقيقي: بعد إنشاء امتحان وإضافة أسئلة (Save عند كل سؤال)، شاشة الـ Edit كانت بترجع فاضية من الأسئلة رغم إنها موجودة فعليًا (وظاهرة من حساب الطالب). المطوّر رد بـ"الفرونت مش عارضهم" — تحقّقنا وطلع السبب الحقيقي مختلف: استجابة PUT /api/exams/:id مكنتش بترجّع <code>modules</code> خالص، فالفرونت اند ماكانش بيقدر يزامن الـ IDs الحقيقية بعد كل حفظة، والأسئلة المستقلة (standalone) ماكانش فيها أي مزامنة خالص تحت أي ظرف.</p>
+        <p>ديف 30 أغسطس فيه شغل هندسي حقيقي وجاد لحل المشكلة دي: ملفات جديدة <code style="font-family:var(--font-m);">examAutosaveIdSync.ts</code> و<code style="font-family:var(--font-m);">examAutosaveModuleSync.ts</code>، مع tests مخصصة (<code style="font-family:var(--font-m);">exam-autosave-id-sync.test.ts</code>). لكن الاستجابة النهائية لـ <code>putExamHandler5</code> لسه ما بترجّعش <code>modules</code> — نفس السطر اللي كان ناقص من الأول لسه ناقص. يعني كل المنطق الجديد الجيد ده <strong>ميتنفذش خالص</strong> لأنه لسه محبوس ورا شرط <code style="font-family:var(--font-m);">if (data && data.modules)</code> اللي دايمًا false. وبرضه <code>setStandaloneQuestions</code> لسه مش متستدعاة في أي مكان — الأسئلة المستقلة لسه من غير أي مزامنة خالص.</p>
+        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">سطر واحد بس في الباك اند: ضيف modules للـ include في الـ tx.exam.findUnique الأخيرة جوه putExamHandler5 (نفس شكل getExamHandler10 بالظبط). وبعدين ضيف استدعاء setStandaloneQuestions في رد الحفظ.</span></div>
+      </div>
+
+      <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--danger);">
+        <span class="d-tag" style="background:var(--danger);">🔴 لسه مفتوحة — لم تُلمس في ديف 30 أغسطس، محتاجة تأكيدك المباشر</span>
+        <h3>generate_test_token.js — سر توقيع JWT مكتوب صريح في ملف بالريبو</h3>
+        <p>الملف مش موجود خالص في ديف 30 أغسطس (118 ملف)، يعني لسه موجود بنفس المحتوى:</p>
+        <p><code style="direction:ltr; display:block; background:var(--card-2); padding:10px 14px; border-radius:8px; font-size:13px;">jwt.sign({ id: 'some-user-id', role: 'SUPER_ADMIN', ... }, 'lms_super_secret_key_2026');</code></p>
+        <p><strong>السؤال لسه من غير رد:</strong> هل القيمة دي بتطابق JWT_SECRET الحقيقي في .env على السيرفر؟</p>
         <div style="margin:14px 0 0; padding:12px 14px; background:var(--danger-bg); border-radius:8px; border-right:3px solid var(--danger);">
           <strong style="color:var(--danger);">الحل:</strong>
           <ul style="color:var(--ink-soft); padding-right:20px; line-height:1.8; margin:8px 0 0;">
-            <li>قبل أي عملية على <code>sourceExam</code> أو <code>targetExam</code>: تحقق <code>schoolId === req.user.schoolId || isCentral || creatorId === req.user.id</code> — بالظبط نفس المنطق الموجود فعليًا في <code>PUT /api/exams/:id</code> في نفس الملف (isOwnerOrAssigned)</li>
-            <li>لو التحقق فشل → <code>403</code> فورًا قبل أي تعديل في قاعدة البيانات</li>
+            <li>تأكد فورًا: القيمة دي بتطابق JWT_SECRET الحقيقي؟</li>
+            <li>لو آه: دوّر JWT_SECRET فورًا (هيسجّل خروج كل المستخدمين)</li>
+            <li>في الحالتين: امسح الملف من الريبو</li>
           </ul>
         </div>
-        <div class="flagged" style="margin-top:14px;">⚠ <strong>أولوية قصوى فورية:</strong> ده أخطر بند في التقرير كله دلوقتي. لازم يتصلح قبل أي استخدام حقيقي — الفيتشر ده لسه جديد فمفيش بيانات إنتاج اتأثرت لحد الآن على الأرجح، لكن الخطر حي طول ما الـ endpoint مفتوح.</div>
       </div>
 
       <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--danger);">
-        <span class="d-tag" style="background:var(--danger);">🔴 اكتشاف حرج جديد — IDOR على مستوى المدرسة</span>
-        <h3>PUT / DELETE /api/exam-folders/:id — SCHOOL_ADMIN من أي مدرسة يقدر يعدّل/يمسح مجلدات مدرسة تانية</h3>
-        <p><strong>المشكلة:</strong> الاثنين محميين بـ <code>checkRole(['SUPER_ADMIN', 'SCHOOL_ADMIN'])</code> بس، والاستعلام هو <code>prisma.examFolder.update({ where: { id }, ... })</code> — من غير <code>schoolId: req.user.schoolId</code> في الـ where. أي SCHOOL_ADMIN يقدر يعدّل أو يمسح (soft-delete) مجلد امتحانات تبع مدرسة تانية أو مجلد مركزي لو عرف الـ ID.</p>
-        <p style="color:var(--ink-soft);">الملفت إن نفس الملف فيه الحل الصح جاهز — <code>PUT /api/exams/:id</code> بيعمل بالظبط التحقق المطلوب (<code>existingExam.schoolId === req.user.schoolId || isCentral || schools.some(...)</code>) قبل أي تعديل. المطوّر عارف الباترن، بس ماطبقهوش على المورد الجديد ده — تسرّع في الشحن مش قرار متعمد.</p>
-        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">ضيف نفس شرط isOwnerOrAssigned قبل الـ update في الاتنين.</span></div>
+        <span class="d-tag" style="background:var(--danger);">🔴 لسه مفتوحة — لم تُلمس، محتاجة تأكيدك المباشر</span>
+        <h3>reset_pass.js — سكريبت بيغيّر باسورد الـ superadmin لـ"123456" صريح</h3>
+        <p>الملف مش موجود في الديف الجديد، لسه موجود بنفس المحتوى. السؤال لسه من غير رد: <strong>هل باسورد حساب superadmin الحي دلوقتي هو فعلاً "123456"؟</strong></p>
+        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تأكد فورًا، غيّر الباسورد لو آه، وامسح السكريبت.</span></div>
       </div>
 
       <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--danger);">
-        <span class="d-tag" style="background:var(--warn); color:#fff;">🟠 اكتشاف عالي — من ديف 16 أغسطس، لسه مفتوح</span>
-        <h3>POST / PUT / DELETE /api/exams/:id/modules — نفس نمط الـ IDOR، من غير tenant check</h3>
-        <p><strong>المشكلة:</strong> الـ endpoints دي جت في ديف 16 أغسطس مع فيتشر الـ Exam Modules الأول، ومحمية بـ <code>checkRole([..., 'TEACHER'])</code> بس من غير أي تحقق إن الامتحان (<code>examId</code> من الـ URL) تبع المستخدم. أي معلم يقدر يضيف/يعدّل/يمسح modules في امتحان مش بتاعه لو عرف الـ ID.</p>
-        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">نفس الحل بتاع move-to-module و exam-folders — إضافة تحقق ملكية موحّد قبل أي كتابة على مورد مرتبط بامتحان.</span></div>
+        <span class="d-tag" style="background:var(--danger);">🔴 لسه مفتوحة — لم تُلمس</span>
+        <h3>cleanup_duplicates_dokploy.ts — سكريبت hard-delete لسه موجود، محتاج تأكيد Dokploy hook</h3>
+        <p>الملف مش موجود في ديف 30 أغسطس. لسه بنفس المحتوى — hard delete من غير preview أو تأكيد. سؤال Dokploy hook لسه من غير إجابة.</p>
+        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تأكيد مباشر من إعدادات Dokploy.</span></div>
       </div>
 
       <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--danger);">
-        <span class="d-tag" style="background:var(--danger);">🔴 اكتشاف — رجوع محتمل لمشكلة كانت مؤكدة إنها اتصلحت</span>
-        <h3>prisma db push رجعت تاني في Dockerfile وpackage.json — عكس ما تم تأكيده في الجولة اللي فاتت</h3>
-        <p><strong>المشكلة:</strong> الجولة اللي فاتت أكدت إن <code>db push --accept-data-loss</code> اتشالت وبقى <code>prisma migrate deploy</code>. لكن في ديف 16 أغسطس، الـ Dockerfile CMD وscript الـ start في package.json بقوا:</p>
-        <p><code style="direction:ltr; display:block; background:var(--card-2); padding:10px 14px; border-radius:8px;">CMD ["sh", "-c", "npx prisma db push && pm2-runtime start dist/index.js -i max --max-memory-restart 1024M"]</code></p>
-        <p>يعني <code>db push</code> بترجع تتنفذ في كل تشغيل/إعادة تشغيل للـ container، مش migrate deploy. لازم تتأكد من نية المطوّر هنا — ده بالظبط البند اللي كان "مؤكد مصلح" قبل كده.</p>
-        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">رجّع migrate deploy في الـ CMD، واستخدم db push بس محليًا وقت التطوير.</span></div>
+        <span class="d-tag" style="background:var(--danger);">🔴 لسه مفتوحة — لم تُلمس</span>
+        <h3>Zip Slip / Path Traversal في رفع الباك أب</h3>
+        <p><code>backups_controller.ts</code> (فيه الـ Zip Slip) مش موجود خالص في ديف 30 أغسطس — الملف اللي اتلمس هو <code>routes/backups.ts</code> بس (سطر force-restore-work). الثغرة نفسها لسه موجودة، من غير تغيير.</p>
+        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تحقق path.resolve قبل الكتابة، زي ما اتشرح قبل كده.</span></div>
       </div>
 
-      <!-- Resolved discovery: deduplication -->
+      <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--danger);">
+        <span class="d-tag" style="background:var(--danger);">🔴 لسه مفتوحة — لم تُلمس</span>
+        <h3>XSS مخزّن في StandaloneQuestions.tsx، وimports.ts لسه من غير sanitizeDeep</h3>
+        <p><code>StandaloneQuestions.tsx</code> مش موجود خالص في ديف 30 أغسطس. <code>ModuleModal.tsx</code> (الأربع نسخ: school-admin/super-admin × edit/new) اتلمس فعلاً في الديف لأسباب تانية (إعادة هيكلة)، لكن السطر الخطر نفسه (<code style="font-family:var(--font-m);">dangerouslySetInnerHTML={{ __html: q.text }}</code> من غير sanitize) مش موجود في أي diff hunk — يعني اتنقل زي ما هو، لسه غير آمن. <code>imports.ts</code> نفسه مش موجود في الديف، فـ<code>sanitizeDeep</code> لسه مستوردة ومش مستخدمة.</p>
+        <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">sanitizeHtml() في الفرونت، sanitizeDeep() في imports.ts — زي ما اتشرح قبل كده.</span></div>
+      </div>
+
+      <!-- Resolved: things NOT touched by this diff, still holding -->
       <div class="discovery" style="margin-top:28px; margin-bottom:18px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✓ اكتشاف قديم — تم إصلاحه فعليًا ومؤكد من الكود</span>
-        <h3>حذف الدروس المكررة تلقائيًا — المشكلة الحرجة الأساسية من الجولة اللي فاتت</h3>
-        <p><code>runGlobalDeduplication()</code> اتشالت خالص، محولة لـ <code>previewDeduplication()</code> (preview فقط) + endpoint منفصل للدمج اليدوي بموافقة صريحة بـ IDs. الاستدعاء التلقائي اتشال من 3 نقاط (startup + استيراد Excel + استيراد JSON)، وفيه test file جديد بيتحقق تحديدًا من سيناريو Math/Physics اللي حصل فعليًا.</p>
-        <div class="resolved">✓ اتصلحت بجدية — مش تجميل. مؤكد من الكود في backend/src/routes/courses.ts و imports.ts.</div>
+        <span class="d-tag" style="background:var(--good);">✓ اكتشاف قديم — تم إصلاحه فعليًا، لم يُمس في ديف 30 أغسطس</span>
+        <h3>حذف الدروس المكررة تلقائيًا (المسار الأصلي) — المشكلة الحرجة الأساسية من الجولة الأولى</h3>
+        <p><code>runGlobalDeduplication()</code> اتشالت خالص، محولة لـ <code>previewDeduplication()</code>. الملفات دي (courses.ts, imports.ts) مش موجودة في ديف 30 أغسطس، فالإصلاح لسه قائم.</p>
+        <p style="color:var(--danger); font-weight:700;">⚠ سكريبت cleanup_duplicates_dokploy.ts فوق لسه بيكرر نفس فكرة المشكلة دي بمنطق أهش (hard delete).</p>
+        <div class="resolved">✓ لسه قائم ومؤكد.</div>
       </div>
 
       <div class="discovery" style="margin-top:24px; margin-bottom:18px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✓ اكتشاف — تم إصلاحه ومؤكد (من التقرير السابق)</span>
+        <span class="d-tag" style="background:var(--good);">✓ اكتشاف — تم إصلاحه، لم يُمس</span>
         <h3>ثغرة SVG + HTML sanitization</h3>
-        <p><strong>١) ثغرة SVG XSS:</strong> shared.ts الآن تُستبعد svg+xml من regex base64 كليًا</p>
-        <p><strong>٢) HTML sanitization في exams.ts:</strong> formatExplanation() تُعيد sanitizeHtml() لجميع الحالات بشكل آمن</p>
-        <div class="resolved">✓ مؤكد من الكود.</div>
+        <p>shared.ts وexams.ts القديمين (اللي فيهم الإصلاح ده) مش موجودين في ديف 30 أغسطس.</p>
+        <div class="resolved">✓ لسه قائم.</div>
       </div>
     </section>
 
@@ -492,39 +546,33 @@
       <div class="cards">
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي — أولوية اتصعّدت</span><h3>ثلاث Maps مختلفة لسه في ذاكرة السيرفر بدل Redis</h3></div>
-          <span class="loc">shared.ts (loginAttempts, statsCache) · middleware/auth.ts (userStatusCache)</span>
-          <p class="desc">لا تغيير في الاثنين ديف 16 وديف 17 — middleware/auth.ts متلمسش خالص، وshared.ts اتعدّل بس في حاجات تانية (اتضافت حماية 5000 entry max على loginAttempts بس، مش نقل لـ Redis).<br><strong>مهم:</strong> ديف 16 غيّر start script للباك اند لـ <code style="font-family:var(--font-m);">pm2-runtime -i max</code> (cluster mode على كل الأنوية). ده معناه الـ 3 Maps دول بقوا منفصلين لكل worker — الـ rate limiting بتاع تسجيل الدخول ممكن يتلف بسهولة (المهاجم بيضرب worker مختلف كل مرة)، والكاش بقى غير متسق بين الـ workers. الأولوية ارتفعت فعليًا بسبب التغيير ده.</p>
+          <span class="loc">shared.ts (loginAttempts, statsCache) · auth.ts (userStatusCache)</span>
+          <p class="desc">راجعنا shared.ts وauth.ts مباشرة — لسه الثلاثة Maps عادية في الذاكرة، مفيش Redis. userStatusCache في auth.ts فيها حد 2000 entry وTTL 30 ثانية (bounded، كويس)، لكن ده لسه مش حل للمشكلة الأساسية: السيرفر شغال بـ PM2 cluster mode (-i max)، يعني كل الـ Maps دي منفصلة لكل worker — الـ rate limiting بتاع تسجيل الدخول ممكن يتلف بسهولة، والكاش غير متسق.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">نقل الثلاثة لـ Redis سوا — بقى أولوية قبل استخدام cluster mode في الإنتاج.</span></div>
         </div>
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>استرجاع تلقائي لدرس معيّن بيكتب فوق البيانات الحالية بدون شرط</h3></div>
           <span class="loc">index.ts — autoRecoverSpecificLesson()، بعد 30 ثانية من كل تشغيل</span>
-          <p class="desc">لا تغيير في الاثنين ديف 16 وديف 17 — الدالة نفسها متلمستش منطقيًا (غير تنسيق/مسارات فقط بعد نقل مجلد backups جوه uploads). لسه بتكتب بيانات النسخة القديمة من غير أي مقارنة، ولسه مش متعرفة كنقطة استدعاء تلقائية فعّالة حاليًا (تستاهل تأكيد).</p>
+          <p class="desc">لم تتم مراجعته في هذه الجولة (مش من ضمن الملفات اللي راجعناها). آخر تأكيد معروف: بتكتب بيانات النسخة القديمة من غير أي مقارنة. يستاهل طلب الملف للتأكد من حالته الحالية.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تحويلها لسكريبت يدوي، أو إضافة شرط مقارنة قبل الكتابة.</span></div>
         </div>
         <div class="card sev-high">
-          <div class="card-top"><span class="badge sev-high">عالي</span><h3>الملفات لسه على القرص المحلي للسيرفر — وحد الرفع اتزوّد ×10</h3></div>
+          <div class="card-top"><span class="badge sev-high">عالي</span><h3>الملفات لسه على القرص المحلي للسيرفر — وحد الرفع 1GB</h3></div>
           <span class="loc">multer.diskStorage — shared.ts</span>
-          <p class="desc">المشكلة الأساسية لم تتغيّر (لسه القرص المحلي مش object storage)، لكن ديف 16 زوّد حد حجم الملف المسموح من 100MB لـ <strong>1GB</strong>. الجمع بين قرص محلي + حد رفع بـ 1GB بيوسّع مساحة الخطر (استهلاك مساحة تخزين / DoS باستهلاك القرص).</p>
+          <p class="desc">راجعنا shared.ts مباشرة — لسه diskStorage محلي، وحد الرفع لسه 1GB. الجمع بين قرص محلي + حد رفع بـ 1GB بيوسّع مساحة الخطر (استهلاك مساحة تخزين / DoS باستهلاك القرص).</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">Object Storage خارجي (Cloudflare R2)، ومراجعة الحاجة الفعلية لحد 1GB.</span></div>
         </div>
         <div class="card sev-high">
           <div class="card-top"><span class="badge sev-high">عالي</span><h3>لا يوجد Monitoring أو Alerting حقيقي</h3></div>
           <span class="loc">console.log في كل مكان</span>
-          <p class="desc">لا تغيير في الاثنين ديف 16 وديف 17.</p>
+          <p class="desc">لم تتم مراجعته مباشرة في هذه الجولة، لكن مفيش أي إشارة لأداة monitoring (Sentry أو غيرها) في أي من الملفات اللي راجعناها.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">أداة مثل Sentry.</span></div>
         </div>
         <div class="card sev-high">
-          <div class="card-top"><span class="badge sev-high">عالي — endpoints جديدة/موجودة بدون حماية</span><h3>Endpoints بدون verifyToken/checkRole خالص، بتكتب/تسترجع في قاعدة البيانات</h3></div>
-          <span class="loc">GET /api/system/force-inject-factors · GET /api/admin/force-restore-work</span>
-          <p class="desc">الاتنين موجودين من غير أي middleware حماية — مفيش verifyToken ولا checkRole خالص. الأول بيحقن محتوى درس ثابت في قاعدة البيانات، والتاني بيسترجع/يفرض بيانات من باك أب. أي حد عنده رابط الـ API (من غير حتى تسجيل دخول) يقدر ينفذهم.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة verifyToken + checkRole(['SUPER_ADMIN']) فورًا، أو حذفهم لو مش مستخدمين فعليًا في الإنتاج.</span></div>
-        </div>
-        <div class="card sev-high">
-          <div class="card-top"><span class="badge sev-high">عالي — خطر تشغيلي</span><h3>Endpoint لمسح شبه كامل لقاعدة البيانات من غير تأكيد أو dry-run</h3></div>
-          <span class="loc">POST /api/system/wipe-all-dummy-data-danger — system.ts (ديف 16)</span>
-          <p class="desc">محمي فعليًا بـ SUPER_ADMIN (مش open endpoint)، لكنه بيمسح كل الأسئلة/الامتحانات/الدروس/الكورسات/الفصول والمستخدمين غير الـ super admin بضغطة POST واحدة، من غير تأكيد ثانٍ أو dry-run أو نسخة احتياطية إجبارية قبل التنفيذ. خطر كبير لو حصل token leak أو ضغطة غلط من الفريق نفسه.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة تأكيد صريح (زي كتابة اسم المدرسة/كلمة تأكيد)، وdry-run يرجّع عدد السجلات قبل التنفيذ الفعلي.</span></div>
+          <div class="card-top"><span class="badge sev-high">عالي — خطر تشغيلي</span><h3>سكريبتات CLI جديدة للمسح الكامل بدون تأكيد</h3></div>
+          <span class="loc">backend/src/scripts/wipe-data.ts · wipe-dummy-data.ts</span>
+          <p class="desc">سكريبتان بيمسحوا بيانات كتير (كل الدروس/الامتحانات/الكورسات/المستخدمين ما عدا super admin، أو مدارس دومين معيّن) بمجرد تشغيل الملف — من غير أي "اكتب YES للتأكيد". خطر أقل من endpoint لأنها محتاجة وصول مباشر للسيرفر. لم تتم مراجعتها مرة أخرى في هذه الجولة، افتراض استمرار نفس الحالة.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة تأكيد تفاعلي (readline "type YES") قبل التنفيذ الفعلي — بنفس نمط wipe-all-dummy-data-danger اللي اتصلح.</span></div>
         </div>
       </div>
     </section>
@@ -533,33 +581,33 @@
       <h2>متوسطة / تحتاج مراجعة</h2>
       <div class="cards">
         <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>تغطية automated tests لسه محدودة جدًا (ملف واحد بس)</h3></div>
-          <span class="loc">backend/jest.config.js · backend/src/tests/lesson-dedup-safety.test.ts</span>
-          <p class="desc">تحسّن حقيقي: Jest + ts-jest اتضافوا فعليًا لـ package.json، وفيه أول test file حقيقي بيغطي سيناريو الـ dedup تحديدًا. لكن ده لسه بعيد عن "test suite أساسي للعمليات الحرجة" — لا يوجد تغطية لعمليات تانية حساسة (backups، auth، exam submission، الـ endpoints الجديدة اللي فيها IDOR فوق).</p>
-          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">توسيع التغطية تدريجيًا لأهم 5-10 عمليات حرجة، وبالذات أي endpoint بيكتب/يمسح بيانات.</span></div>
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>تغطية automated tests أوسع من قبل، لكن لسه فيها فجوة مهمة</h3></div>
+          <span class="loc">jest.config.cjs · tests/quality/security.test.cjs · tests/quality/ (integration, data-integrity)</span>
+          <p class="desc">تحسّن ملموس: package.json بقى فيه test:integration وtest:security وtest:data كـ scripts منفصلة، وsecurity.test.cjs حقيقي (headers، anonymous access، error leaks، reflected XSS بسيط). لكن راجعناه بالكامل ولقينا <strong>مفيش ولا اختبار واحد لتفويض tenant/IDOR</strong> — بالظبط نوع الثغرة اللي كان محور هذا التقرير. الإصلاح موجود في الكود، لكن مفيش حاجة تمنع رجوعه بالغلط مستقبلًا.</p>
+          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">إضافة اختبار: تسجيل دخول كمعلم من مدرسة A، محاولة نقل/تعديل/حذف امتحان مدرسة B، والتأكد من 403.</span></div>
         </div>
         <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>Pagination في reports.ts — endpoint واحد بس اتصلح</h3></div>
-          <span class="loc">progress.ts — ✓ FIXED (جولة سابقة) | reports.ts/exam-attendance — ✓ FIXED (ديف 16) | باقي reports.ts — لسه مفتوح</span>
-          <p class="desc">ديف 16 ضاف pagination كامل (page/limit/skip + metadata) لـ endpoint واحد بس (/api/reports/exam-attendance). باقي الـ endpoints في نفس الملف لسه معتمدة على caching بس من غير take/skip صريح.</p>
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>Pagination في reports.ts — لم تتم مراجعته في هذه الجولة</h3></div>
+          <span class="loc">progress.ts — ✓ FIXED | reports.ts/exam-attendance — ✓ FIXED | باقي reports.ts — آخر حالة معروفة: مفتوح</span>
+          <p class="desc">لم يكن من ضمن الملفات اللي طلبناها في هذه الجولة. آخر حالة مؤكدة: endpoint واحد بس اتصلح، الباقي معتمد على caching بدون pagination صريح.</p>
           <div class="fix"><span class="fix-label">الخطوة التالية</span><span class="fix-text">تعميم نفس نمط الـ pagination على باقي endpoints الملف.</span></div>
         </div>
-        <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط — يحتاج تأكيد صريح من المطوّر</span><h3>تغيير في صلاحيات المعلم (teacher visibility) غير موثّق وغير متسق بين الـ endpoints</h3></div>
-          <span class="loc">courses.ts, exams.ts, skillsHub.ts — ديف 17 (فيتشر creatorId الجديد)</span>
-          <p class="desc">قبل: المعلم كان يشوف isCentral + كورسات/امتحانات مدرسته + المعيّن عليها. بعد ديف 17: في GET /api/courses وGET /api/exams وGET /api/skills-hub/clusters، اتشالت isCentral/schoolId من فلتر المعلم، وبقى يشوف بس (creatorId = هو) + (معيّن عليه). لكن endpoint تاني زي /api/courses/stats احتفظ بالسلوك القديم جزئيًا — يعني السلوك غير متسق بين شاشة وشاشة لنفس المستخدم.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تأكيد من المطوّر: هل ده تغيير مقصود في موديل الصلاحيات؟ لو آه، لازم يتطبق بشكل متسق ويتعمله اختبار فعلي بحساب معلم حقيقي قبل أي pilot — لأن لو مش مقصود، معلم في مدرسة ممكن يفتح المنصة ويلاقي إنه مايشوفش المنهج المركزي خالص.</span></div>
+        <div class="card sev-info">
+          <div class="card-top"><span class="badge sev-info">تنظيف كود</span><h3>كود ميت وترتيب غير صحيح في system.ts</h3></div>
+          <span class="loc">system.ts — export default router قبل تسجيل آخر route</span>
+          <p class="desc"><code style="font-family:var(--font-m);">export default router;</code> ظاهر قبل تسجيل <code style="font-family:var(--font-m);">/api/system/wipe-seeded-dummy-data</code> مش بعده. على الأغلب لسه شغال (Node بينفذ باقي الملف بغض النظر عن مكان الـ export)، لكن شكله غريب وسهل يتكسر في refactor مستقبلي.</p>
+          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">نقل export default لآخر الملف فعليًا، وعمل smoke test مباشر على الـ endpoint للتأكد.</span></div>
         </div>
-        <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط — process/جودة كود</span><h3>~30 سكريبت مؤقت (patch/reshape) بيتكتب بيه على صفحات الإنتاج مباشرة، وباقي في الريبو</h3></div>
-          <span class="loc">frontend/scripts/*.js · frontend/src/reshape_*.js · scripts/fix_*.js — كلها "new file" في ديف 17</span>
-          <p class="desc">فيتشر Exam Modules/Folders الجديد اتوصّل جزء كبير منه عن طريق سكريبتات regex find/replace بتتكتب مرة واحدة على صفحات TSX حساسة (صفحات edit/new للامتحانات) وبتتسيب في الريبو بعد كده (زي reshape_edit_v2.js لحد v5.js، fix_moduleId.js، إلخ). النمط ده بيرفع احتمال باجات دقيقة تفوت من غير مراجعة — وده فعليًا اللي حصل مع ثغرات الـ IDOR الموثقة فوق.</p>
-          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">التحويل لتعديل يدوي/PR review بدل سكريبتات patch مؤقتة، وتنظيف الملفات دي من الريبو.</span></div>
+        <div class="card sev-info">
+          <div class="card-top"><span class="badge sev-info">باج بصري، مش أمني</span><h3>نصوص عربية افتراضية تالفة (mojibake) في صفحات إنشاء الامتحان</h3></div>
+          <span class="loc">useExamState.ts — القيم الافتراضية لـ country وslide title</span>
+          <p class="desc">القيم الافتراضية زي <code style="font-family:var(--font-m);">"Ù…ØµØ±"</code> (المفروض "مصر") و<code style="font-family:var(--font-m);">"Ø§Ù„Ù…Ù‚Ø¯Ù…Ø©"</code> (المفروض "المقدمة") متكتوبة كده تالفة في الكود — يبان إن سكريبت patch كتب الملف من غير تحديد UTF-8. كل امتحان/موديول جديد هيظهر بنص عربي مكسور لحد ما حد يعدّله يدويًا.</p>
+          <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">تصحيح النصوص دي، والتأكد إن باقي الملفات المُعاد هيكلتها ما فيهاش نفس المشكلة.</span></div>
         </div>
         <div class="card sev-info">
           <div class="card-top"><span class="badge sev-info">مراجعة جزئية</span><h3>قواعد الـ Cascade على العلاقات غير موثقة بالكامل</h3></div>
           <span class="loc">prisma/schema.prisma</span>
-          <p class="desc">لم يُلمَس في ديف 16 ولا 17 (الإضافة الوحيدة كانت موديل ExamFolder وحقول creatorId جديدة). مراجعة أولية سابقة: Classroom.school عليها onDelete: Cascade، وUser.school بدون onDelete صريح. باقي العلاقات محتاجة جرد كامل.</p>
+          <p class="desc">لم تتم مراجعته في هذه الجولة. آخر حالة معروفة: Classroom.school عليها onDelete: Cascade، وUser.school بدون onDelete صريح. باقي العلاقات محتاجة جرد كامل.</p>
           <div class="fix"><span class="fix-label">التالي</span><span class="fix-text">جرد وتوثيق كامل لكل العلاقات.</span></div>
         </div>
       </div>
@@ -570,14 +618,14 @@
     <div class="part-divider alt" id="frontend">
       <div class="part-eyebrow">لسه مفتوحة</div>
       <h2>مشاكل الفرونت اند</h2>
-      <p>معظم مشاكل الفرونت اند الحرجة (XSS الأساسية) اتصلحت. الباقي أداء وتفاصيل تجربة استخدام — لم تُلمس في ديف 16 ولا ديف 17.</p>
+      <p>الاكتشاف الجديد المهم (XSS في StandaloneQuestions.tsx وModuleModal.tsx) موثّق بالتفصيل فوق في قسم الاكتشافات الحرجة. الباقي هنا أداء وتفاصيل تجربة استخدام، مش أمن.</p>
     </div>
 
     <section id="frontend-open">
       <div class="cards">
         <div class="card sev-critical">
           <div class="card-top"><span class="badge sev-critical">حرج</span><h3>توكن الدخول (JWT) لسه في localStorage</h3></div>
-          <span class="loc">frontend/src/lib/auth.ts — غير موجود في ديف 16 ولا 17</span>
+          <span class="loc">frontend/src/lib/auth.ts — غير موجود في أي من الثلاث ديفّات</span>
           <p class="desc">لا تغيير — نفس التلات مفاتيح (super_admin_token, school_admin_token, lms_token) لسه في localStorage.<br>مهم: هذا ليس XSS مباشرًا، لكن أي XSS بسيط يفتح الباب الكامل لسرقة الجلسة فورًا.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">على المدى الأطول: الانتقال لـ httpOnly cookie.</span></div>
         </div>
@@ -595,7 +643,7 @@
         </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>مسودات الكورس بدون تحقق من نجاح الحفظ</h3></div>
-          <span class="loc">CourseEditorContext.tsx — غير موجود في ديف 16 ولا 17</span>
+          <span class="loc">CourseEditorContext.tsx — غير موجود في أي من الثلاث ديفّات</span>
           <p class="desc">لا تغيير — لو فشل الحفظ في localStorage، المعلم لا يُخطَر، الكود لا يزال يتجاهل الخطأ بصمت.<br>المشكلة هنا أن المحتوى يبدو “محفوظًا” في الواجهة رغم أنه ما اتسجلش فعليًا في الخادم.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إظهار تنبيه عند فشل الحفظ.</span></div>
         </div>
@@ -765,21 +813,32 @@
 
     <section id="plan">
       <h2>خطة العمل المحدّثة</h2>
-      <p class="section-sub">مبنية على اللي لسه فعليًا مفتوح بعد تحقق ديف 16 وديف 17 الكامل. الأولوية دلوقتي اتغيّرت — الـ IDOR الجديدة أخطر من أي حاجة تانية في التقرير.</p>
+      <p class="section-sub">مبنية على مراجعة git diff مباشرة لديف 30 أغسطس (118 ملف). الأولوية القصوى دلوقتي مش اكتشاف حاجات جديدة — الأولوية إرجاع 4 إصلاحات أمنية اتشالت بالغلط، قبل أي حاجة تانية.</p>
 
       <div class="timeline">
         <div class="tl-item urgent">
           <div class="tl-dot"></div>
-          <div class="tl-day">مرحلة 0 — فورًا، قبل أي استخدام حقيقي (ساعات لأيام)</div>
+          <div class="tl-day">مرحلة 0 — إرجاع اللي اتشال، فورًا (ساعات، مش أيام)</div>
           <div class="tl-body">
-            <h4>🔴 3 ثغرات IDOR + رجوع db push — أولوية قصوى مطلقة</h4>
+            <h4>🔴🔴 دول مش إصلاحات جديدة — دول كود كان موجود وشغال وراجع اتشال بالغلط</h4>
             <ul>
-              <li>🔴 <strong>الأخطر:</strong> إضافة تحقق ملكية في POST /api/exams/:id/move-to-module — من غيره أي معلم يقدر يمسح/يسرق امتحان مدرسة تانية</li>
-              <li>🔴 إضافة فلترة schoolId في PUT/DELETE /api/exam-folders/:id</li>
-              <li>🟠 نفس التحقق في POST/PUT/DELETE /api/exams/:id/modules</li>
-              <li>🔴 إرجاع migrate deploy بدل db push في Dockerfile CMD وpackage.json start script</li>
-              <li>⚠️ إضافة verifyToken + checkRole('SUPER_ADMIN') لـ force-inject-factors وforce-restore-work، أو حذفهم لو مش مستخدمين</li>
-              <li>⚠️ تأكيد من المطوّر: هل تقييد رؤية المعلم (creatorId) في courses.ts/exams.ts/skillsHub.ts مقصود؟ لو آه، لازم يتوحّد ويتختبر بحساب معلم حقيقي</li>
+              <li>🔴 <strong>الأخطر:</strong> إرجاع تحقق الملكية (22 سطر) في postExamHandler18/19/20، putExamHandler23/deleteExamHandler24، postExamHandler25/26 — النسخة الصحيحة موثقة كاملة في قسم "تم إصلاحه" فوق</li>
+              <li>🔴 إرجاع verifyToken + checkRole(['SUPER_ADMIN']) لـ force-restore-work وforce-inject-factors</li>
+              <li>🔴 إرجاع dryRun + شرط confirm: 'WIPE_EVERYTHING' لـ wipe-all-dummy-data-danger</li>
+              <li>🔴 إرجاع prisma migrate deploy بدل db push (للمرة التالتة — يستاهل مراجعة ليه بيحصل ده كل مرة)</li>
+              <li>⚠️ <strong>مهم بنفس القدر:</strong> افهم سبب التراجع الجماعي ده قبل ما تكرره — غالبًا merge/rebase مع نسخة قديمة محفوظة محليًا. لو مفيش branching/CI check يمنعه، هيحصل تاني</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item urgent">
+          <div class="tl-dot"></div>
+          <div class="tl-day">مرحلة 0.5 — إجابتك أنت مطلوبة فورًا، قبل أي سطر كود تاني (دقايق)</div>
+          <div class="tl-body">
+            <h4>🔴 3 أسئلة لسه من غير رد من الجولة اللي فاتت</h4>
+            <ul>
+              <li>🔴 هل 'lms_super_secret_key_2026' في generate_test_token.js بيطابق JWT_SECRET الحقيقي في .env؟</li>
+              <li>🔴 هل باسورد حساب superadmin الحي دلوقتي هو "123456"؟</li>
+              <li>🔴 هل Dokploy عندها deploy hook بيشغّل cleanup_duplicates_dokploy.ts تلقائيًا بعد كل نشر؟</li>
             </ul>
           </div>
         </div>
@@ -787,15 +846,13 @@
           <div class="tl-dot"></div>
           <div class="tl-day">مرحلة 1 — عاجل جدًا (أيام)</div>
           <div class="tl-body">
-            <h4>✅ الـ deduplication اتصلح — والباقي يتركّز على الـ Redis والملفات</h4>
+            <h4>إصلاحات كود محددة وجاهزة، بالإضافة لإكمال إصلاح بلاغ العميل</h4>
             <ul>
-              <li>✅ <strong>مؤكد مصلح:</strong> deduplication التلقائي → اتشال خالص، بقى preview + موافقة يدوية</li>
-              <li>✅ <strong>مؤكد مصلح:</strong> Password@123 الثابتة → بقت عشوائية فريدة لكل مستخدم</li>
-              <li>✅ <strong>مؤكد مصلح:</strong> حماية recover-lesson-data.ts → require.main === module اتضافت</li>
-              <li>✅ <strong>مؤكد مصلح:</strong> بداية test suite حقيقي → Jest اتضاف فعليًا</li>
+              <li>🟡 <strong>خطوة واحدة بس ناقصة:</strong> ضيف modules للـ include في tx.exam.findUnique الأخيرة جوه putExamHandler5 (نفس شكل getExamHandler10)، وضيف setStandaloneQuestions في معالجة رد الحفظ — عشان الشغل الجيد اللي اتعمل في examAutosaveIdSync.ts يشتغل فعليًا</li>
+              <li>🔴 <strong>عاجل:</strong> إصلاح Zip Slip في POST /api/admin/backup/upload — تحقق path.resolve قبل الكتابة</li>
+              <li>🔴 <strong>عاجل:</strong> sanitizeHtml() في StandaloneQuestions.tsx وModuleModal.tsx، وsanitizeDeep() في imports.ts</li>
+              <li>⚠️ <strong>عاجل:</strong> إضافة تأكيد تفاعلي لسكريبتات wipe-data.ts وwipe-dummy-data.ts</li>
               <li>⚠️ <strong>عاجل — أولوية اتصعّدت:</strong> نقل الـ 3 Maps لـ Redis — بقت أهم بسبب تفعيل PM2 cluster mode</li>
-              <li>⚠️ <strong>عاجل:</strong> مراجعة endpoint مسح البيانات wipe-all-dummy-data-danger — إضافة تأكيد ثانٍ/dry-run</li>
-              <li>⚠️ <strong>عاجل:</strong> Pagination في باقي reports.ts — endpoint واحد بس اتصلح</li>
             </ul>
           </div>
         </div>
@@ -859,7 +916,7 @@
       </div>
     </div>
     <p>هذا التقرير تم تحديثه على أساس مراجعة شاملة لآخر ٧ أيام من التطوير (git log). معظم الأولويات القصوى من التقرير السابق تم إصلاحها بالفعل: superadmin auto-reset محسّن، تكرار الدروس اتصلح بـ ID sync، ثغرات XSS أُغلقت، sanitization اترجّع. المتبقي: سيرفر مخصص (performance)، pagination في reports.ts (احتياطي)، و مراجعة deduplication scope.</p>
-    <p class="footer-note">تحديث: ١٨ أغسطس ٢٠٢٦ — مراجعة كودية مباشرة (git diff) لدفعتين: full_changes_aug16_utf8.diff (76 ملف) وfull_changes_aug17_utf8.diff (54 ملف)، بمقارنة السطور الفعلية المضافة/المحذوفة مش وصف المطوّر. تم تتبّع كل endpoint جديد للتأكد من وجود تحقق ملكية (schoolId/creatorId/isCentral) قبل أي عملية كتابة أو حذف.</p>
+    <p class="footer-note">تحديث: ٣٠ أغسطس ٢٠٢٦ — مراجعة git diff مباشرة (diff_30_aug.diff، 118 ملف — إعادة هيكلة كبيرة لصفحات الامتحانات). تم عدّ أسطر تحقق الملكية المحذوفة يدويًا (22 سطر محذوف، صفر مضاف) بدل الاعتماد على قراءة سطحية. أي ملف مش موجود في هذا الديف معناه إنه لم يُلمس، فحالته آخر ما تأكد منه في الجولة اللي فاتت (24 أغسطس، مراجعة كود مباشرة) لسه سارية. الجولة اللي فاتت اعتمدت على قراءة كود مباشرة (exams_controller.ts، backups_controller.ts، shared.ts، auth.ts، system.ts، courses_controller.ts) بعد ما المطوّر عمل commit "Empty repository" ومسح تاريخ الـ git بالكامل.</p>
   </div>
 </footer>
 
