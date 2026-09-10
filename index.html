@@ -275,12 +275,13 @@
 <header class="hero">
   <div class="wrap">
     <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V19 — ٧ سبتمبر ٢٠٢٦</p>
-    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بس بقاعدة جديدة من دلوقتي: أي بند بيتحل <strong>مش هيتشال من الصفحة</strong> — هيتنقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند بدل ما يختفي. البنود المفتوحة فعليًا: 8 (كروت مفصّلة) + 3 نقاط محتاجة قرار. فيه بند حرج جديد ظهر النهاردة (أعلى الكروت) محتاج تأكيد سريع منك.</p>
+    <h1>المشاكل المفتوحة حاليًا — V19</h1>
+    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. بعد مراجعة تكميلية النهاردة (باب خلفي في تسجيل الدخول، تخزين باك أب عام، وتصحيح ادعاء سابق)، البنود المفتوحة فعليًا قلّت لـ 6 (كروت) + 2 نقطة محتاجة قرار — ولا واحد فيهم حرج دلوقتي.</p>
 
     <div class="stat-row">
-      <div class="stat-tile open"><span class="n">8</span><span class="l">بند مفتوح — محتاج إصلاح كود (كروت مفصّلة تحت)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">3</span><span class="l">نقطة محتاجة قرار/تأكيد منك، مش إصلاح كود بالضرورة</span></div>
-      <div class="stat-tile fixed"><span class="n">1</span><span class="l">بند اتحل مؤخرًا (سجل تاريخي — أول بند من دلوقتي)</span></div>
+      <div class="stat-tile open"><span class="n">6</span><span class="l">بند مفتوح — محتاج إصلاح كود (كروت مفصّلة تحت)</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">2</span><span class="l">نقطة محتاجة قرار/تأكيد منك، مش إصلاح كود بالضرورة</span></div>
+      <div class="stat-tile fixed"><span class="n">6</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -312,7 +313,7 @@
         <div class="r-tile">
           <div class="r-title">الأمان</div>
           <div class="r-score-row"><span class="r-score now good">8.5/10</span></div>
-          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات. التوكن مؤكد إنه خرج من localStorage في الأربع مسارات. التسجيل العام كمعلم اتقفل. verifyToken بقى بيتحقق من الداتابيز مباشرة كل طلب. المتبقي: أداة تنظيف التكرارات من غير تحقق ملكية، احتمال إن الكوكي ميتخزنش لغياب credentials:'include' في الـ login (محتاج تأكيد سريع)، واختبار IDOR وهمي واحد.</div>
+          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات. التوكن مؤكد إنه خرج من localStorage في الأربع مسارات. باب خلفي كامل في تسجيل الدخول (باسورد ثابت لو NODE_ENV مش production) اتشال خالص. التسجيل العام كمعلم اتقفل. المتبقي: أداة تنظيف التكرارات من غير تحقق ملكية (أعلى الكروت)، واختبار IDOR وهمي واحد.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
@@ -322,12 +323,12 @@
         <div class="r-tile">
           <div class="r-title">سلامة البيانات</div>
           <div class="r-score-row"><span class="r-score now good">8/10</span></div>
-          <div class="r-verdict">مفيش db push في أي مسار تشغيل. الامتحانات المنشورة بتحافظ على حالتها بعد autosave. مشكلة تكرار الأسئلة (بلاغ عميل) اتحلت من جذورها. المتبقي: تأكيد مزامنة الأسئلة المستقلة بالفرونت، وتحويل سكريبت تنظيف التكرارات القديم لـ preview بدل حذف مباشر.</div>
+          <div class="r-verdict">مفيش db push في أي مسار تشغيل. الامتحانات المنشورة بتحافظ على حالتها بعد autosave. مشكلة تكرار الأسئلة (بلاغ عميل) اتحلت من جذورها. سكريبت تنظيف التكرارات القديم بقى soft-delete بالكامل. قواعد الـ Cascade موثّقة كاملة (48 علاقة). المتبقي: تأكيد مزامنة الأسئلة المستقلة بالفرونت.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">استمرارية التخزين</div>
           <div class="r-score-row"><span class="r-score now good">9/10</span></div>
-          <div class="r-verdict">النسخ الاحتياطي محلي + سحابي ومستقر، ومحمي من Zip Slip. المتبقي: الملفات لسه على قرص محلي بدل Object Storage خارجي.</div>
+          <div class="r-verdict">النسخ الاحتياطي محلي + سحابي ومستقر، ومحمي من Zip Slip. الباك أبات نُقلت من مجلد عام لمجلد خاص (private/backups) مع middleware حماية إضافي. المتبقي: الملفات لسه على قرص محلي بدل Object Storage خارجي.</div>
         </div>
       </div>
     </section>
@@ -345,7 +346,42 @@
         <span class="d-tag" style="background:var(--good);">✅ تم الحل — مؤكد 7 سبتمبر</span>
         <h3>توكن الدخول خرج من localStorage — مؤكد في الأربع مسارات</h3>
         <p>راجعنا التلات صفحات (app/login، app/school-admin/login، app/super-admin/login) اللي بتغطي الأربع أدوار (STUDENT، TEACHER، SCHOOL_ADMIN، SUPER_ADMIN). كل واحدة بتخزّن قيمة وهمية ("cookie_auth") بس في localStorage، مع كومنت صريح "Token is stored in httpOnly cookie set by the server — do NOT persist in localStorage." متسق في الأربع مسارات.</p>
-        <div class="resolved">✓ مقفول رسميًا. (لاحظنا أثناء المراجعة مشكلة جديدة منفصلة — عدم وجود credentials: 'include' في نفس طلبات الـ login — موجودة كبند مفتوح جديد تحت.)</div>
+        <div class="resolved">✓ مقفول رسميًا.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تم الحل — اكتشاف وإصلاح في نفس المراجعة</span>
+        <h3>باب خلفي كامل في تسجيل الدخول اتشال</h3>
+        <p>كان فيه كود في routes/auth.ts: لو NODE_ENV مش "production" بالظبط، أي حساب (حتى SUPER_ADMIN) كان يقبل باسورد من قائمة ثابتة ('admin123'، '123456'، 'super-admin-password-123'...) بغض النظر عن الباسورد الحقيقي. اتشال خالص، بقت bcrypt.compare بس.</p>
+        <div class="resolved">✓ مقفول رسميًا.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تم الحل</span>
+        <h3>الباك أبات نُقلت من مجلد عام لمجلد خاص</h3>
+        <p>كانت متخزنة في uploads/backups (مسار عام قابل للوصول من غير تسجيل دخول لو حد عرف اسم الملف). نُقلت لـ private/backups (صلاحيات 0700)، مع middleware جديد (blockPublicBackups) بيرفض أي طلب لمسار فيه "backups"، وترحيل آمن للملفات القديمة.</p>
+        <div class="resolved">✓ مقفول رسميًا.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تم الحل</span>
+        <h3>cleanup_duplicates_dokploy.ts — soft-delete + إجابة صريحة عن Dokploy</h3>
+        <p>بقى soft-delete بالكامل (مش حذف نهائي) مع دعم --preview/--dry-run. وسؤال Dokploy hook اتجاوب صراحة في كومنت بالكود: "This script is NOT invoked by Dokploy, Dockerfile, package.json scripts, or any CI/CD hook."</p>
+        <div class="resolved">✓ مقفول رسميًا — البندين الاتنين.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تم الحل</span>
+        <h3>قواعد الـ Cascade بقت موثّقة بالكامل</h3>
+        <p>ملف جديد DATABASE_RELATIONS_GUIDE.md بيوثّق كل الـ48 علاقة في schema.prisma مع سبب هندسي/أمني لكل قرار onDelete.</p>
+        <div class="resolved">✓ مقفول رسميًا.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--ink-soft);">
+        <span class="d-tag" style="background:var(--ink-soft);">↩️ تصحيح — تراجع عن بند سابق</span>
+        <h3>غياب credentials:'include' في صفحات الدخول — طلع مش مشكلة حقيقية</h3>
+        <p>كنا حطينا البند ده كـ"حرج" في التحديث اللي فات. لقينا في المراجعة التالية front/src/app/api/[...path]/route.ts — proxy على مستوى Next.js بيخلي طلبات الفرونت same-origin (مش عابرة أصل)، وبينسخ Set-Cookie من رد الباك اند صح. front/src/lib/auth.ts فيه كمان كومنت صريح من المطور بيأكد نفس التصميم. البند اتشال من الكروت المفتوحة.</p>
+        <div class="resolved" style="background:rgba(148,163,184,.14); color:var(--ink-soft);">↩️ مقفول — اتضح إنه مش مشكلة، مش "تم إصلاحه".</div>
       </div>
     </section>
 
@@ -383,12 +419,6 @@
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إعادة كتابة idor-exam.test.cjs بـ seed حقيقي، أو حذفه بما إن فيه بديل. وتعميم نفس نمط الاختبار الحقيقي على سيناريوهات TEACHER/SCHOOL_ADMIN.</span></div>
         </div>
         <div class="card sev-info">
-          <div class="card-top"><span class="badge sev-info">مراجعة جزئية</span><h3>قواعد الـ Cascade على العلاقات غير موثقة بالكامل</h3></div>
-          <span class="loc">prisma/schema.prisma</span>
-          <p class="desc">Classroom.school عليها onDelete: Cascade، وUser.school من غير onDelete صريح. باقي العلاقات (607 سطر) محتاجة جرد كامل.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">جرد وتوثيق كامل لكل العلاقات في schema.prisma.</span></div>
-        </div>
-        <div class="card sev-info">
           <div class="card-top"><span class="badge sev-info">ملاحظة عملية</span><h3>تعديل هيكل الجدول بيحصل عند الإقلاع، بره نظام الـ migrations</h3></div>
           <span class="loc">shared.ts — ensurePerformanceIndexes()</span>
           <p class="desc">ALTER TABLE raw SQL بتتنفذ عند تشغيل السيرفر (آمنة تقنيًا، IF NOT EXISTS + non-fatal)، لكن schema.prisma ممكن يفضل مش متزامن فعليًا مع القاعدة الحقيقية مع الوقت.</p>
@@ -399,12 +429,6 @@
 
     <section id="frontend-open">
       <div class="cards">
-        <div class="card sev-critical">
-          <div class="card-top"><span class="badge sev-critical">حرج — اكتشاف جديد</span><h3>طلبات تسجيل الدخول الأربعة من غير credentials: 'include' — الكوكي ممكن ميتخزنش خالص</h3></div>
-          <span class="loc">app/login, app/school-admin/login, app/super-admin/login (page.tsx) — fetch(API_URL + "/auth/login", ...)</span>
-          <p class="desc">راجعنا التلات صفحات (الأربع أدوار) — كلهم بيستخدموا fetch() خام لطلب /auth/login من غير credentials: 'include'. لو الفرونت والباك اند مش على نفس الـ origin بالظبط، المتصفح هيتجاهل الـ Set-Cookie القادم من السيرفر تلقائيًا، والمستخدم هيدخل بنجاح ظاهريًا لكن أي طلب بعد كده هيفشل بـ401 (لأنه لا معاه كوكي حقيقي ولا توكن — بس "cookie_auth" الوهمية في localStorage). front/src/lib/api.ts (لباقي الطلبات) بيستخدم credentials: 'include' صح — يبان إنها اتنسيت في أهم طلب (تسجيل الدخول نفسه) في الأربع صفحات.</p>
-          <div class="fix"><span class="fix-label">التأكيد + الحل</span><span class="fix-text">افتح المنصة، سجّل دخول، وشوف في DevTools هل ظهر auth_token cookie فعلاً. لو الفرونت والباك على نفس origin بالإنتاج فالمشكلة نظرية بس؛ لو مختلفين، ضيف credentials: 'include' للأربع طلبات فورًا.</span></div>
-        </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image شبه غير مستخدم (4 من 67 صفحة)</h3></div>
           <span class="loc">grep على frontend/src/app</span>
@@ -432,13 +456,6 @@
         <h3>مزامنة الأسئلة المستقلة بعد الحفظ بالفرونت</h3>
         <p>الباك اند مُصلح ومؤكد (بيرجّع modules في الرد). استدعاء <code style="font-family:var(--font-m);">setStandaloneQuestions</code> بالفرونت لسه محتاج تأكيد من ملفات الـ hooks — مش موجود في أي ملف باك اند راجعناه.</p>
         <div class="fix"><span class="fix-label">المطلوب</span><span class="fix-text">ملفات useExamState/useExamAutosave الفعلية، أو اختبار يدوي: امتحان بأسئلة مستقلة بس، احفظ، اقفل الصفحة، افتحها تاني.</span></div>
-      </div>
-
-      <div class="discovery" style="margin-top:20px; border-color:var(--warn);">
-        <span class="d-tag" style="background:var(--warn); color:#fff;">🟠 تحسّن جزئي</span>
-        <h3>cleanup_duplicates_dokploy.ts — لسه hard-delete، وسؤال Dokploy بلا إجابة</h3>
-        <p>بقى فيه تأكيد تفاعلي (readline)، لكن المنطق لسه حذف مباشر بمطابقة نصية بسيطة من غير preview.</p>
-        <div class="fix"><span class="fix-label">المطلوب</span><span class="fix-text">تأكيد من إعدادات Dokploy: هل فيه hook بيشغّل السكريبت ده تلقائيًا بعد كل نشر؟</span></div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--warn);">
@@ -621,10 +638,8 @@
             <h4>البنود القليلة المتبقية</h4>
             <ul>
               <li>🔴 <strong>الأهم دلوقتي:</strong> ضيف requireManagedExam على POST /api/exams/:id/clean-duplicates قبل ما الزرار يتعمم على كل المستخدمين</li>
-              <li>🔴 <strong>الأهم دلوقتي:</strong> تأكد هل auth_token cookie فعلاً بيتسجل في المتصفح بعد الـ login (DevTools → Cookies). لو لأ، ضيف credentials: 'include' للأربع طلبات login فورًا</li>
               <li>🟡 تأكيد وجود استدعاء setStandaloneQuestions في ملفات hooks الفرونت</li>
               <li>🟠 تعميم اختبار cross-school الحقيقي على سيناريوهات TEACHER/SCHOOL_ADMIN، وحذف/إعادة كتابة idor-exam.test.cjs الوهمي</li>
-              <li>🟠 تأكيد من إعدادات Dokploy: هل فيه hook بيشغّل cleanup_duplicates_dokploy.ts تلقائيًا؟</li>
               <li>🟠 تأكيد نيّة: هل منع حذف الأسئلة المحفوظة (SUPER_ADMIN فقط) قرار منتج مقصود؟</li>
             </ul>
           </div>
@@ -637,7 +652,6 @@
             <ul>
               <li>نسخ احتياطي تلقائي لتخزين خارجي (S3-compatible)</li>
               <li>نقل الملفات لـ Cloudflare R2 — الـ dependency موجودة بالفعل</li>
-              <li>تحويل cleanup_duplicates_dokploy.ts لمنطق preview-then-confirm</li>
               <li>تحويل ALTER TABLE raw SQL لـ migration رسمية</li>
             </ul>
           </div>
@@ -650,7 +664,6 @@
             <ul>
               <li>توسيع next/image لباقي الصفحات (4 من 67 حاليًا)</li>
               <li>مراجعة تدريجية لتحويل صفحات بسيطة (login) لـ Server Components</li>
-              <li>توثيق قواعد الـ Cascade كاملة في schema.prisma</li>
             </ul>
           </div>
         </div>
@@ -670,7 +683,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V19 — ٧ سبتمبر ٢٠٢٦. من هذه النسخة، البنود اللي بتتحل بتفضل موثقة في قسم "اتحلت مؤخرًا" بدل ما تتشال، عشان يبقى فيه سجل تاريخي واضح. التقرير الكامل (58 بند مُصلح، تفاصيل التحقق من كل واحد) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">V19 — ٧ سبتمبر ٢٠٢٦ (محدّثة بعد مراجعة تكميلية). من هذه النسخة، البنود اللي بتتحل بتفضل موثقة في قسم "اتحلت مؤخرًا" بدل ما تتشال، عشان يبقى فيه سجل تاريخي واضح — بما فيها التصحيحات (ادعاءات طلعت غير دقيقة). التقرير الكامل (63 بند مُصلح، تفاصيل التحقق من كل واحد) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
   </div>
 </footer>
 
