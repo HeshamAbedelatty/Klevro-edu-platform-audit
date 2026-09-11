@@ -280,8 +280,8 @@
 
     <div class="stat-row">
       <div class="stat-tile open"><span class="n">6</span><span class="l">بند مفتوح — محتاج إصلاح كود (كروت مفصّلة تحت)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">2</span><span class="l">نقطة محتاجة قرار/تأكيد منك، مش إصلاح كود بالضرورة</span></div>
-      <div class="stat-tile fixed"><span class="n">7</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">1</span><span class="l">نقطة محتاجة قرار/تأكيد منك، مش إصلاح كود بالضرورة</span></div>
+      <div class="stat-tile fixed"><span class="n">8</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -323,7 +323,7 @@
         <div class="r-tile">
           <div class="r-title">سلامة البيانات</div>
           <div class="r-score-row"><span class="r-score now good">8/10</span></div>
-          <div class="r-verdict">مفيش db push في أي مسار تشغيل. الامتحانات المنشورة بتحافظ على حالتها بعد autosave. مشكلة تكرار الأسئلة (بلاغ عميل) اتحلت من جذورها. سكريبت تنظيف التكرارات القديم بقى soft-delete بالكامل. قواعد الـ Cascade موثّقة كاملة (48 علاقة). المتبقي: تأكيد مزامنة الأسئلة المستقلة بالفرونت.</div>
+          <div class="r-verdict">مفيش db push في أي مسار تشغيل. الامتحانات المنشورة بتحافظ على حالتها بعد autosave. مشكلة تكرار الأسئلة (بلاغ عميل) اتحلت من جذورها. سكريبت تنظيف التكرارات القديم بقى soft-delete بالكامل. قواعد الـ Cascade موثّقة كاملة. مزامنة الأسئلة المستقلة بالفرونت اتأكدت إنها شغالة. تحسينات أداء الحفظ/التعديل (8 سبتمبر) مراجَعة وآمنة.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">استمرارية التخزين</div>
@@ -382,6 +382,13 @@
         <h3>النسخ الاحتياطي التلقائي (الساعاتي) كان ناقص — درجات الطلاب مكنتش بتتحفظ فيه</h3>
         <p>راجعنا cronService.ts مباشرة: النسخة القديمة من الـ cron الساعاتي كانت بتنسخ 5 جداول بس (schools/users/courses/lessons/exams) — يعني ExamSubmission وStudentAnswer (درجات وإجابات الطلاب) ما كانتش بتتحفظ في النسخ التلقائي خالص، بس في النسخ اليدوي لو حد شغّله بنفسه. دلوقتي اتوحّد الكرون على نفس دالة النسخ الشاملة (performBackupAndPruning) المستخدمة في النسخ اليدوي — بقى نفس المحتوى بالظبط.</p>
         <div class="resolved">✓ مقفول رسميًا.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تم الحل — مؤكد 8 سبتمبر</span>
+        <h3>مزامنة الأسئلة المستقلة بعد الحفظ بالفرونت</h3>
+        <p>راجعنا useExamState.ts مباشرة (بعد ديف 8 سبتمبر) — <code style="font-family:var(--font-m);">setStandaloneQuestions(standaloneQs)</code> موجودة وشغالة فعليًا. آخر بند حقيقي متبقي من بلاغ "الأسئلة مش بتتزامن بعد الحفظ" الأصلي.</p>
+        <div class="resolved">✓ مقفول رسميًا — الباك والفرونت الاتنين مؤكدين.</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--ink-soft);">
@@ -459,13 +466,6 @@
 
     <section id="open-decisions" style="margin-top:20px;">
       <div class="discovery" style="border-color:var(--warn);">
-        <span class="d-tag" style="background:var(--warn); color:#fff;">🟡 نص متأكد منه</span>
-        <h3>مزامنة الأسئلة المستقلة بعد الحفظ بالفرونت</h3>
-        <p>الباك اند مُصلح ومؤكد (بيرجّع modules في الرد). استدعاء <code style="font-family:var(--font-m);">setStandaloneQuestions</code> بالفرونت لسه محتاج تأكيد من ملفات الـ hooks — مش موجود في أي ملف باك اند راجعناه.</p>
-        <div class="fix"><span class="fix-label">المطلوب</span><span class="fix-text">ملفات useExamState/useExamAutosave الفعلية، أو اختبار يدوي: امتحان بأسئلة مستقلة بس، احفظ، اقفل الصفحة، افتحها تاني.</span></div>
-      </div>
-
-      <div class="discovery" style="margin-top:20px; border-color:var(--warn);">
         <span class="d-tag" style="background:var(--warn); color:#fff;">🟠 قرار تصميم يستاهل تأكيد</span>
         <h3>حذف الأسئلة المحفوظة بقى مقصور على SUPER_ADMIN — حتى صاحب الامتحان</h3>
         <p>حتى المعلم اللي أنشأ السؤال مش هيقدر يمسحه بعد ما يتحفظ مرة، من شاشة التعديل العادية. القيد ده متسق مع نفس القيد في استيراد Excel، يعني يبدو مقصود مش عرضي.</p>
@@ -690,7 +690,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">آخر تحديث: ٧ سبتمبر ٢٠٢٦ (مراجعة كاملة للديف انتهت). من هذه النسخة، البنود اللي بتتحل بتفضل موثقة في قسم "اتحلت مؤخرًا" بدل ما تتشال، عشان يبقى فيه سجل تاريخي واضح — بما فيها التصحيحات (ادعاءات طلعت غير دقيقة). التقرير الكامل (63 بند مُصلح، تفاصيل التحقق من كل واحد) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">آخر تحديث: ٨ سبتمبر ٢٠٢٦. من هذه النسخة، البنود اللي بتتحل بتفضل موثقة في قسم "اتحلت مؤخرًا" بدل ما تتشال، عشان يبقى فيه سجل تاريخي واضح — بما فيها التصحيحات (ادعاءات طلعت غير دقيقة). التقرير الكامل (68 بند مُصلح، تفاصيل التحقق من كل واحد) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
   </div>
 </footer>
 
