@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا (آخر تحديث: ٧ سبتمبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V23 (١٦ سبتمبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -274,14 +274,14 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · آخر تحديث: ٧ سبتمبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا</h1>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V23 — ١٦ سبتمبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V23</h1>
     <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. بعد مراجعة تكميلية النهاردة (باب خلفي في تسجيل الدخول، تخزين باك أب عام، وتصحيح ادعاء سابق)، البنود المفتوحة فعليًا قلّت لـ 6 (كروت) + 2 نقطة محتاجة قرار — ولا واحد فيهم حرج دلوقتي.</p>
 
     <div class="stat-row">
-      <div class="stat-tile open"><span class="n">6</span><span class="l">بند مفتوح — محتاج إصلاح كود (كروت مفصّلة تحت)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">1</span><span class="l">نقطة محتاجة قرار/تأكيد منك، مش إصلاح كود بالضرورة</span></div>
-      <div class="stat-tile fixed"><span class="n">8</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
+      <div class="stat-tile open"><span class="n">4</span><span class="l">بند مفتوح — محتاج إصلاح كود (كروت مفصّلة تحت)</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">2</span><span class="l">نقطة محتاجة قرار/تأكيد منك، مش إصلاح كود بالضرورة</span></div>
+      <div class="stat-tile fixed"><span class="n">14</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -312,8 +312,8 @@
       <div class="readiness-grid">
         <div class="r-tile">
           <div class="r-title">الأمان</div>
-          <div class="r-score-row"><span class="r-score now good">8.5/10</span></div>
-          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات. التوكن مؤكد إنه خرج من localStorage في الأربع مسارات. باب خلفي كامل في تسجيل الدخول (باسورد ثابت لو NODE_ENV مش production) اتشال خالص. التسجيل العام كمعلم اتقفل. المتبقي: أداة تنظيف التكرارات من غير تحقق ملكية (أعلى الكروت)، واختبار IDOR وهمي واحد.</div>
+          <div class="r-score-row"><span class="r-score now good">9.5/10</span></div>
+          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات. التوكن مؤكد إنه خرج من localStorage في الأربع مسارات. باب خلفي كامل في تسجيل الدخول اتشال خالص. التسجيل العام كمعلم اتقفل. أداة تنظيف التكرارات بقى عندها تحقق ملكية كامل (13 سبتمبر)، واختبار IDOR بقى حقيقي وشامل. مفيش بند حرج أو عالي مفتوح في محور الأمان دلوقتي.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
@@ -343,6 +343,50 @@
 
     <section id="resolved-list" style="margin-top:20px;">
       <div class="discovery" style="border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ اتحل فعليًا من 13 سبتمبر — اكتشفنا التأخير أثناء مراجعة تانية</span>
+        <h3>أداة تنظيف التكرارات — الثغرة اللي كانت أعلى أولوية اتقفلت</h3>
+        <p>كوميت 13 سبتمبر ضاف <code style="font-family:var(--font-m);">requireManagedExam</code> فعليًا على route الـ <code style="font-family:var(--font-m);">POST /api/exams/:id/clean-duplicates</code>، بالإضافة لتحقق إضافي جوه الـ handler نفسه (رفض mismatch بين path وbody، رفض تشغيل الوضع الشامل من غير صلاحية super-admin). التأكيد جه من اختبار جديد مخصص (cleanDuplicatesHandler IDOR defense & parameter validation) بيغطي السيناريوهات دي بالظبط.</p>
+        <div class="resolved">✓ مقفول رسميًا. (كان لازم يتسجل من أسبوع، اتأخر التسجيل لانشغالنا بمراجعة ميزة الترجمة وقتها.)</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ اتحل بالكامل — تطوّر عبر مرحلتين (7 ثم 13 سبتمبر)</span>
+        <h3>idor-exam.test.cjs — من اختبار وهمي لاختبار حقيقي بالكامل</h3>
+        <p>7 سبتمبر: بطّل يقبل UUID عشوائي، بقى يتطلب fixtures حقيقية مع assertion صارم (403 بس، مش [403,404]). 13 سبتمبر: اتحول بالكامل لنمط mock-Prisma (زي student-exam-regressions.test.cjs) — بقى بيختبر requireManagedExam وcleanDuplicatesHandler مباشرة بأدوار متعددة (SCHOOL_ADMIN، TEACHER، SUPER_ADMIN، امتحان مركزي) من غير أي اعتماد على سيرفر live أو DB حقيقية.</p>
+        <div class="resolved">✓ مقفول رسميًا — بقى اختبار حقيقي وشامل.</div>
+      </div>
+      <div class="discovery" style="border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ إصلاح مهم — مراجعة 16 سبتمبر</span>
+        <h3>دقة تصحيح الأسئلة — إصلاح بأثر رجعي على الامتحانات القديمة كمان</h3>
+        <p>منطق مطابقة الإجابات (الباك اند وصفحة النتيجة) بقى بيطبّع الحروف العربية (أ/إ/آ ← ا، ة ← ه، ى ← ي، وشيل التشكيل)، وبيتجاهل بادئات الاختيارات ("A."، "ب)")، وبيدعم الإجابة الصحيحة بالإنجليزي. قبل كده، طالب يكتب "مدرسه" بدل "مدرسة" كان ممكن يتحسب غلط رغم إن إجابته صح فعليًا.</p>
+        <p>الأهم: الإصلاح بيتطبق <strong>بأثر رجعي</strong> على امتحانات اتصححت قبل كده من غير أي migration خطر — بمنطق محافظ (بيحوّل "غلط قديم" لـ"صح" بس، مايسحبش درجة كانت صح). اتأكد إن نفس المنطق شغال على الشيكمارك الفردي والدرجة الكلية مع بعض، فمفيش تعارض بينهم.</p>
+        <div class="resolved">✓ مقفول — تحسين حقيقي في عدالة التصحيح، بأثر رجعي وآمن.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ إصلاح — مراجعة 16 سبتمبر</span>
+        <h3>سكريبتات تنظيف الصور كانت ممكن تمسح صور الترجمة الإنجليزية بالغلط</h3>
+        <p>cleanup-delete.ts/cleanup-report.ts كانت بتفحص النص العربي بس عشان تحدد الصور "المستخدمة". لو معلم حط صورة في ترجمة إنجليزية بس، السكريبت كان يقدر يفتكرها غير مستخدمة ويمسحها. بقى بيفحص textEn/optionsEn كمان.</p>
+        <div class="resolved">✓ مقفول.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ إصلاح تجربة استخدام — مراجعة 16 سبتمبر</span>
+        <h3>صفحة نتيجة الامتحان بقت تفرّق بين "لم يُحل" و"غلط"</h3>
+        <p>شارة رمادية جديدة "لم يتم الحل" للأسئلة اللي الطالب متجاوبش عليها خالص، بدل ما تتحسب مع الغلط. كمان اتقفل احتمال حافة نادر كان ممكن يخلي سؤال متجاوبش يتحسب "صح" غلط (شرط hasAnswered صريح دلوقتي).</p>
+        <div class="resolved">✓ مقفول.</div>
+      </div>
+
+      <div class="discovery" style="border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ مؤكد آمن — مراجعة 13 سبتمبر</span>
+        <h3>ترجمة أسئلة الامتحان للطالب — مقفولة خلف مراجعة، مفيش ترجمة آلية مباشرة له</h3>
+        <p>ميزة جديدة (ترجمة عربي/إنجليزي) — راجعنا صفحة أداء الامتحان الفعلية: بتعرض <code style="font-family:var(--font-m);">question.textEn</code>/<code style="font-family:var(--font-m);">optionsEn</code> بس (حقول مخزّنة بيدخلها المعلم يدويًا ويراجعها)، مع رجوع تلقائي للعربي لو الترجمة لسه متضافتش. مفيش أي استدعاء لخدمة الترجمة الفورية في صفحة الطالب — الترجمة الآلية اللحظية (اللي بتضرب Google) موجودة بس في شاشات إنشاء المحتوى بتاعة المعلم/الأدمن.</p>
+        <div class="resolved">✓ مؤكد — الطالب ميشوفش ترجمة آلية غير مراجَعة وقت الامتحان.</div>
+        <p style="margin-top:14px; padding-top:14px; border-top:1px dashed var(--line); font-size:14px; color:var(--ink-soft);">📝 <strong>ملاحظة:</strong> أداة الترجمة الفورية اللي بيستخدمها المعلم وقت إنشاء المحتوى (مش الطالب) بتعتمد على <code style="font-family:var(--font-m);">translate.googleapis.com</code> — endpoint غير رسمي من جوجل (مش الـ API المدفوع)، مع احتياطي MyMemory بحد يومي منخفض. مش مشكلة أمنية، لكنها نقطة استقرار تشغيلي تستاهل الانتباه — جوجل ممكن يحظر الاستخدام ده في أي وقت من غير إنذار. لو الميزة هتبقى دائمة ومعتمَد عليها، يستحسن الانتقال لـ API رسمي مستقبلًا.</p>
+        <p style="margin-top:14px; padding-top:14px; border-top:1px dashed var(--line); font-size:14px; color:var(--ink-soft);">📝 <strong>ملاحظة صيانة (16 سبتمبر):</strong> منطق مطابقة الإجابات موجود دلوقتي في 3 أماكن منفصلة (الباك اند، صفحة أداء الامتحان، صفحة النتيجة) بدل مكان واحد مشترك. اتحدّثوا الثلاثة بشكل متزامن هذه المرة، لكن أي تعديل مستقبلي لازم يتعمل في الثلاثة مع بعض وإلا هيحصل تعارض.</p>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
         <span class="d-tag" style="background:var(--good);">✅ تم الحل — مؤكد 7 سبتمبر</span>
         <h3>توكن الدخول خرج من localStorage — مؤكد في الأربع مسارات</h3>
         <p>راجعنا التلات صفحات (app/login، app/school-admin/login، app/super-admin/login) اللي بتغطي الأربع أدوار (STUDENT، TEACHER، SCHOOL_ADMIN، SUPER_ADMIN). كل واحدة بتخزّن قيمة وهمية ("cookie_auth") بس في localStorage، مع كومنت صريح "Token is stored in httpOnly cookie set by the server — do NOT persist in localStorage." متسق في الأربع مسارات.</p>
@@ -407,36 +451,19 @@
       <p>مرتبة من الأعلى للأقل خطورة. كل كارت فيه المكان بالظبط والحل المقترح.</p>
     </div>
 
-    <section id="backend-high">
-      <div class="cards">
-        <div class="card sev-high">
-          <div class="card-top"><span class="badge sev-high">عالي — جديد 7 سبتمبر</span><h3>أداة تنظيف التكرارات بدون تحقق ملكية — أي معلم ينظّف امتحان مدرسة تانية</h3></div>
-          <span class="loc">routes/exams.ts — POST /api/exams/:id/clean-duplicates</span>
-          <p class="desc">الـ endpoint الجديد (اللي بيحل مشكلة تكرار الأسئلة) مسموح لـ SUPER_ADMIN/SCHOOL_ADMIN/TEACHER من غير requireManagedExam، والـ handler نفسه من غير تحقق ملكية جوّاه. أي معلم/أدمن مدرسة يقدر يشغّله على ID امتحان تابع لمدرسة تانية ويعمل حذف/soft-delete على أسئلتها.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">ضيف requireManagedExam على الـ route، بالظبط زي putExamHandler5.</span></div>
-        </div>
-        <div class="card sev-high">
-          <div class="card-top"><span class="badge sev-high">عالي</span><h3>الملفات لسه على القرص المحلي للسيرفر</h3></div>
-          <span class="loc">multer.diskStorage — shared.ts</span>
-          <p class="desc">diskStorage محلي مش Object Storage، رغم إن @aws-sdk/client-s3 موجودة كـ dependency في package.json مش مفعّلة بعد. حد الرفع 150MB.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">Object Storage خارجي (Cloudflare R2) — الـ dependency جاهزة، الموضوع تفعيل مش تركيب.</span></div>
-        </div>
-      </div>
-    </section>
-
     <section id="backend-medium">
       <div class="cards">
-        <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>idor-exam.test.cjs اختبار وهمي — بديل حقيقي جزئي موجود</h3></div>
-          <span class="loc">tests/quality/security/idor-exam.test.cjs</span>
-          <p class="desc">كل test فيه بيبدأ بـ <code style="font-family:var(--font-m);">if (!isLive) return;</code> ويستخدم UUID عشوائي غير موجود، فبيعدي حتى لو الحماية اتشالت بالكامل. البديل الحقيقي (student-exam-regressions.test.cjs) موجود لسيناريوهات الطلاب بس، مش لسيناريوهات المعلم/الأدمن.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إعادة كتابة idor-exam.test.cjs بـ seed حقيقي، أو حذفه بما إن فيه بديل. وتعميم نفس نمط الاختبار الحقيقي على سيناريوهات TEACHER/SCHOOL_ADMIN.</span></div>
-        </div>
         <div class="card sev-info">
           <div class="card-top"><span class="badge sev-info">ملاحظة عملية</span><h3>تعديل هيكل الجدول بيحصل عند الإقلاع، بره نظام الـ migrations</h3></div>
           <span class="loc">shared.ts — ensurePerformanceIndexes()</span>
           <p class="desc">ALTER TABLE raw SQL بتتنفذ عند تشغيل السيرفر (آمنة تقنيًا، IF NOT EXISTS + non-fatal)، لكن schema.prisma ممكن يفضل مش متزامن فعليًا مع القاعدة الحقيقية مع الوقت.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تحويل أي تعديل هيكلي لـ migration رسمية بدل raw SQL في startup code.</span></div>
+        </div>
+        <div class="card sev-info">
+          <div class="card-top"><span class="badge sev-info">تحصين إضافي</span><h3>/api/translate من غير قيد على الدور (role)</h3></div>
+          <span class="loc">back/src/routes/system.ts</span>
+          <p class="desc">الـ endpoint محمي بـ verifyToken بس (أي مستخدم مسجل دخول)، من غير checkRole. الاستخدام الفعلي حاليًا مقصور على شاشات المعلم/الأدمن (مفيش زرار في واجهة الطالب بيستدعيه)، لكن مفيش قيد في الباك اند نفسه يمنع طالب من استدعائه مباشرة لو حاول.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة checkRole(['SUPER_ADMIN','SCHOOL_ADMIN','TEACHER']) كدفاع إضافي، وحد أقصى لحجم/عدد النصوص المرسلة في الطلب الواحد.</span></div>
         </div>
       </div>
     </section>
@@ -470,6 +497,13 @@
         <h3>حذف الأسئلة المحفوظة بقى مقصور على SUPER_ADMIN — حتى صاحب الامتحان</h3>
         <p>حتى المعلم اللي أنشأ السؤال مش هيقدر يمسحه بعد ما يتحفظ مرة، من شاشة التعديل العادية. القيد ده متسق مع نفس القيد في استيراد Excel، يعني يبدو مقصود مش عرضي.</p>
         <div class="fix"><span class="fix-label">المطلوب</span><span class="fix-text">تأكيد: هل ده قرار منتج مقصود، ولا محتاج استثناء لصاحب الامتحان الأصلي؟</span></div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--warn);">
+        <span class="d-tag" style="background:var(--warn); color:#fff;">🟡 محتاج تأكيد من المطور</span>
+        <h3>هل الطالب بيشوف ترجمة فورية (لحظية) وهو بيتفرج على درس/كورس؟</h3>
+        <p>راجعنا كل الملفات اللي بتستدعي الترجمة الفورية (translateBatch) — كلها شاشات إنشاء محتوى للمعلم/الأدمن (QuestionsBuilder، LessonQuestionsBuilder، محرر أسئلة قسم المهارات). مفيش أي صفحة عرض كورس/درس للطالب بتستدعي الترجمة الفورية في الديف اللي راجعناه. لو الجزء ده (ترجمة فورية لمحتوى الدرس وقت ما الطالب يتفرج عليه) لسه هيوصل في تحديث قادم، يستاهل نراجعه بنفس الدقة اللي راجعنا بيها أسئلة الامتحان.</p>
+        <div class="fix"><span class="fix-label">المطلوب</span><span class="fix-text">سؤال مباشر للمطور: الطالب وهو بيتفرج على درس، بيشوف ترجمة متحفوظة من الأول ولا بتتحسب له لحظيًا؟</span></div>
       </div>
     </section>
 
@@ -644,9 +678,8 @@
           <div class="tl-body">
             <h4>البنود القليلة المتبقية</h4>
             <ul>
-              <li>🔴 <strong>الأهم دلوقتي:</strong> ضيف requireManagedExam على POST /api/exams/:id/clean-duplicates قبل ما الزرار يتعمم على كل المستخدمين</li>
-              <li>🟡 تأكيد وجود استدعاء setStandaloneQuestions في ملفات hooks الفرونت</li>
-              <li>🟠 تعميم اختبار cross-school الحقيقي على سيناريوهات TEACHER/SCHOOL_ADMIN، وحذف/إعادة كتابة idor-exam.test.cjs الوهمي</li>
+              <li>🟠 <strong>جديد:</strong> قرار بخصوص ميزة الترجمة الفورية — الاعتماد على Google endpoint غير رسمي، محتاج قرار: نكمل عليها مؤقتًا ولا نتحول لـ API رسمي قبل ما تنتشر أكتر؟</li>
+              <li>🟡 <strong>جديد:</strong> تأكيد من المطور — هل الطالب بيشوف ترجمة فورية لحظية في صفحات الدروس/الكورسات؟</li>
               <li>🟠 تأكيد نيّة: هل منع حذف الأسئلة المحفوظة (SUPER_ADMIN فقط) قرار منتج مقصود؟</li>
             </ul>
           </div>
@@ -658,7 +691,7 @@
             <h4>الأداء والبنية التحتية</h4>
             <ul>
               <li>نسخ احتياطي تلقائي لتخزين خارجي (S3-compatible)</li>
-              <li>نقل الملفات لـ Cloudflare R2 — الـ dependency موجودة بالفعل</li>
+              <li><strong>الملفات لسه على قرص السيرفر المحلي</strong> (multer.diskStorage، حد رفع 150MB) — نقلها لـ Cloudflare R2 (الـ dependency @aws-sdk/client-s3 موجودة بالفعل، الموضوع تفعيل مش تركيب من الصفر)</li>
               <li>تحويل ALTER TABLE raw SQL لـ migration رسمية</li>
             </ul>
           </div>
@@ -690,7 +723,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">آخر تحديث: ٨ سبتمبر ٢٠٢٦. من هذه النسخة، البنود اللي بتتحل بتفضل موثقة في قسم "اتحلت مؤخرًا" بدل ما تتشال، عشان يبقى فيه سجل تاريخي واضح — بما فيها التصحيحات (ادعاءات طلعت غير دقيقة). التقرير الكامل (68 بند مُصلح، تفاصيل التحقق من كل واحد) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">V23 — ١٦ سبتمبر ٢٠٢٦ (نسخة ثابتة/snapshot، محدّثة بمراجعة تصحيحية — بندين كانوا مسجّلين "مفتوحين" اتأكد إنهم اتصلحوا فعليًا من 13 سبتمبر). الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح، تفاصيل التحقق من كل واحد) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
   </div>
 </footer>
 
