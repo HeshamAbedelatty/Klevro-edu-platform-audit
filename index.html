@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V26 (٢٣ سبتمبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V27 (٢٣ سبتمبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -274,13 +274,13 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V26 — ٢٣ سبتمبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V26</h1>
-    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميتات 21-22 سبتمبر لسه فيهم اكتشافين مفتوحين (IDOR حذف الدروس، CORS رفع الملفات — تفاصيلهم تحت). مراجعة كوميت 23 سبتمبر قفلت 3 بنود جديدة (تكرار الكرون على كل PM2 worker، تصادم أسئلة الهندسة في كشف التكرار، توافق النسخ الاحتياطي مع الموديلات الجديدة)، وضافت نقطة توضيح واحدة (تغيير رسالة Redis من "موصى بيه" لـ"اختياري").</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V27 — ٢٣ سبتمبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V27</h1>
+    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميتات 21-22 سبتمبر لسه فيهم اكتشافين مفتوحين (IDOR حذف الدروس، CORS رفع الملفات). تتبّع سؤال Redis (بعد مراجعة index.ts وredis.ts وshared.ts كاملين) كشف الآلية بالظبط: rate limiter الـ/api العام أصلًا مش بيستخدم Redis خالص (مش جزء من القلق)، لكن brute-force lockout على تسجيل الدخول (10 محاولات/15 دقيقة) مبني صح على Redis كمصدر حقيقة، وبيضعف لحد N× (عدد PM2 workers) لو REDIS_URL مش شغال. محتاج تأكيد واحد بس يقفل البند.</p>
 
     <div class="stat-row">
       <div class="stat-tile open"><span class="n">3</span><span class="l">بند مفتوح — محتاج إصلاح كود (فيه بند حرج واحد دلوقتي)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">2</span><span class="l">نقاط قرار مفتوحة — CORS + توضيح Redis</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">2</span><span class="l">نقاط قرار مفتوحة — CORS + تأكيد REDIS_URL</span></div>
       <div class="stat-tile fixed"><span class="n">19</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
     </div>
 
@@ -540,8 +540,11 @@
       <div class="box">
         <p><strong>تأكيد إعدادات CORS في الباك اند لمسار رفع الملفات.</strong> إصلاح FileUpload.tsx (كوميت 21-22 سبتمبر) بيعتمد إن back/src/index.ts معمول فيه Access-Control-Allow-Credentials:true + origin محدد بدومين الفرونت (مش *)، والكوكي SameSite/Domain يسمح بالطلب الـcross-origin بين الفرونت والباك اند. محتاجين نشوف الملف ده نأكد قبل ما نقفل بند رفع الصور رسميًا، أو نأخد قرار بتوجيه الرفع عبر بروكسي /api بدل المسار المباشر (الاقتراح الأمتن، تفاصيله في قسم الاكتشافات فوق).</p>
       </div>
-      <div class="box" style="margin-top:16px;">
-        <p><strong>توضيح نية تغيير رسالة Redis من "موصى بيه بشدة" لـ"اختياري".</strong> كوميت 23 سبتمبر غيّر comment وseverity في back/src/lib/redis.ts من warn لـlog، ومن "REDIS_URL is strongly recommended" لـ"REDIS_URL is optional for cross-worker store" — لحاجة كانت مسجلة في V24 كنقطة قوة معمارية (Redis كمصدر حقيقة أول للـrate limiting والكاش عبر الـworkers). محتاجين نعرف: ده قرار منتج مقصود (يعني مش ناوين تستخدموا Redis في production)، ولا كان جزء غير مقصود من تنظيف اللوجات؟ لو مفيش Redis فعلي في الإنتاج، الـrate limiting والكاش هيرجعوا per-worker مش shared عبر الـcluster.</p>
+      <div class="discovery" style="margin-top:16px; border-color:var(--warn);">
+        <span class="d-tag" style="background:var(--warn);">🟠 اكتشاف مؤكد بالكود — الخطورة الفعلية معلّقة على تأكيد إعداد واحد</span>
+        <h3>brute-force lockout على تسجيل الدخول بيضعف لحد N× لو REDIS_URL مش شغال في production متعدد الـworkers</h3>
+        <p>تتبّعنا سؤال Redis بمراجعة index.ts وredis.ts وshared.ts كاملين. النتيجة: rate limiter الـ<code>/api</code> العام (express-rate-limit في index.ts) أصلًا مش بيستخدم Redis خالص من الأول — فمش ده مصدر القلق. ودالة <code>checkRateLimit</code> في redis.ts كود ميت، مفيش أي استدعاء ليها في المشروع كله. <strong>لكن</strong> <code>isLoginRateLimited</code>/<code>recordFailedLogin</code>/<code>clearLoginAttempts</code> في shared.ts (~سطر 1120-1195) هي فعليًا الـbrute-force lockout الحقيقي على تسجيل الدخول — <code>LOGIN_MAX_ATTEMPTS = 10</code> محاولات كل <code>LOGIN_WINDOW_MS = 15</code> دقيقة (shared.ts سطر 137-139)، ومكتوبة صح: بتعامل Redis كـ"single source of truth عبر الـcluster" لما يكون شغال، وترجع فورًا من غير ما تلمس الـMap المحلي. لو Redis مش شغال، بتقع على <code>loginAttempts</code> — Map عادي في الذاكرة، per-worker زي أي حاجة تانية.</p>
+        <div class="flagged">⚠ لو REDIS_URL مش معمول set في production، وعندنا N من PM2 workers، الحد الفعلي لمحاولات تسجيل الدخول بيبقى لغاية 10×N محاولة/15 دقيقة لكل IP (مش 10) — لأن كل worker بيعد لوحده والطلبات بتتوزع بينهم بالـload balancing. محتاجين تأكيد: (1) REDIS_URL معمول set في production ولا لأ، (2) عدد الـPM2 instances الفعلي. لو الاتنين مؤكدين (REDIS_URL شغال، أو instance واحد بس)، البند ده يقفل من غير أي تغيير كود. لو لأ، الإصلاح مش كود جديد — الآلية مبنية صح بالفعل، بس محتاجة REDIS_URL يتفعّل في production.</div>
       </div>
     </section>
 
@@ -760,7 +763,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V26 — ٢٣ سبتمبر ٢٠٢٦ (مراجعة كوميت 23 سبتمبر عن طريق diff review مباشر: قفلت 3 بنود — تكرار الكرون على كل PM2 worker، تصادم أسئلة الهندسة في كشف التكرار، توافق النسخ الاحتياطي مع الموديلات الجديدة — وضافت نقطة توضيح واحدة عن رسالة Redis). فيه بند حرج واحد مفتوح (IDOR حذف الدروس) ونقطتين قرار معلّقتين (CORS رفع الملفات + توضيح Redis). الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">V27 — ٢٣ سبتمبر ٢٠٢٦ (تتبّع كامل لسؤال Redis عبر index.ts/redis.ts/shared.ts: الـrate limiter العام مش بيستخدم Redis أصلًا، checkRateLimit كود ميت، لكن brute-force lockout على تسجيل الدخول حقيقي ومبني صح على Redis — الخطورة الفعلية معلّقة على تأكيد REDIS_URL في production). فيه بند حرج واحد مفتوح (IDOR حذف الدروس) ونقطتين قرار معلّقتين (CORS رفع الملفات + تأكيد REDIS_URL). الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
   </div>
 </footer>
 
