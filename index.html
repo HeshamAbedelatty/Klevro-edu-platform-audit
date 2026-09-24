@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V27 (٢٣ سبتمبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V28 (٢٤ سبتمبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -274,14 +274,14 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V27 — ٢٣ سبتمبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V27</h1>
-    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميتات 21-22 سبتمبر لسه فيهم اكتشافين مفتوحين (IDOR حذف الدروس، CORS رفع الملفات). تتبّع سؤال Redis (بعد مراجعة index.ts وredis.ts وshared.ts كاملين) كشف الآلية بالظبط: rate limiter الـ/api العام أصلًا مش بيستخدم Redis خالص (مش جزء من القلق)، لكن brute-force lockout على تسجيل الدخول (10 محاولات/15 دقيقة) مبني صح على Redis كمصدر حقيقة، وبيضعف لحد N× (عدد PM2 workers) لو REDIS_URL مش شغال. محتاج تأكيد واحد بس يقفل البند.</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V28 — ٢٤ سبتمبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V28</h1>
+    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميت 24 سبتمبر قفل الثلاث بنود المفتوحة كلها (IDOR حذف الدروس، CORS رفع الملفات، brute-force lockout/Redis)، وضاف بونص: ثغرة IDOR تانية في إدارة الامتحانات اتلقت واتصلحت من غير ما نطلبها. كل بند فيهم مؤكد من الكود مباشرة ومحمي باختبار مخصص جديد. مفيش أي نقطة قرار أو بند حرج مفتوح حاليًا.</p>
 
     <div class="stat-row">
-      <div class="stat-tile open"><span class="n">3</span><span class="l">بند مفتوح — محتاج إصلاح كود (فيه بند حرج واحد دلوقتي)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">2</span><span class="l">نقاط قرار مفتوحة — CORS + تأكيد REDIS_URL</span></div>
-      <div class="stat-tile fixed"><span class="n">19</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
+      <div class="stat-tile open"><span class="n">2</span><span class="l">بند مفتوح — محتاج إصلاح كود (الاتنين تحسينات، مش مشاكل حرجة)</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">0</span><span class="l">نقاط قرار مفتوحة — كله اتأكد</span></div>
+      <div class="stat-tile fixed"><span class="n">23</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -297,7 +297,6 @@
     <ul>
       <li><a href="#readiness">لوحة الجاهزية الحالية</a></li>
       <li><a href="#resolved-recently" style="color:var(--good);">✅ اتحلت مؤخرًا</a></li>
-      <li><a href="#new-findings" style="color:var(--danger); font-weight:700;">🔴 اكتشافات 21-22 سبتمبر</a></li>
       <li><a href="#open-now" class="nav-h">المشاكل المفتوحة — كروت</a></li>
       <li><a href="#decisions" class="nav-h">نقاط محتاجة قرار/تأكيد</a></li>
       <li><a href="#server-specs" class="nav-h">اقتراح إمكانيات ومزودي السيرفرات</a></li>
@@ -313,8 +312,8 @@
       <div class="readiness-grid">
         <div class="r-tile">
           <div class="r-title">الأمان</div>
-          <div class="r-score-row"><span class="r-score was">10/10</span><span class="r-arrow">→</span><span class="r-score now warn">7/10</span></div>
-          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات القديمة. JWT خرج من localStorage والـresponse body خالص، محمي باختبار تراجع دائم. باب خلفي كامل في تسجيل الدخول اتشال. /api/translate بقى فيه قيد دور وحدود حجم. لكن مراجعة 21-22 سبتمبر لقت IDOR حقيقي جديد (TEACHER يقدر يحذف دروس أي مدرسة تانية بمجرد تفعيل توجل الحذف — تفاصيل تحت) — النتيجة هترجع 10/10 أول ما يتقفل.</div>
+          <div class="r-score-row"><span class="r-score was">7/10</span><span class="r-arrow">→</span><span class="r-score now good">10/10</span></div>
+          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات/الدروس، بما فيها تحقق TeacherCourse فعلي (مش بس school-level). JWT خرج من localStorage والـresponse body خالص، محمي باختبار تراجع دائم. باب خلفي كامل في تسجيل الدخول اتشال. brute-force lockout بقى fail-closed هيكليًا (Redis أو worker واحد بالإجبار، مفيش حالة وسط ضعيفة). ثغرة IDOR حذف الدروس لـTEACHER وثغرة إدارة امتحان cross-school عبر creatorId — الاتنين اتلقوا واتقفلوا في مراجعة 21-24 سبتمبر، ومحميين باختبارات مخصصة. مفيش بند حرج أو عالي مفتوح في محور الأمان دلوقتي.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
@@ -362,6 +361,34 @@
         <h3>النسخ الاحتياطي بقى بيكتشف الـprimary key الحقيقي لكل موديل، وبقى متوافق مع الموديلات الجديدة</h3>
         <p>backupSnapshot.ts كان بيفترض id هو الـprimary key لكل موديل دايمًا. بقى فيه getPkField() بيقرأ الـPK الحقيقي من Prisma schema. وبقى فيه توافق رجعي: نسخة احتياطية قديمة (من قبل ما SystemSetting يتضاف الأسبوع اللي فات) بترجع من غير ما ترمي "Incomplete backup" error — بتتعامل كمصفوفة فاضية بدل كده. اختبار جديد (backup-snapshot.test.cjs) بيتأكد من الاتنين صراحة (fixture فيه systemSetting + assertion على الـround-trip).</p>
         <div class="resolved">✓ مقفول — مربوط صح بميزة السياسة الجديدة من الأسبوع اللي فات، ومحمي باختبار.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ اتقفل — كوميت 24 سبتمبر</span>
+        <h3>IDOR حذف الدروس لدور TEACHER اتقفل — تحقق ownership على مستوى الكورس نفسه، مش المدرسة بس</h3>
+        <p>الإصلاح تعدّى اللي طلبناه: بقى فيه فرع مخصص لدور TEACHER بيتحقق من انتماء المدرسة (زي SCHOOL_ADMIN) <strong>وكمان</strong> بيعمل lookup فعلي على جدول TeacherCourse (<code>teacherId</code> + <code>courseId</code>) للتأكد إن المعلم فعلًا مُسند للكورس ده تحديدًا. تحقق SCHOOL_ADMIN كمان اتحصّن (بقى بيتعامل مع حالة <code>schoolId</code> فاضي). سطر الـlog بقى بيسجل هوية ودور الفاعل الحقيقي بدل "SUPER_ADMIN" الثابتة. اختبار جديد مخصص (lesson-deletion-idor.test.cjs) بيغطي 7 سيناريوهات: توجل الحذف مقفول، SUPER_ADMIN bypass، SCHOOL_ADMIN لنفس/مدرسة تانية، TEACHER لمدرسة تانية، TEACHER في مدرسته بس مش مُسند للكورس، وTEACHER مُسند فعليًا.</p>
+        <div class="resolved">✓ مقفول ومؤكد من الكود + اختبار شامل. درجة الأمان رجعت 10/10.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ اتقفل نهائيًا — كوميت 24 سبتمبر</span>
+        <h3>مشكلة رفع الصور اتقفلت بالحل الأمتن — الكومبوننت بقى بيعدي من بروكسي /api زي باقي المنصة، مفيش cross-origin خالص</h3>
+        <p>بدل تصحيح إعدادات الـCORS، <code>getUploadEndpoint()</code> في FileUpload.tsx بقت ترجع <code>"/api/upload"</code> ثابتة — الـcross-origin bypass اللي كان بيضرب <code>NEXT_PUBLIC_BACKEND_ORIGIN</code> مباشرة اتشال بالكامل. back/.env.example اتحدث ليوضح إن الـvariable ده بقى للاستخدام السيرفر-side بس (proxy fallback جوه route.ts)، مش لطلبات المتصفح. النتيجة: مفيش أي اعتمادية على إعدادات CORS خارجية خالص، مطابق تمامًا لباقي مسارات الـAPI في المنصة.</p>
+        <div class="resolved">✓ مقفول نهائيًا — الحل الهيكلي الأمتن اتطبق، مش مجرد تصحيح إعداد.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ اتقفل — تصميم fail-closed كامل، كوميت 24 سبتمبر</span>
+        <h3>brute-force lockout على تسجيل الدخول بقى مستحيل يضعف بصمت — إما Redis شغال، أو النظام بيفرض worker واحد</h3>
+        <p>إصلاح على 3 مستويات: <strong>(1)</strong> redis.ts بقى فيه <code>getSharedLoginAttempts</code>/<code>recordSharedLoginFailure</code>/<code>clearSharedLoginAttempts</code> بترمي error بدل ما ترجع بصمت لو Redis مش متاح، والعدّاد بقى atomic (Lua script واحد INCR+PEXPIRE) بدل read-then-write اللي كان فيه احتمال race condition. <strong>(2)</strong> shared.ts: لو production+REDIS_URL → يستخدم Redis حصريًا؛ لو production جوه PM2 cluster (NODE_APP_INSTANCE موجود) ومفيش REDIS_URL ومفيش override صريح → يرمي error بدل ما يقع بصمت على Map محلي per-worker؛ auth.ts بيحول الـerror ده لرسالة 503 واضحة للمستخدم. <strong>(3)</strong> الأهم: start-production.js بقى بيتحقق من REDIS_URL وقت التشغيل نفسه — لو موجود يشغل PM2 بكل الأنوية، لو مش موجود يجبر instance واحد بس (<code>-i 1</code>) تلقائيًا مع تحذير في اللوج. يعني الحالة الخطرة (multi-worker + مفيش Redis) بقت مستحيلة هيكليًا مش مجرد موصى بتجنبها. اختبار جديد (login-rate-limit-cluster.test.cjs) بيغطي الـ4 سيناريوهات كلها.</p>
+        <div class="resolved">✓ مقفول — تصميم دفاعي حقيقي (fail-closed)، مش مجرد تفعيل إعداد، ومحمي باختبار.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ اكتشاف وحل في نفس الكوميت — لم يكن مسجل عندنا كبند</span>
+        <h3>ثغرة إضافية اتلقت واتقفلت: معلم كان يقدر يدير امتحان من مدرسة تانية لو هو الـcreator بتاعه</h3>
+        <p><code>canManageExamRecord</code> في examAccessPolicy.ts كان بيتحقق <code>creatorId === user.id</code> <strong>قبل</strong> شرط الانتماء للمدرسة (belongsToSchool) — يعني لو ظروف الامتحان اتغيرت (نقل مدرسة، تغيير بيانات)، المعلم اللي أنشأه أصلًا كان لسه يقدر يديره حتى لو دلوقتي برا مدرسته. اتصلح بنقل شرط الـcreatorId جوه فرع TEACHER وبعد التحقق من belongsToSchool. اختبار idor-exam.test.cjs اتحدث باسم سيناريو صريح (<code>foreignExamCreatedBeforeTransfer</code>) بيأكد الحظر دلوقتي، وسيناريو تاني (<code>ownSchoolExam</code>) بيأكد الوصول لسه شغال لو الامتحان فعلاً في مدرسته. deleteExamHandler6 كمان بقى بيستخدم <code>canManageExam</code> الموحدة بدل تحقق منفصل مكتوب لوحده — بيتفادى نفس نوع التضارب اللي سبب مشكلة حذف الدروس من الأساس.</p>
+        <div class="resolved">✓ مقفول — اكتشاف واستباقي كويس من نفس المراجعة، مش كان مطلوب منا تحديدًا.</div>
       </div>
 
       <div class="discovery" style="border-color:var(--good);">
@@ -475,30 +502,6 @@
       </div>
     </section>
 
-    <!-- ================= NEW FINDINGS 21-22 SEP ================= -->
-
-    <div class="part-divider" id="new-findings" style="margin-top:40px; background:var(--danger);">
-      <div class="part-eyebrow" style="color:#fff;">مراجعة كوميتات 21-22 سبتمبر</div>
-      <h2>اكتشافين جدد — لسه مفتوحين</h2>
-      <p>الاتنين طلعوا من مراجعة diff مباشرة سطر بسطر، مش من وصف المطور. الدليل من الكود نفسه تحت كل واحد.</p>
-    </div>
-
-    <section id="new-findings-list" style="margin-top:20px;">
-      <div class="discovery">
-        <span class="d-tag">🔴 حرج — IDOR — لسه مفتوح</span>
-        <h3>صلاحية حذف الدروس اتفتحت لـTEACHER من غير أي تحقق ملكية</h3>
-        <p>الكوميت ضاف ميزة "سياسة حذف المحتوى" — توجل عام (<code>SystemSetting.allow_content_deletion</code>، افتراضيًا <code>false</code>) بيتحكم فيه SUPER_ADMIN من /super-admin/settings، وبيفتح صلاحية حذف الدروس/الامتحانات لـSCHOOL_ADMIN وTEACHER لما يتفعّل. راجعنا <code>deleteCourseHandler21</code> (حذف الدرس) كاملة سطر بسطر: فيه تحقق ownership لـSCHOOL_ADMIN بس (<code>schoolId</code> match) — <strong>مفيش أي تحقق مماثل لدور TEACHER خالص</strong>. يعني بمجرد ما التوجل يتفعّل لأي سبب (حتى لمدرسة واحدة بس)، أي حساب TEACHER في أي مدرسة يقدر يحذف أي درس من أي مدرسة تانية بمجرد معرفة الـid بتاعه. ملاحظة إضافية: سطر الـlog بعد الحذف مكتوب ثابت "SUPER_ADMIN manually deleted..." بغض النظر عن الدور الحقيقي للفاعل، فحتى الـaudit trail مش هيبيّن مين فعل إيه صح وقت التحقيق. والأهم: واجهة الإعدادات نفسها بتوعد المستخدم صراحة إن الحذف هيفضل "تابع لمدرسته" — الكود بينقض الوعد ده تحديدًا لدور TEACHER.</p>
-        <div class="flagged">⚠ لسه مفتوح. الحذف soft-delete (قابل للاسترجاع من سلة المهملات) فمفيش فقدان بيانات نهائي، لكنه IDOR حقيقي وdisruption محتمل عبر مدارس مختلفة. الإصلاح: إضافة نفس تحقق schoolId (أو ownership أضيق حسب نية المنتج) لدور TEACHER في deleteCourseHandler21، قبل أي تفعيل لتوجل حذف المحتوى، ومراجعة باقي الـhandlers اللي اتفتحت لنفس الدور بنفس الكوميت.</div>
-      </div>
-
-      <div class="discovery" style="margin-top:20px; border-color:var(--warn);">
-        <span class="d-tag" style="background:var(--warn);">🟠 السبب اتأكد بالكامل — الإصلاح موجود، معلّق على تأكيد إعداد</span>
-        <h3>"مش عارفين يرفعوا صور" — FileUpload.tsx بيتخطى بروكسي الـNext.js ويضرب الباك اند cross-origin مباشرة</h3>
-        <p><code>getUploadEndpoint()</code> في FileUpload.tsx بتتخطى عمدًا بروكسي <code>/api</code> (اللي كل باقي المنصة بتعتمد عليه لـsame-origin auth حسب api.ts) وتضرب <code>NEXT_PUBLIC_BACKEND_ORIGIN</code> مباشرة — دومين تاني فعليًا (زي api.klevro.tech). قبل 7 سبتمبر كان ده شغال لأن توكن حقيقي كان بيتبعت في Authorization header. بعد ما التوكن اتشال من localStorage خالص (7 سبتمبر)، بقى بيتبعت هيدر وهمي "Bearer cookie_auth" ومفيش withCredentials خالص — يعني كل رفع عن طريق الكومبوننت ده كان لازم يفشل auth من ساعتها، بالظبط نفس توقيت بلاغ العميل. كوميت 21-22 سبتمبر ضاف xhr.withCredentials = true وشال الهيدر الوهمي — منطقيًا صح.</p>
-        <div class="flagged">⚠ الكود مُصلح بس النجاح معلّق على إعدادات الباك اند: لازم Access-Control-Allow-Credentials:true + Access-Control-Allow-Origin محدد بدومين الفرونت (مش *)، والكوكي SameSite/Domain يسمحوا بالطلب الـcross-origin ده. محتاجين تأكيد back/src/index.ts. الاقتراح الأمتن: توجيه الرفع عبر /api/upload (نفس بروكسي الباقي) بدل المسار المباشر — خصوصًا إن route.ts بقى بيعالج multipart بشكل صريح (isStream + duplex:'half')، فسبب تجاوز البروكسي الأصلي ("avoid multipart issues") يمكن ماعادش موجود.</div>
-      </div>
-    </section>
-
     <!-- ================= OPEN ISSUES ================= -->
 
     <div class="part-divider" id="open-now" style="margin-top:40px;">
@@ -509,12 +512,6 @@
 
     <section id="frontend-open">
       <div class="cards">
-        <div class="card sev-critical">
-          <div class="card-top"><span class="badge sev-critical">حرج</span><h3>TEACHER يقدر يحذف دروس أي مدرسة تانية — مفيش تحقق ownership</h3></div>
-          <span class="loc">back/src/controllers/courses.controller.ts — deleteCourseHandler21</span>
-          <p class="desc">التحقق الحالي بيتفحص schoolId لـSCHOOL_ADMIN بس؛ دور TEACHER بيتخطى الشرط بالكامل. التفاصيل والدليل من الكود في قسم "اكتشافات 21-22 سبتمبر" فوق.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">إضافة نفس تحقق schoolId (أو ownership أضيق حسب نية المنتج) لدور TEACHER، قبل أي تفعيل لتوجل حذف المحتوى.</span></div>
-        </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image شبه غير مستخدم (4 من 67 صفحة)</h3></div>
           <span class="loc">grep على frontend/src/app</span>
@@ -522,10 +519,10 @@
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استبدال تدريجي بـ next/image في باقي الصفحات، خصوصًا الأثقل بالصور.</span></div>
         </div>
         <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client" في كل الصفحات (67/67، 100%)</h3></div>
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client" لسه في أغلب الصفحات (58 من 67، ~87%)</h3></div>
           <span class="loc">grep على frontend/src/app</span>
-          <p class="desc">كل صفحة تقريبًا Client Component، حتى لو المحتوى شبه static.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">مراجعة تدريجية وتحويل الصفحات الأبسط (زي login) لـ Server Components.</span></div>
+          <p class="desc">كوميت 24 سبتمبر بدأ فعليًا في الموضوع ده — شال "use client" من 9 صفحات (lessons + redirects الواجبات/الاختبارات لـschool-admin وsuper-admin). لسه أغلب الصفحات Client Components حتى لو المحتوى شبه static.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استمرار المراجعة التدريجية على باقي الصفحات، وخصوصًا الأبسط (زي login).</span></div>
         </div>
       </div>
     </section>
@@ -537,15 +534,7 @@
     </div>
 
     <section id="open-decisions" style="margin-top:20px;">
-      <div class="box">
-        <p><strong>تأكيد إعدادات CORS في الباك اند لمسار رفع الملفات.</strong> إصلاح FileUpload.tsx (كوميت 21-22 سبتمبر) بيعتمد إن back/src/index.ts معمول فيه Access-Control-Allow-Credentials:true + origin محدد بدومين الفرونت (مش *)، والكوكي SameSite/Domain يسمح بالطلب الـcross-origin بين الفرونت والباك اند. محتاجين نشوف الملف ده نأكد قبل ما نقفل بند رفع الصور رسميًا، أو نأخد قرار بتوجيه الرفع عبر بروكسي /api بدل المسار المباشر (الاقتراح الأمتن، تفاصيله في قسم الاكتشافات فوق).</p>
-      </div>
-      <div class="discovery" style="margin-top:16px; border-color:var(--warn);">
-        <span class="d-tag" style="background:var(--warn);">🟠 اكتشاف مؤكد بالكود — الخطورة الفعلية معلّقة على تأكيد إعداد واحد</span>
-        <h3>brute-force lockout على تسجيل الدخول بيضعف لحد N× لو REDIS_URL مش شغال في production متعدد الـworkers</h3>
-        <p>تتبّعنا سؤال Redis بمراجعة index.ts وredis.ts وshared.ts كاملين. النتيجة: rate limiter الـ<code>/api</code> العام (express-rate-limit في index.ts) أصلًا مش بيستخدم Redis خالص من الأول — فمش ده مصدر القلق. ودالة <code>checkRateLimit</code> في redis.ts كود ميت، مفيش أي استدعاء ليها في المشروع كله. <strong>لكن</strong> <code>isLoginRateLimited</code>/<code>recordFailedLogin</code>/<code>clearLoginAttempts</code> في shared.ts (~سطر 1120-1195) هي فعليًا الـbrute-force lockout الحقيقي على تسجيل الدخول — <code>LOGIN_MAX_ATTEMPTS = 10</code> محاولات كل <code>LOGIN_WINDOW_MS = 15</code> دقيقة (shared.ts سطر 137-139)، ومكتوبة صح: بتعامل Redis كـ"single source of truth عبر الـcluster" لما يكون شغال، وترجع فورًا من غير ما تلمس الـMap المحلي. لو Redis مش شغال، بتقع على <code>loginAttempts</code> — Map عادي في الذاكرة، per-worker زي أي حاجة تانية.</p>
-        <div class="flagged">⚠ لو REDIS_URL مش معمول set في production، وعندنا N من PM2 workers، الحد الفعلي لمحاولات تسجيل الدخول بيبقى لغاية 10×N محاولة/15 دقيقة لكل IP (مش 10) — لأن كل worker بيعد لوحده والطلبات بتتوزع بينهم بالـload balancing. محتاجين تأكيد: (1) REDIS_URL معمول set في production ولا لأ، (2) عدد الـPM2 instances الفعلي. لو الاتنين مؤكدين (REDIS_URL شغال، أو instance واحد بس)، البند ده يقفل من غير أي تغيير كود. لو لأ، الإصلاح مش كود جديد — الآلية مبنية صح بالفعل، بس محتاجة REDIS_URL يتفعّل في production.</div>
-      </div>
+      <p style="color:var(--ink-soft); font-size:14px;">مفيش نقاط قرار مفتوحة حاليًا — آخر اتنين (CORS رفع الملفات + تأكيد REDIS_URL) اتقفلوا في مراجعة كوميت 24 سبتمبر (تفاصيلهم في قسم "اتحلت مؤخرًا" فوق).</p>
     </section>
 
     <!-- ================= SERVER SPECS & PROVIDERS ================= -->
@@ -710,23 +699,12 @@
 
     <section id="plan">
       <h2>خطة العمل</h2>
-      <p class="section-sub">الوضع العام: فيه بند حرج واحد مفتوح (IDOR في حذف الدروس) لازم يتقفل قبل أي تفعيل لتوجل الحذف. الترتيب تحت حسب الأولوية.</p>
+      <p class="section-sub">الوضع العام: مفيش بند حرج (critical) مفتوح — آخر بند حرج (IDOR حذف الدروس) اتقفل في مراجعة 24 سبتمبر. الترتيب تحت حسب الأولوية.</p>
 
       <div class="timeline">
-        <div class="tl-item urgent">
-          <div class="tl-dot"></div>
-          <div class="tl-day">مرحلة 1 — عاجل (قبل تفعيل توجل حذف المحتوى)</div>
-          <div class="tl-body">
-            <h4>إصلاحات من مراجعة 21-22 سبتمبر</h4>
-            <ul>
-              <li><strong>إضافة تحقق ownership لدور TEACHER</strong> في deleteCourseHandler21 (وأي handler تاني اتفتح لنفس الدور بنفس الكوميت) — قبل ما SUPER_ADMIN يفعّل توجل "السماح بالحذف" لأول مرة</li>
-              <li>تأكيد إعدادات CORS في back/src/index.ts لمسار رفع الملفات، أو الأفضل توجيه FileUpload.tsx عبر بروكسي /api زي باقي المنصة</li>
-            </ul>
-          </div>
-        </div>
         <div class="tl-item mid">
           <div class="tl-dot"></div>
-          <div class="tl-day">مرحلة 2 — الجاهزية للتوسع (أسابيع، مش عاجل)</div>
+          <div class="tl-day">مرحلة 1 — الجاهزية للتوسع (أسابيع، مش عاجل)</div>
           <div class="tl-body">
             <h4>الأداء والبنية التحتية</h4>
             <ul>
@@ -738,7 +716,7 @@
         </div>
         <div class="tl-item">
           <div class="tl-dot"></div>
-          <div class="tl-day">مرحلة 3 — جودة وتجربة استخدام</div>
+          <div class="tl-day">مرحلة 2 — جودة وتجربة استخدام</div>
           <div class="tl-body">
             <h4>تحسينات مستمرة</h4>
             <ul>
@@ -763,7 +741,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V27 — ٢٣ سبتمبر ٢٠٢٦ (تتبّع كامل لسؤال Redis عبر index.ts/redis.ts/shared.ts: الـrate limiter العام مش بيستخدم Redis أصلًا، checkRateLimit كود ميت، لكن brute-force lockout على تسجيل الدخول حقيقي ومبني صح على Redis — الخطورة الفعلية معلّقة على تأكيد REDIS_URL في production). فيه بند حرج واحد مفتوح (IDOR حذف الدروس) ونقطتين قرار معلّقتين (CORS رفع الملفات + تأكيد REDIS_URL). الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">V28 — ٢٤ سبتمبر ٢٠٢٦ (كوميت 24 سبتمبر قفل الثلاث بنود المفتوحة كلها من V25-V27: IDOR حذف الدروس، CORS رفع الملفات، brute-force lockout/Redis — بالإضافة لثغرة IDOR إضافية في إدارة الامتحانات اتلقت واتصلحت من غير طلب. كل بند مؤكد من الكود ومحمي باختبار مخصص). مفيش بند حرج ولا نقطة قرار مفتوحة حاليًا. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
   </div>
 </footer>
 
