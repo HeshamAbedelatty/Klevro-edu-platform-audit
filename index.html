@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V28 (٢٤ سبتمبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V29 (٢٨ سبتمبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -274,13 +274,13 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V28 — ٢٤ سبتمبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V28</h1>
-    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميت 24 سبتمبر قفل الثلاث بنود المفتوحة كلها (IDOR حذف الدروس، CORS رفع الملفات، brute-force lockout/Redis)، وضاف بونص: ثغرة IDOR تانية في إدارة الامتحانات اتلقت واتصلحت من غير ما نطلبها. كل بند فيهم مؤكد من الكود مباشرة ومحمي باختبار مخصص جديد. مفيش أي نقطة قرار أو بند حرج مفتوح حاليًا.</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V29 — ٢٨ سبتمبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V29</h1>
+    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميت 24 سبتمبر قفل الثلاث بنود المفتوحة (IDOR حذف الدروس، CORS رفع الملفات، brute-force lockout/Redis) وضاف إصلاح IDOR إضافي في إدارة الامتحانات. مراجعة كوميت 28 سبتمبر (مزامنة الـIDs والـdedup في الـautosave) حسّنت حالة واحدة فعلاً (ids مؤقتة + ترتيب مختلف) لكنها سابت نقطة مفتوحة متوسطة، من غير اختبارات مصاحبة، وحالتها معلّقة على تأكيد من المطوّر/المختبر. كمان اتصحّح رقم "use client" بالقياس الفعلي (52 من 67 صفحة)، وأرقام next/image لسه من V24 ومش متعاد قياسها. مفيش بند حرج مفتوح.</p>
 
     <div class="stat-row">
-      <div class="stat-tile open"><span class="n">2</span><span class="l">بند مفتوح — محتاج إصلاح كود (الاتنين تحسينات، مش مشاكل حرجة)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">0</span><span class="l">نقاط قرار مفتوحة — كله اتأكد</span></div>
+      <div class="stat-tile open"><span class="n">3</span><span class="l">بند مفتوح — محتاج إصلاح كود (كلهم متوسطة، مفيش حرج)</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">1</span><span class="l">نقطة تأكيد مفتوحة — سلوك الـautosave (مينا/المختبر)</span></div>
       <div class="stat-tile fixed"><span class="n">23</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
     </div>
 
@@ -323,7 +323,7 @@
         <div class="r-tile">
           <div class="r-title">سلامة البيانات</div>
           <div class="r-score-row"><span class="r-score now good">8/10</span></div>
-          <div class="r-verdict">مفيش db push في أي مسار تشغيل، وبقى فيه نظام migrations رسمي (baseline + migrations حقيقية) بدل الاعتماد الكامل على raw SQL. الامتحانات المنشورة بتحافظ على حالتها بعد autosave. مشكلة تكرار الأسئلة اتحلت من جذورها، وتحديث 23 سبتمبر قفل تفصيلة إضافية في نفس الموضوع (توقيع التكرار كان بيتجاهل الاختيارات والصور، فكان بيسبب تصادم غلط لأسئلة الهندسة القصيرة — تفاصيل تحت). حذف الأسئلة المحفوظة (SUPER_ADMIN فقط) اتأكد كسياسة مقصودة ومحمية باختبار. مزامنة الأسئلة المستقلة بالفرونت شغالة. تحسينات أداء الحفظ/التعديل مراجَعة وآمنة.</div>
+          <div class="r-verdict">مفيش db push في أي مسار تشغيل، وبقى فيه نظام migrations رسمي (baseline + migrations حقيقية) بدل الاعتماد الكامل على raw SQL. الامتحانات المنشورة بتحافظ على حالتها بعد autosave. مشكلة تكرار الأسئلة اتحلت من جذورها، وتحديث 23 سبتمبر قفل تفصيلة إضافية في نفس الموضوع (توقيع التكرار كان بيتجاهل الاختيارات والصور، فكان بيسبب تصادم غلط لأسئلة الهندسة القصيرة — تفاصيل تحت). حذف الأسئلة المحفوظة (SUPER_ADMIN فقط) اتأكد كسياسة مقصودة ومحمية باختبار. مزامنة الأسئلة المستقلة بالفرونت شغالة. تحسينات أداء الحفظ/التعديل مراجَعة وآمنة. تنبيه (28 سبتمبر): منطق مطابقة الـIDs والـdedup في الـautosave عليه بند متوسط مفتوح بحالة ضيقة قابلة لكتابة محتوى سؤال فوق سؤال تاني (تفاصيله في كروت المشاكل المفتوحة) — الدرجة ثابتة لأن الوصول له مش متأكد لسه.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">استمرارية التخزين</div>
@@ -513,28 +513,38 @@
     <section id="frontend-open">
       <div class="cards">
         <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image شبه غير مستخدم (4 من 67 صفحة)</h3></div>
-          <span class="loc">grep على frontend/src/app</span>
-          <p class="desc">تبني جزئي بدأ (4 صفحات)، لكن النسبة لسه ضئيلة جدًا (~6%).</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استبدال تدريجي بـ next/image في باقي الصفحات، خصوصًا الأثقل بالصور.</span></div>
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>Autosave: مطابقة الـIDs بالـindex fallback + dedup عابر للموديولات ممكن يكتب محتوى سؤال فوق سؤال محفوظ</h3></div>
+          <span class="loc">front/src/lib/examAutosaveModuleSync.ts (syncClientItemsWithServerIds) + front/src/lib/examEditingPayload.ts (deduplicateSubmissionQuestions) — كوميت 28 سبتمبر</span>
+          <p class="desc"><strong>اللي اتحسّن فعلاً (مجرَّب على نسخة معزولة من الكود):</strong> ids مؤقتة + السيرفر رجّع الترتيب مختلف والنصوص مختلفة — القديم كان بيبدّل الـIDs، الجديد بيطابق صح بالـID ثم النص.</p>
+          <p class="desc"><strong>اللي لسه مفتوح:</strong> (1) الـdedup بقى عابر للموديولات لكن على الأسئلة اللي من غير ID حقيقي بس؛ السؤال المحفوظ (ID أطول من 20 حرف) بيتفلتر بالـID ومش بيسجّل توقيع، فمش بيمنع نسخة جديدة مطابقة. (2) نسخة الـpayload اللي اتشالت بتفضل في state الكلاينت من غير ID، فلو وقعت قبل سؤال محفوظ في نفس القائمة، الـindex fallback (المرحلة 3) بيديها ID السؤال المحفوظ؛ بعدها الـdedup بالـID بيحتفظ بالأولى (النص الغلط) ويشيل الأصلية، فالـPUT بيبعت ID الأصل ومعاه نص السؤال التاني. اتجرّبت على نسخة مني من الكود: سلسلة الخطوات دي شغالة. مش متأكدين إنها بتحصل في التطبيق، لأنها بتعتمد إن الـhook بيمرر قايمة الموديول فعلاً للـsync، وإن السيناريو (نفس السؤال في نطاقين بنفس الـpayload، أو standalone مقابل موديول) بيحصل. نقطة الضعف في الـindex fallback قديمة (الكود القديم كان index-only)، لكن الـdedup العابر للموديولات خلّى الوصول ليها ممكن بمحتوى غير فاضي.</p>
+          <p class="desc"><strong>ملاحظات جانبية:</strong> نص الكوميت بيفسّر المشكلة بـ"timestamps مؤقتة في محاولة وUUIDs في التانية"، لكن <code>seenSignatures</code> بيتعمل من جديد في كل استدعاء، فالتفسير ده مش مطابق للكود؛ الأقرب إن نفس السؤال ظاهر تحت نطاقين في نفس الـpayload (standalone مقابل موديول) — محتاج خطوات إعادة إنتاج من المطوّر. كمان <code>isPersistedId</code> في examAutosaveIdSync.ts بتقبل أي string غير فاضي، بينما الـdedup بيشترط طول أكبر من 20، فـID مؤقت نصي قصير هيتعامل "محفوظ" في مكان و"من غير ID" في التاني. وفي فرع "الـmodal مقفول" الكود بيعمل <code>setModules(parsedModules)</code>، فالنسخة المشالة ممكن تختفي من الواجهة بعد الـautosave (استنتاج من الكود، غير مجرَّب). ومحتمل loop في الـautosave لو <code>requiresStandaloneExamQuestionIdSync</code> فضلت true بسبب نسخة من غير ID (غير مؤكد، بيعتمد على شرط تشغيل الـautosave اللي مشفناهوش). والكوميت من غير أي اختبارات (الكوميتات السابقة كل واحد فيها اختبار لسلوكه). البند ده مرتبط بس مختلف عن بند "مزامنة الأسئلة المستقلة بعد الحفظ" اللي اتقفل في 8 سبتمبر.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">(أ) sync بـ3 مراحل: كل الـIDs الأول، بعدين نص+خيارات، وبعدين الباقي بالترتيب، مع منع الـindex fallback عن أي سؤال عنده نص أو ID (جُرّبت على نسخة معزولة وصلّحت الحالات اللي بتتبدل فيها الـIDs). (ب) لو السيناريو standalone مقابل موديول: تضييق الـdedup بحيث نسخة الـstandalone هي اللي تتشال من الـstate كمان، مش من الـpayload بس، وموديول مقابل موديول يفضل زي ما كان. (ج) اختبارين: "نفس السؤال في موديولين" و"سؤال مشال من الـpayload قبل سؤال محفوظ".</span></div>
         </div>
         <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client" لسه في أغلب الصفحات (58 من 67، ~87%)</h3></div>
-          <span class="loc">grep على frontend/src/app</span>
-          <p class="desc">كوميت 24 سبتمبر بدأ فعليًا في الموضوع ده — شال "use client" من 9 صفحات (lessons + redirects الواجبات/الاختبارات لـschool-admin وsuper-admin). لسه أغلب الصفحات Client Components حتى لو المحتوى شبه static.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استمرار المراجعة التدريجية على باقي الصفحات، وخصوصًا الأبسط (زي login).</span></div>
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image شبه غير مستخدم (4 من 67 صفحة — رقم V24، لسه متعاد قياسه)</h3></div>
+          <span class="loc">grep على front/src/app</span>
+          <p class="desc">تبني جزئي بدأ (4 صفحات)، لكن النسبة كانت ضئيلة (~6%). الرقم ده من V24 ومش متأكدين من منهجية عدّه وقتها (اتضح إن رقم "use client" اللي جه من نفس المصدر كان مش دقيق)، فاعتبره تقدير مش قياس. آخر ديفات (24 و28 سبتمبر) مفيهاش أي تغيير في استخدام next/image.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">قياس الرقم الفعلي بنفس منهجية "use client" (page.tsx بس): <code>grep -rl "next/image" front/src/app --include="page.tsx" | wc -l</code> ثم استبدال تدريجي في الصفحات الأثقل بالصور.</span></div>
+        </div>
+        <div class="card sev-medium">
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client" لسه في أغلب الصفحات (52 من 67 page.tsx، ~78%)</h3></div>
+          <span class="loc">front/src/app (page.tsx)</span>
+          <p class="desc"><strong>الرقم مقاس فعليًا</strong> بأمرين على الريبو: <code>find front/src/app -name "page.tsx" | wc -l</code> = 67، و<code>grep -rl '"use client"' front/src/app --include="page.tsx" | wc -l</code> = 52. كوميت 24 سبتمبر شال "use client" من 11 صفحة (lessons + 5 لـschool-admin + 5 لـsuper-admin؛ redirects الواجبات/الاختبارات وcourses/edit). تصحيحات على نسخ سابقة: V28 كتب "58 من 67" (حساب 67-9 غلط: العدد الصحيح 11 مش 9، وكمان الرقم الأصلي 67/67 كان تقديري)، فالفرق بين 67-11=56 والمقاس 52 (4 صفحات) غير مفسّر من الديف ده لوحده — الأرجح إن رقم V24 مكانش دقيق. الرقم المقاس دلوقتي هو المرجع. (ملاحظة: عدّ كل الملفات تحت app/ بالسطر ده بيدي 61 لأنه بيشمل layout وغيره، مش مقارَن بـ67.) لسه أغلب الصفحات Client Components حتى لو المحتوى شبه static.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استمرار المراجعة التدريجية على باقي الصفحات، وخصوصًا الأبسط (زي login)، وإعادة القياس بنفس الأمرين بعد كل دفعة.</span></div>
         </div>
       </div>
     </section>
 
     <div class="part-divider" id="decisions" style="margin-top:40px; background:var(--warn);">
-      <div class="part-eyebrow">محتاجة قرار أو تأكيد منك</div>
+      <div class="part-eyebrow">محتاجة قرار أو تأكيد</div>
       <h2>نقاط لسه مفتوحة — مش بالضرورة إصلاح كود</h2>
-      <p>الفرق عن الكروت فوق: دول محتاجين رد منك (تأكيد ملف، تأكيد نيّة تصميم) قبل ما نقفلهم، مش مجرد سطر كود.</p>
+      <p>الفرق عن الكروت فوق: دول محتاجين تأكيد (ملف، سلوك متجرَّب، نيّة تصميم) قبل ما نقفلهم، مش مجرد سطر كود. لو مفيش مختبر متاح، البند بيتحوّل لمينا.</p>
     </div>
 
     <section id="open-decisions" style="margin-top:20px;">
-      <p style="color:var(--ink-soft); font-size:14px;">مفيش نقاط قرار مفتوحة حاليًا — آخر اتنين (CORS رفع الملفات + تأكيد REDIS_URL) اتقفلوا في مراجعة كوميت 24 سبتمبر (تفاصيلهم في قسم "اتحلت مؤخرًا" فوق).</p>
+      <div class="box">
+        <p><strong>تأكيد سلوك الـautosave على التطبيق الفعلي (من مينا أو المختبر).</strong> ثلاث حاجات مش ظاهرة من الكود لوحده: (1) هل PUT /api/exams/:id بيتكرر لوحده لما تحط نفس السؤال في موديول وفي الـstandalone وتسيبها؟ (شوف Network؛ بيعتمد على الـeffect اللي بيجدول الـautosave، ومشفناهوش). (2) هل السلسلة الموصوفة في كارت الـautosave بتحصل فعلاً (سؤال مشال من الـpayload قبل سؤال محفوظ)؟ (3) إيه خطوات إعادة إنتاج المشكلة اللي كوميت 28 سبتمبر كان بيصلحها بالظبط؟ لحد التأكيد، البند مسجّل متوسط، مش حرج.</p>
+      </div>
     </section>
 
     <!-- ================= SERVER SPECS & PROVIDERS ================= -->
@@ -699,12 +709,23 @@
 
     <section id="plan">
       <h2>خطة العمل</h2>
-      <p class="section-sub">الوضع العام: مفيش بند حرج (critical) مفتوح — آخر بند حرج (IDOR حذف الدروس) اتقفل في مراجعة 24 سبتمبر. الترتيب تحت حسب الأولوية.</p>
+      <p class="section-sub">الوضع العام: مفيش بند حرج (critical) مفتوح — آخر بند حرج (IDOR حذف الدروس) اتقفل في مراجعة 24 سبتمبر. فيه بند متوسط جديد (autosave sync/dedup) محتاج تأكيد. الترتيب تحت حسب الأولوية.</p>
 
       <div class="timeline">
         <div class="tl-item mid">
           <div class="tl-dot"></div>
-          <div class="tl-day">مرحلة 1 — الجاهزية للتوسع (أسابيع، مش عاجل)</div>
+          <div class="tl-day">مرحلة 1 — قريب (أيام): سلامة بيانات الـautosave</div>
+          <div class="tl-body">
+            <h4>من مراجعة 28 سبتمبر</h4>
+            <ul>
+              <li>تأكيد سلوك الـautosave على التطبيق (تكرار PUT، السلسلة الموصوفة، خطوات إعادة الإنتاج) — مينا/المختبر</li>
+              <li>لو اتأكد: sync بـ3 مراحل + منع الـindex fallback عن الأسئلة اللي ليها نص/ID + تضييق الـdedup + اختبارين</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item mid">
+          <div class="tl-dot"></div>
+          <div class="tl-day">مرحلة 2 — الجاهزية للتوسع (أسابيع، مش عاجل)</div>
           <div class="tl-body">
             <h4>الأداء والبنية التحتية</h4>
             <ul>
@@ -716,12 +737,12 @@
         </div>
         <div class="tl-item">
           <div class="tl-dot"></div>
-          <div class="tl-day">مرحلة 2 — جودة وتجربة استخدام</div>
+          <div class="tl-day">مرحلة 3 — جودة وتجربة استخدام</div>
           <div class="tl-body">
             <h4>تحسينات مستمرة</h4>
             <ul>
-              <li>توسيع next/image لباقي الصفحات (4 من 67 حاليًا)</li>
-              <li>مراجعة تدريجية لتحويل صفحات بسيطة (login) لـ Server Components</li>
+              <li>توسيع next/image لباقي الصفحات (رقم V24: 4 من 67 — يتعاد قياسه أولًا)</li>
+              <li>مراجعة تدريجية لتحويل صفحات بسيطة (login) لـ Server Components (المقاس الحالي: 52 من 67 page.tsx فيها "use client")</li>
             </ul>
           </div>
         </div>
@@ -741,7 +762,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V28 — ٢٤ سبتمبر ٢٠٢٦ (كوميت 24 سبتمبر قفل الثلاث بنود المفتوحة كلها من V25-V27: IDOR حذف الدروس، CORS رفع الملفات، brute-force lockout/Redis — بالإضافة لثغرة IDOR إضافية في إدارة الامتحانات اتلقت واتصلحت من غير طلب. كل بند مؤكد من الكود ومحمي باختبار مخصص). مفيش بند حرج ولا نقطة قرار مفتوحة حاليًا. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">V29 — ٢٨ سبتمبر ٢٠٢٦ (مراجعة كوميت 28 سبتمبر: مطابقة الـIDs والـdedup في الـautosave — تحسّنت حالة واحدة وفضل بند متوسط مفتوح بحالته المتأكد منها على نسخة معزولة من الكود لا على التطبيق، من غير اختبارات مصاحبة؛ + تصحيح رقم "use client" لـ52 من 67 بالقياس الفعلي، وتصحيح عدد الصفحات اللي اتشال منها كوميت 24 سبتمبر من 9 لـ11). مفيش بند حرج مفتوح، ونقطة تأكيد واحدة معلّقة. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
   </div>
 </footer>
 
