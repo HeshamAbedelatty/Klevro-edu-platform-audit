@@ -526,10 +526,10 @@
     <section id="frontend-open">
       <div class="cards">
         <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image شبه غير مستخدم (4 من 67 صفحة — رقم V24، لسه متعاد قياسه)</h3></div>
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image مستخدم في 16 من 67 صفحة (~24%)</h3></div>
           <span class="loc">front/src/app (page.tsx)</span>
-          <p class="desc">تبني جزئي بدأ (4 صفحات)، لكن النسبة كانت ضئيلة (~6%). الرقم ده من V24 ومش متأكدين من منهجية عدّه وقتها، فاعتبره تقدير مش قياس. آخر 3 ديفات (24، 28، 30 سبتمبر) مفيهاش أي تغيير في استخدام next/image.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">قياس الرقم الفعلي بنفس منهجية "use client": <code>grep -rl "next/image" front/src/app --include="page.tsx" | wc -l</code> ثم استبدال تدريجي في الصفحات الأثقل بالصور.</span></div>
+          <p class="desc">رقم مقاس فعليًا على الريبو (<code>grep -rl "next/image" front/src/app --include="page.tsx" | wc -l</code> = 16). الرقم القديم "4 من 67" كان من V24 وطلع غير دقيق (زي رقم "use client" بالظبط) — التبني الفعلي أعلى بكتير من المتصوَّر (~24% مش ~6%)، لكن لسه أغلبية الصفحات (51) مش مستخدمة next/image.</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استبدال تدريجي بـ next/image في باقي الصفحات، خصوصًا الأثقل بالصور.</span></div>
         </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client" لسه في أغلب الصفحات (46 من 67 page.tsx، ~69%)</h3></div>
