@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V30 (٣٠ سبتمبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V32 (٢ أكتوبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -274,14 +274,14 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V30 — ٣٠ سبتمبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V30</h1>
-    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميت 30 سبتمبر قفل بند الـautosave (مطابقة IDs + dedup) بالكامل — اتأكد بإعادة بناء الكود على نسخة معزولة وتشغيل 11 سيناريو، بينها سلسلة الخطر اللي رفعناها بالظبط. الديف نفسه ضاف كمان فصل صلاحية "مشاهدة" عن "إدارة" للامتحانات (مُختبر) وقفل مفعّل/موقوف للحسابات عند تسجيل الدخول (الـdefault اتأكد آمن من schema.prisma). "use client" اتصحح لرقم مقاس فعليًا: 46 من 67. مفيش بند حرج أو نقطة قرار مفتوحة حاليًا.</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V32 — ٢ أكتوبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V32</h1>
+    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميتات 1-2 أكتوبر (موصوفة كـUI/cache fixes بس فعليًا فيها تحصين أمان جوهري) وسّعت تحقق ownership (TEACHER/schoolId) لعمليات تعديل الدروس/الكورسات مش بس الحذف الصريح، وقفلت ثغرة تجاوز توجل الحذف عبر تعديل عادي، وأصلحت كاش 15 ثانية لكل worker في فحص سياسة الحذف، وفصلت كوكي الجلسة عن كوكي التجديد بتصميم JWT purpose منفصل مع كل الإصلاحات المصاحبة (بروكسي الكوكيز، فشل التجديد المؤقت، مزامنة السياسة لحظيًا على الفرونت). كل بند مؤكد من الكود + اختبارات جديدة شاملة. مفيش بند حرج أو نقطة قرار مفتوحة حاليًا.</p>
 
     <div class="stat-row">
       <div class="stat-tile open"><span class="n">2</span><span class="l">بند مفتوح — محتاج إصلاح كود (الاتنين تحسينات، مش مشاكل حرجة)</span></div>
       <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">0</span><span class="l">نقاط قرار مفتوحة — كله اتأكد</span></div>
-      <div class="stat-tile fixed"><span class="n">25</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
+      <div class="stat-tile fixed"><span class="n">28</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -299,6 +299,7 @@
       <li><a href="#resolved-recently" style="color:var(--good);">✅ اتحلت مؤخرًا</a></li>
       <li><a href="#open-now" class="nav-h">المشاكل المفتوحة — كروت</a></li>
       <li><a href="#decisions" class="nav-h">نقاط محتاجة قرار/تأكيد</a></li>
+      <li><a href="#server-specs" class="nav-h">اقتراح إمكانيات ومزودي السيرفرات</a></li>
       <li><a href="#architecture" class="nav-h">قاعدة البيانات والمعمارية</a></li>
       <li><a href="#plan" class="nav-h">خطة العمل</a></li>
     </ul>
@@ -312,7 +313,7 @@
         <div class="r-tile">
           <div class="r-title">الأمان</div>
           <div class="r-score-row"><span class="r-score was">7/10</span><span class="r-arrow">→</span><span class="r-score now good">10/10</span></div>
-          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات/الدروس، بما فيها تحقق TeacherCourse فعلي (مش بس school-level). JWT خرج من localStorage والـresponse body خالص، محمي باختبار تراجع دائم. باب خلفي كامل في تسجيل الدخول اتشال. brute-force lockout بقى fail-closed هيكليًا (Redis أو worker واحد بالإجبار، مفيش حالة وسط ضعيفة). ثغرة IDOR حذف الدروس لـTEACHER وثغرة إدارة امتحان cross-school عبر creatorId — الاتنين اتلقوا واتقفلوا في مراجعة 21-24 سبتمبر، ومحميين باختبارات مخصصة. مفيش بند حرج أو عالي مفتوح في محور الأمان دلوقتي.</div>
+          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات/الدروس، بما فيها تحقق TeacherCourse فعلي (مش بس school-level). JWT خرج من localStorage والـresponse body خالص، محمي باختبار تراجع دائم. باب خلفي كامل في تسجيل الدخول اتشال. brute-force lockout بقى fail-closed هيكليًا (Redis أو worker واحد بالإجبار، مفيش حالة وسط ضعيفة). ثغرة IDOR حذف الدروس لـTEACHER وثغرة إدارة امتحان cross-school عبر creatorId — الاتنين اتلقوا واتقفلوا في مراجعة 21-24 سبتمبر. مراجعة 1-2 أكتوبر مدّت نفس تحقق الـownership لعمليات التعديل (مش الحذف الصريح بس) وقفلت تجاوز توجل الحذف عبر تعديل عادي، وفصلت كوكي الجلسة عن كوكي التجديد بـJWT purpose منفصل (مع إصلاح مصاحب في بروكسي الكوكيز كان ممكن يكسر الميزة بصمت). مفيش بند حرج أو عالي مفتوح في محور الأمان دلوقتي.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
@@ -402,6 +403,21 @@
         <h3>فصل صلاحية "مشاهدة" عن "إدارة" الامتحانات + قفل حسابات موقوفة عند تسجيل الدخول</h3>
         <p><strong>مشاهدة/إدارة:</strong> <code>canViewExam</code> جديدة أوسع من <code>canManageExam</code> — امتحان central بقى متاح للمشاهدة لأي TEACHER/SCHOOL_ADMIN بغض النظر عن التخصيص، بينما الإدارة (تعديل/حذف) لسه مقيّدة. مطبّق على 4 GET handlers + endpoint export-json، ومتغطى باختبارات صريحة. تعديل ملحق في <code>canManageExamRecord</code> (امتحان central معاه تخصيص مدارس بقى قابل للإدارة من المدارس دي) من غير اختبار مخصص — منخفض الخطورة (توسيع صلاحية مقصود الشكل، مش تضييق)، بس يستاهل إشارة لمينا لو حد راجعها تاني. <strong>حسابات موقوفة:</strong> تسجيل الدخول بقى بيرفض بـ403 لو <code>user.status !== 'ACTIVE'</code>. راجعنا schema.prisma: الحقل <code>status String @default("ACTIVE")</code> — يعني أي مستخدم حالي أو جديد بياخد ACTIVE تلقائيًا وقت الـmigration، مفيش خطر lockout جماعي.</p>
         <div class="resolved">✓ الاتنين شكلهم قرار منتج مقصود ومتأكد منهم من الكود؛ نقطة صغيرة واحدة (تعديل canManageExamRecord بلا اختبار) للعلم بس.</div>
+      </div>
+
+      <div class="discovery" style="border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ اتقفل — مراجعة 1-2 أكتوبر</span>
+        <h3>تحقق الـownership بقى شامل لعمليات التعديل مش بس الحذف الصريح، وكاش سياسة الحذف المتضارب بين الـworkers اتشال</h3>
+        <p>إصلاح 24 سبتمبر (schoolId + TeacherCourse) كان محصور في <code>deleteCourseHandler21</code> بس. الكوميت ده مدّ نفس النمط لـ<code>patchCourseHandler17/18/19</code> (تعديل slides/questions/assignments) و<code>putCourseHandler12</code> (حفظ الكورس) و<code>deleteCourseHandler22</code> (حذف كورس — TEACHER كان مش في role list أصلًا، اتضاف مع التحقق). <code>removesSavedContent()</code> جديدة بتقارن المحتوى قبل/بعد أي تعديل (مش بس حذف صريح) فتمنع تجاوز توجل "منع الحذف" عن طريق PATCH عادي بيشيل عناصر. وبالتوازي: <code>isContentDeletionAllowed()</code> كان عنده كاش محلي 15 ثانية لكل PM2 worker (نفس عيلة مشكلة Redis اللي راجعناها قبل كده، منطقة تانية) — لو SUPER_ADMIN يبدّل التوجل، worker تاني كان ممكن يفضل شغال بقيمة قديمة لحد 15 ثانية. اتشال الكاش خالص. وعلى الفرونت، <code>useDeletionPolicy</code> كان عنده كاش بلا انتهاء صلاحية — بقى يتحدّث كل 30 ثانية + عند التركيز على التاب + cross-tab sync عبر storage event.</p>
+        <div class="resolved">✓ مقفول — اختبارات جديدة شاملة (content-deletion-policy.test.cjs, system-deletion-settings.test.cjs) تغطي الأدوار والمدارس والـtoggle.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ اتقفل — تصميم جديد غير مطلوب منا، مراجعة 1-2 أكتوبر</span>
+        <h3>كوكي الجلسة انفصل عن كوكي التجديد بـJWT purpose منفصل، مع إصلاحين مصاحبين كانا ضروريين</h3>
+        <p>كوكيين منفصلين دلوقتي: <code>auth_token</code> (وصول عادي) و<code>auth_refresh</code> (JWT بعلامة <code>purpose: 'session_refresh'</code>). أي توكن معلّم بـpurpose مرفوض في المسارات العادية، والعكس. <strong>إصلاح مصاحب ضروري:</strong> بروكسي الـNext.js كان بيستخدم <code>headers.set()</code> لكل هيدر رد، وده بيمسح أي Set-Cookie سابق بنفس الاسم — من غير الإصلاح ده (بقى <code>getSetCookie()</code>/<code>.append()</code>)، إضافة الكوكي التاني كانت هتكسر الأول بصمت في production. <strong>إصلاح مصاحب تاني:</strong> apiFetch بقى يفرّق بين فشل تجديد "أكيد" (401/403 → تسجيل خروج) وفشل "مؤقت" (503/network → تسيب الجلسة، تحاول تاني) — ده بالظبط اللي كان ناقص عشان fail-closed بتاع Redis (503 وقت مفيش worker واحد) ميبقاش بيطرد المستخدم غلط.</p>
+        <p><strong>ملاحظة صغيرة (مش بند مفتوح):</strong> الفصل اتجاه واحد عمليًا — توكن refresh miقدرش يُستخدم كـaccess (مؤكد ومحمي)، لكن access token يقدر يستخدم endpoint التجديد لو اتبعت كـBearer صريح بدل كوكي الـrefresh (الشرط <code>usingRefreshCookie</code> بيبقى false وقتها فيرجع للمسار العادي). راجعنا auth.ts كامل: ده مش privilege escalation (نفس صلاحيات التوكن أصلًا)، وشكله legacy path مقصود لجلسات الطلاب المنتحَلة (توكن حقيقي في localStorage بدل كوكي) — يستاهل تأكيد إن المسار ده لسه مطلوب فعليًا.</p>
+        <div class="resolved">✓ مقفول — اختبارات مخصصة شاملة (فصل الكوكيز، التجديد مع الانتحال، فشل مؤقت، بروكسي Set-Cookie مزدوج)، وراجعنا auth.ts كامل + كل مواضع jwt.sign في الباك اند للتأكد من عدم وجود تصادم purpose.</div>
       </div>
 
       <div class="discovery" style="border-color:var(--good);">
@@ -552,6 +568,75 @@
 
     <!-- ================= SERVER SPECS & PROVIDERS ================= -->
 
+    <div class="part-divider" id="server-specs" style="margin-top:40px; background:var(--signal);">
+      <div class="part-eyebrow">توصية تقنية</div>
+      <h2>اقتراح إمكانيات ومزودي السيرفرات</h2>
+      <p>بناءً على الوضع الحالي للمنصة ومتطلبات التشغيل، هذه هي المواصفات المقترحة لبيئة الإنتاج وأبرز الاستضافات الموصى بها.</p>
+    </div>
+
+    <section id="server-specs-content">
+      <div class="box">
+        <p><strong>الوضع الحالي:</strong> الخادم الحالي عبارة عن VPS محدود (vCPU واحد، 4GB RAM، 50GB NVMe) وموارده مشتركة مع مشاريع أخرى، مما يسبب بطء الأداء.</p>
+        <p><strong>المواصفات المقترحة (الحد الأدنى لبيئة الإنتاج):</strong></p>
+        <ul style="margin-top:10px; color:var(--ink-soft); font-size:15px; line-height:1.8; padding-right: 20px;">
+          <li><strong>المعالج (CPU):</strong> من 4 إلى 8 أنوية (vCPUs) مخصصة لاستيعاب الطلبات المتزامنة والنسخ الاحتياطي.</li>
+          <li><strong>الذاكرة العشوائية (RAM):</strong> من 8GB إلى 16GB لتشغيل PostgreSQL و Docker بسلاسة.</li>
+          <li><strong>مساحة التخزين:</strong> 100GB كحد أدنى من نوع NVMe SSD.</li>
+          <li><strong>تخزين الملفات (Media Storage):</strong> نقل تخزين الفيديوهات والصور إلى مساحة خارجية مثل Cloudflare R2.</li>
+          <li><strong>التوسع المستقبلي:</strong> فصل قاعدة البيانات على سيرفر مستقل عن الواجهة الأمامية والخلفية للمشروع.</li>
+        </ul>
+      </div>
+
+      <h3 style="margin-top:28px; font-size:18px;">المزودون المقترحون (Hosting Providers)</h3>
+      <p class="section-sub">مقارنة بين خيارات الاستضافة المناسبة للأداء العالي والميزانية:</p>
+
+      <div class="cost-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="cost-card" style="border-top: 3px solid var(--signal);">
+          <div class="cc-num" style="color:var(--signal);">Option 1 — التوصية الأولى (أفضل أداء مقابل سعر)</div>
+          <h4>Hetzner (Cloud / Dedicated)</h4>
+          <p>أفضل خيار في أوروبا وأمريكا من حيث قوة المعالجات والأقراص السريعة بأسعار تنافسية جداً. يقدم خطط Dedicated CPU (سلسلة CCX) وسيرفرات كاملة (AX Line).</p>
+          <ul style="font-size:13px; color:var(--ink-soft); padding-right:16px; margin:8px 0;">
+            <li><strong>المميزات:</strong> أداء عالي جداً (NVMe SSD)، معالجات مخصصة، تكلفة منخفضة للغاية مقارنة بالمواصفات.</li>
+            <li><strong>العيوب:</strong> مراكز البيانات رئيسياً في ألمانيا وفنلندا وأمريكا (قد تتطلب CDN مثل Cloudflare للمنطقة العربية).</li>
+          </ul>
+          <span class="cc-price">CPX31 (4 vCPU / 8GB RAM) ≈ €14/شهر</span>
+        </div>
+
+        <div class="cost-card" style="border-top: 3px solid var(--navy-2);">
+          <div class="cc-num" style="color:var(--navy-2);">Option 2 — الأكثر سهولة واستقراراً</div>
+          <h4>DigitalOcean</h4>
+          <p>ممتاز ومناسب جداً للشبكات والتطبيقات السحابية. يتيح إنشاء خوادم سريعة (Droplets) وربط Managed Databases بسهولة.</p>
+          <ul style="font-size:13px; color:var(--ink-soft); padding-right:16px; margin:8px 0;">
+            <li><strong>المميزات:</strong> لوحة تحكم سهلة جداً، ثبات عالي، خوادم في ألمانيا وفرانكفورت والشرق الأوسط أحياناً.</li>
+            <li><strong>العيوب:</strong> التكلفة أعلى قليلاً من Hetzner و Contabo لنفس الإمكانيات.</li>
+          </ul>
+          <span class="cc-price">Dedicated CPU (4 vCPU / 8GB RAM) ≈ $48/شهر</span>
+        </div>
+
+        <div class="cost-card" style="border-top: 3px solid var(--purple);">
+          <div class="cc-num" style="color:var(--purple);">Option 3 — خيار موثوق وشبكة قوية</div>
+          <h4>Linode / Akamai</h4>
+          <p>من أقدم وأقوى شركات الاستضافة السحابية، وتوفر خطط Dedicated CPU متزنة ومناسبة لبيئات Production.</p>
+          <ul style="font-size:13px; color:var(--ink-soft); padding-right:16px; margin:8px 0;">
+            <li><strong>المميزات:</strong> دعم فني ممتاز، استقرار عالي جداً للشبكة، تسعير واضح بدون تكاليف خفية.</li>
+            <li><strong>العيوب:</strong> تحتاج خبرة في إدارة وتأمين السيرفرات لعدم وجود إدارات مدمجة كثيرة.</li>
+          </ul>
+          <span class="cc-price">Dedicated 8GB (4 vCPU / 8GB RAM) ≈ $36/شهر</span>
+        </div>
+
+        <div class="cost-card" style="border-top: 3px solid var(--warn);">
+          <div class="cc-num" style="color:var(--warn);">Option 4 — الخيار الاقتصادي للبدايات</div>
+          <h4>Contabo</h4>
+          <p>توفر حجم ذاكرة عشوائية (RAM) ومعالجات ضخمة جداً مقابل مبالغ زهيدة. مناسبة للميزانيات المحدودة جداً.</p>
+          <ul style="font-size:13px; color:var(--ink-soft); padding-right:16px; margin:8px 0;">
+            <li><strong>المميزات:</strong> أسعار رخيصة جداً مقابل إمكانيات عتاد مرتفعة.</li>
+            <li><strong>العيوب:</strong> الموارد قد تكون مشتركة بشكل مكثف في خطط VPS العادية، مما قد يسبب تذبذب السرعة تحت الضغط العالي.</li>
+          </ul>
+          <span class="cc-price">Cloud VPS 2 (6 vCPU / 16GB RAM) ≈ $12/شهر</span>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= DATABASE & ARCHITECTURE ================= -->
 
     <div class="part-divider" id="architecture">
@@ -664,7 +749,7 @@
           <div class="tl-body">
             <h4>تحسينات مستمرة</h4>
             <ul>
-              <li>توسيع next/image لباقي الصفحات (رقم V24: 4 من 67 — يتعاد قياسه أولًا)</li>
+              <li>توسيع next/image لباقي الصفحات (المقاس الحالي: 16 من 67، ~24%)</li>
               <li>مراجعة تدريجية لتحويل صفحات بسيطة (login) لـ Server Components (المقاس الحالي: 46 من 67 page.tsx فيها "use client")</li>
             </ul>
           </div>
@@ -685,7 +770,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V30 — ٣٠ سبتمبر ٢٠٢٦ (كوميت 30 سبتمبر قفل بند autosave الوحيد المفتوح — مؤكد بتشغيل مستقل لـ11 سيناريو + اختبارات جديدة مخصصة. نفس الكوميت ضاف فصل مشاهدة/إدارة للامتحانات وقفل حسابات موقوفة عند تسجيل الدخول، الاتنين اتأكدوا من الكود. "use client" اتصحح لرقم مقاس فعليًا: 46 من 67). مفيش بند حرج ولا نقطة قرار مفتوحة حاليًا. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">V32 — ٢ أكتوبر ٢٠٢٦ (مراجعة كوميتات 1-2 أكتوبر: تحقق ownership اتمد لعمليات التعديل مش الحذف الصريح بس، كاش سياسة حذف 15 ثانية لكل worker اتشال، وفصل كوكي الجلسة عن كوكي التجديد بتصميم JWT purpose منفصل مع إصلاحات مصاحبة ضرورية في بروكسي الكوكيز وفشل التجديد المؤقت. راجعنا auth.ts كامل + كل مواضع jwt.sign للتأكد من عدم تصادم. كل بند محمي باختبارات جديدة). مفيش بند حرج ولا نقطة قرار مفتوحة حاليًا. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
   </div>
 </footer>
 
