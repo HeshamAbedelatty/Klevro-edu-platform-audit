@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V32 (٢ أكتوبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V33 (٥ أكتوبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -274,14 +274,14 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V32 — ٢ أكتوبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V32</h1>
-    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميتات 1-2 أكتوبر (موصوفة كـUI/cache fixes بس فعليًا فيها تحصين أمان جوهري) وسّعت تحقق ownership (TEACHER/schoolId) لعمليات تعديل الدروس/الكورسات مش بس الحذف الصريح، وقفلت ثغرة تجاوز توجل الحذف عبر تعديل عادي، وأصلحت كاش 15 ثانية لكل worker في فحص سياسة الحذف، وفصلت كوكي الجلسة عن كوكي التجديد بتصميم JWT purpose منفصل مع كل الإصلاحات المصاحبة (بروكسي الكوكيز، فشل التجديد المؤقت، مزامنة السياسة لحظيًا على الفرونت). كل بند مؤكد من الكود + اختبارات جديدة شاملة. مفيش بند حرج أو نقطة قرار مفتوحة حاليًا.</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V33 — ٥ أكتوبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V33</h1>
+    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. بلاغ عميل (صور أسئلة الامتحان بطيئة وبتحمّل بشكل متدرّج) اتحقق منه بمراجعة كود مباشرة وقفل بكوميت 5 أكتوبر: صورة السؤال بقت eager-loaded، فيه hook جديد بيستنى اكتمال فك الترميز قبل ما يعتبرها جاهزة، العداد التنازلي بيتوقف أثناء التحميل، وصورة السؤال الجاي بتتحمّل مقدمًا. نفس التحقيق كشف بند تاني لسه مفتوح: صور HEIC الملصوقة مباشرة (مش مرفوعة كملف) بتتسرب كـbase64 خام لعدم تطابق قايمتين في shared.ts. مفيش بند حرج أو نقطة قرار مفتوحة حاليًا.</p>
 
     <div class="stat-row">
       <div class="stat-tile open"><span class="n">2</span><span class="l">بند مفتوح — محتاج إصلاح كود (الاتنين تحسينات، مش مشاكل حرجة)</span></div>
       <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">0</span><span class="l">نقاط قرار مفتوحة — كله اتأكد</span></div>
-      <div class="stat-tile fixed"><span class="n">28</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
+      <div class="stat-tile fixed"><span class="n">29</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -421,6 +421,13 @@
       </div>
 
       <div class="discovery" style="border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ اتقفل — بلاغ عميل، كوميت 5 أكتوبر</span>
+        <h3>صور أسئلة الامتحان كانت بطيئة وبتحمّل بشكل متدرّج — اتقفلت بتصميم جديد يحمي وقت الطالب مش بس السرعة</h3>
+        <p>بلاغ عميل: "الصورة بتحمّل من فوق لتحت شوية شوية والطالب بينتظر". التحقيق كشف 3 أسباب: (1) صورة السؤال في exams/[id]/page.tsx مفيهاش priority، فـnext/image بيعاملها كـlazy رغم إنها فوق الشاشة من اللحظة الأولى. (2) next.config.ts عنده remotePatterns مفتوحة (hostname: '**')، مش هي السبب. (3) الـCache-Control في بروكسي الـuploads كان تفصيلة ثانوية. الحل النهائي تجاوز "خليها أسرع" للسؤال الأصح "امنع ضياع وقت الطالب": <code>loading="eager"</code> + <code>fetchPriority="high"</code> على صورة السؤال، وhook جديد (<code>useExamMedia</code>) بيستنى كل صور السؤال الحالي تتحمّل <strong>وتتفك ترميزها بالكامل</strong> (<code>image.decode()</code>, مش بس حدث load) قبل ما تُعتبر جاهزة — ده اللي بيمنع فعليًا العرض المتدرّج. العداد التنازلي بقى بيتوقف (<code>paused={'{'}!questionMedia.ready{'}'}</code>) لحد ما الصور تخلص، فوقت الامتحان مش بينقص أثناء الانتظار. وبالتوازي بيعمل prefetch لصورة السؤال الجاي وهو لسه على الحالي، باستخدام نفس آلية next/image الداخلية (getImageProps) عشان الـprefetch يضرب نفس مفتاح الكاش اللي الصورة الحقيقية هتستخدمه.</p>
+        <div class="resolved">✓ مقفول — اختبارات مخصصة جديدة (imageReadiness.test.mjs) بتغطي اكتمال فك الترميز، الصور من الكاش، والفشل/التايم أوت/الإلغاء.</div>
+      </div>
+
+      <div class="discovery" style="border-color:var(--good);">
         <span class="d-tag" style="background:var(--good);">✅ مقفول نهائيًا 100% — مراجعة 20 سبتمبر</span>
         <h3>JWT خرج من localStorage — والتوكن الخام بقى مش موجود في أي رد JSON خالص</h3>
         <p>تطور أخير: قبل كده كان التوكن الحقيقي لسه بيتبعت في body الـ /api/auth/login "للتوافق المؤقت" حتى لو الفرونت مش بيخزّنه. دلوقتي اتشال خالص من login وrefresh-token وimpersonate الثلاثة — الردود بترجع expiresAt/refreshed:true بس. الكوكي httpOnly هي المصدر الوحيد، ومحمي باختبار تراجع مخصص بيتأكد صراحة إن res.body.token = undefined.</p>
@@ -541,6 +548,12 @@
 
     <section id="frontend-open">
       <div class="cards">
+        <div class="card sev-medium">
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>صور HEIC الملصوقة مباشرة بتتسرب كـbase64 خام — قايمتين مش متطابقين في نفس الملف</h3></div>
+          <span class="loc">back/src/shared.ts — سطر 42-45 (ALLOWED_MIME_TYPES) مقابل سطر 492 (extractAndSaveBase64Images)</span>
+          <p class="desc">قايمة الرفع العادي بتقبل HEIC/HEIF/AVIF/BMP/PJPEG. الـregex المسؤول عن استخراج أي base64 متسرب جوه محتوى السؤال (مش عن طريق رفع ملف، زي paste مباشر في المحرر) لسه واقف على <code>png|jpeg|jpg|gif|webp</code> بس. أي صورة HEIC (الصيغة الافتراضية لصور آيفون) اتلزقت مباشرة بتعدّي من غير ما تتحوّل لملف — بتفضل base64 خام كامل جوه imageUrl، ومش بتستفيد من أي caching، وبتدي نفس أعراض البطء/التحميل المتدرّج اللي اتقفلت في البند اللي فوق، لأسئلة معينة بس (اللي فيها صور ملصوقة مش مرفوعة).</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">توسيع الـregex ليطابق نفس ALLOWED_MIME_TYPES (الأفضل يُشتق منها تلقائيًا عشان القايمتين ميفترقوش تاني).</span></div>
+        </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image مستخدم في 16 من 67 صفحة (~24%)</h3></div>
           <span class="loc">front/src/app (page.tsx)</span>
@@ -770,7 +783,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V32 — ٢ أكتوبر ٢٠٢٦ (مراجعة كوميتات 1-2 أكتوبر: تحقق ownership اتمد لعمليات التعديل مش الحذف الصريح بس، كاش سياسة حذف 15 ثانية لكل worker اتشال، وفصل كوكي الجلسة عن كوكي التجديد بتصميم JWT purpose منفصل مع إصلاحات مصاحبة ضرورية في بروكسي الكوكيز وفشل التجديد المؤقت. راجعنا auth.ts كامل + كل مواضع jwt.sign للتأكد من عدم تصادم. كل بند محمي باختبارات جديدة). مفيش بند حرج ولا نقطة قرار مفتوحة حاليًا. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">V33 — ٥ أكتوبر ٢٠٢٦ (بلاغ عميل عن بطء صور الامتحان اتحقق منه بمراجعة كود مباشرة وقفل بكوميت 5 أكتوبر — تصميم eager-loading + انتظار فك ترميز كامل + إيقاف العداد التنازلي + prefetch للسؤال الجاي، محمي باختبارات جديدة. نفس التحقيق كشف بند جديد مفتوح: تسرب base64 لصور HEIC الملصوقة بسبب قايمتين مش متطابقين في shared.ts). مفيش بند حرج ولا نقطة قرار مفتوحة حاليًا. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
   </div>
 </footer>
 
