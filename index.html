@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V33 (٥ أكتوبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V34 (٨ أكتوبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -274,14 +274,14 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V33 — ٥ أكتوبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V33</h1>
-    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. بلاغ عميل (صور أسئلة الامتحان بطيئة وبتحمّل بشكل متدرّج) اتحقق منه بمراجعة كود مباشرة وقفل بكوميت 5 أكتوبر: صورة السؤال بقت eager-loaded، فيه hook جديد بيستنى اكتمال فك الترميز قبل ما يعتبرها جاهزة، العداد التنازلي بيتوقف أثناء التحميل، وصورة السؤال الجاي بتتحمّل مقدمًا. نفس التحقيق كشف بند تاني لسه مفتوح: صور HEIC الملصوقة مباشرة (مش مرفوعة كملف) بتتسرب كـbase64 خام لعدم تطابق قايمتين في shared.ts. مفيش بند حرج أو نقطة قرار مفتوحة حاليًا.</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V34 — ٨ أكتوبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V34</h1>
+    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميتات 7-8 أكتوبر قفلت بند الـHEIC (الـregex بقى مشتق من ALLOWED_MIME_TYPES، مؤكد بتشغيل مستقل واختبار جديد) وقسمت 6 صفحات لـpage.tsx رفيع + View (نقل خالص، "use client" بقى 40 من 67 بالقياس الفعلي). تصحيح من مراجعتنا: ربطنا في V33 تسريب HEIC بأعراض البطء/التحميل المتدرّج، والصياغة دي كانت مبالغ فيها — الشكوى الفعلية عولجت بديف 5 أكتوبر. بقت نقطة تأكيد واحدة: هل صور HEIC المرفوعة كملفات بتظهر للطلاب على Chrome؟ مفيش بند حرج.</p>
 
     <div class="stat-row">
-      <div class="stat-tile open"><span class="n">2</span><span class="l">بند مفتوح — محتاج إصلاح كود (الاتنين تحسينات، مش مشاكل حرجة)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">0</span><span class="l">نقاط قرار مفتوحة — كله اتأكد</span></div>
-      <div class="stat-tile fixed"><span class="n">29</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
+      <div class="stat-tile open"><span class="n">3</span><span class="l">بند مفتوح — محتاج إصلاح كود (كلهم متوسطة/منخفضة، مفيش حرج)</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">1</span><span class="l">نقطة تأكيد مفتوحة — عرض HEIC على Chrome</span></div>
+      <div class="stat-tile fixed"><span class="n">30</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -421,6 +421,14 @@
       </div>
 
       <div class="discovery" style="border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ اتقفل — كوميتات 7-8 أكتوبر</span>
+        <h3>تسريب صور HEIC/AVIF/BMP كـbase64 خام اتقفل — الـregex بقى مشتق من قايمة الرفع نفسها</h3>
+        <p>المشكلة: <code>ALLOWED_MIME_TYPES</code> في shared.ts بتقبل HEIC/HEIF/AVIF/BMP/PJPEG، لكن regex استخراج الـbase64 كان واقف على <code>png|jpeg|jpg|gif|webp</code>، فأي صورة من الأنواع التانية ملصوقة مباشرة كانت بتفضل base64 خام جوه المحتوى. الإصلاح: القايمة والـregex بقوا مشتقين من نفس المصدر (فمفيش drift تاني)، بعلم <code>i</code>، وخريطة امتدادات صريحة، وأي نوع غير معروف بيتساب زي ما هو. كمان اتصلح باج قديم صغير (اسم الملف كان بيُبنى من نوع الـMIME فيطلع <code>.jpeg</code>) وأُضيف حارس للـbase64 الفاضي. اتأكدنا بتشغيل مستقل على القايمة الحقيقية: كل الأنواع المسموحة ليها امتداد، SVG/TIFF بيفضلوا زي ما هما (استبعاد SVG لأمان XSS شغال)، وحمولة 8MB اتعالجت في ~23ms بدون backtracking. اختبار جديد (base64-image-extraction.test.cjs) بيغطي HEIC وAVIF وWEBP وJPEG وSVG. ملاحظة قديمة مش اتغيرت: base64 بصيغة URL-safe بيتقطع عند أول <code>-</code> أو <code>_</code> (المتصفحات بتنتج base64 عادي، فالخطر ضعيف).</p>
+        <p><strong>تصحيح لصياغة V33:</strong> كنا كاتبين إن التسريب ده بيدي "نفس أعراض البطء/التحميل المتدرّج" اللي العميل اشتكى منها. ده مبالغ فيه: أغلب المتصفحات غير Safari غالبًا مش بتفك HEIC أصلًا، فالصورة كانت هتظهر مكسورة مش بتحمّل شوية شوية (حالة دعم Chrome/Edge الحالية مش متأكدين منها من هنا). شكوى العميل الفعلية عولجت بديف 5 أكتوبر (eager + decode + إيقاف العداد + prefetch). إصلاح الـHEIC صحيح كاتساق بين القايمتين، بس مش تفسير الشكوى.</p>
+        <div class="resolved">✓ مقفول — مؤكد بتشغيل مستقل + اختبار جديد.</div>
+      </div>
+
+      <div class="discovery" style="border-color:var(--good);">
         <span class="d-tag" style="background:var(--good);">✅ اتقفل — بلاغ عميل، كوميت 5 أكتوبر</span>
         <h3>صور أسئلة الامتحان كانت بطيئة وبتحمّل بشكل متدرّج — اتقفلت بتصميم جديد يحمي وقت الطالب مش بس السرعة</h3>
         <p>بلاغ عميل: "الصورة بتحمّل من فوق لتحت شوية شوية والطالب بينتظر". التحقيق كشف 3 أسباب: (1) صورة السؤال في exams/[id]/page.tsx مفيهاش priority، فـnext/image بيعاملها كـlazy رغم إنها فوق الشاشة من اللحظة الأولى. (2) next.config.ts عنده remotePatterns مفتوحة (hostname: '**')، مش هي السبب. (3) الـCache-Control في بروكسي الـuploads كان تفصيلة ثانوية. الحل النهائي تجاوز "خليها أسرع" للسؤال الأصح "امنع ضياع وقت الطالب": <code>loading="eager"</code> + <code>fetchPriority="high"</code> على صورة السؤال، وhook جديد (<code>useExamMedia</code>) بيستنى كل صور السؤال الحالي تتحمّل <strong>وتتفك ترميزها بالكامل</strong> (<code>image.decode()</code>, مش بس حدث load) قبل ما تُعتبر جاهزة — ده اللي بيمنع فعليًا العرض المتدرّج. العداد التنازلي بقى بيتوقف (<code>paused={'{'}!questionMedia.ready{'}'}</code>) لحد ما الصور تخلص، فوقت الامتحان مش بينقص أثناء الانتظار. وبالتوازي بيعمل prefetch لصورة السؤال الجاي وهو لسه على الحالي، باستخدام نفس آلية next/image الداخلية (getImageProps) عشان الـprefetch يضرب نفس مفتاح الكاش اللي الصورة الحقيقية هتستخدمه.</p>
@@ -548,23 +556,21 @@
 
     <section id="frontend-open">
       <div class="cards">
-        <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>صور HEIC الملصوقة مباشرة بتتسرب كـbase64 خام — قايمتين مش متطابقين في نفس الملف</h3></div>
-          <span class="loc">back/src/shared.ts — سطر 42-45 (ALLOWED_MIME_TYPES) مقابل سطر 492 (extractAndSaveBase64Images)</span>
-          <p class="desc">قايمة الرفع العادي بتقبل HEIC/HEIF/AVIF/BMP/PJPEG. الـregex المسؤول عن استخراج أي base64 متسرب جوه محتوى السؤال (مش عن طريق رفع ملف، زي paste مباشر في المحرر) لسه واقف على <code>png|jpeg|jpg|gif|webp</code> بس. أي صورة HEIC (الصيغة الافتراضية لصور آيفون) اتلزقت مباشرة بتعدّي من غير ما تتحوّل لملف — بتفضل base64 خام كامل جوه imageUrl، ومش بتستفيد من أي caching، وبتدي نفس أعراض البطء/التحميل المتدرّج اللي اتقفلت في البند اللي فوق، لأسئلة معينة بس (اللي فيها صور ملصوقة مش مرفوعة).</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">توسيع الـregex ليطابق نفس ALLOWED_MIME_TYPES (الأفضل يُشتق منها تلقائيًا عشان القايمتين ميفترقوش تاني).</span></div>
+        <div class="card sev-info">
+          <div class="card-top"><span class="badge sev-info">منخفض</span><h3>RichTextEditor: فرع الـcatch بيحط صيغة المعادلة خام في الـHTML</h3></div>
+          <span class="loc">front/src/components/RichTextEditor.tsx — handleInsertMath (ميزة تعديل المعادلات الجديدة، كوميت 7-8 أكتوبر)</span>
+          <p class="desc">في المسار العادي الـ<code>data-latex</code> بيتهرّب منه <code>"</code> بس، والمعادلة نفسها بتتحوّل بـKaTeX (آمن). لكن لو KaTeX فشل (نادر مع <code>throwOnError:false</code>)، الـcatch بيحط <code>mathFormula</code> خام جوه <code>innerHTML</code>/<code>insertHTML</code>. الخطورة منخفضة: الكاتب مدرس، والعرض للطلاب بيعدي على DOMPurify في HtmlRenderer (ما راجعناش كل أماكن العرض واحد واحد).</p>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">escape لـ<code>&lt;</code> و<code>&amp;</code> (أو textContent) قبل ما الصيغة تتحط في الـfallback.</span></div>
         </div>
         <div class="card sev-medium">
           <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image مستخدم في 16 من 67 صفحة (~24%)</h3></div>
           <span class="loc">front/src/app (page.tsx)</span>
-          <p class="desc">رقم مقاس فعليًا على الريبو (<code>grep -rl "next/image" front/src/app --include="page.tsx" | wc -l</code> = 16). الرقم القديم "4 من 67" كان من V24 وطلع غير دقيق (زي رقم "use client" بالظبط) — التبني الفعلي أعلى بكتير من المتصوَّر (~24% مش ~6%)، لكن لسه أغلبية الصفحات (51) مش مستخدمة next/image.</p>
           <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استبدال تدريجي بـ next/image في باقي الصفحات، خصوصًا الأثقل بالصور.</span></div>
         </div>
         <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client" لسه في أغلب الصفحات (46 من 67 page.tsx، ~69%)</h3></div>
+          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client" لسه في 40 من 67 page.tsx (~60%)</h3></div>
           <span class="loc">front/src/app (page.tsx)</span>
-          <p class="desc">رقم مقاس فعليًا على الريبو (<code>grep -rl '"use client"' front/src/app --include="page.tsx" | wc -l</code> = 46، من إجمالي 67). كان 52 بعد مراجعة 28 سبتمبر؛ كوميت 30 سبتمبر شال الـdirective من 6 صفحات إضافية (assignments, messages, school-admin/login, school-admin/reports, settings, super-admin/reports)، وده متسق مع 52-6=46 — أول مرة الحساب اليدوي بيطابق القياس الفعلي بالظبط. تقدّم مستمر ومتّسق آخر 3 مراجعات.</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استمرار المراجعة التدريجية على باقي الصفحات، وإعادة القياس بنفس الأمر بعد كل دفعة.</span></div>
+          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استمرار المراجعة التدريجية، وإعادة القياس بنفس الأمر بعد كل دفعة. للمكسب الحقيقي: سحب الأجزاء الثابتة (headers، قوايم من بيانات سيرفر) لمكونات سيرفر بدل نقل الصفحة كلها لـView.</span></div>
         </div>
       </div>
     </section>
@@ -576,7 +582,9 @@
     </div>
 
     <section id="open-decisions" style="margin-top:20px;">
-      <p style="color:var(--ink-soft); font-size:14px;">مفيش نقاط قرار مفتوحة حاليًا — بند autosave اتقفل في مراجعة كوميت 30 سبتمبر بعد تأكيد مستقل (تفاصيله في قسم "اتحلت مؤخرًا" فوق).</p>
+      <div class="box">
+        <p><strong>تأكيد: هل ملفات HEIC المرفوعة بتظهر للطلاب على Chrome؟</strong> الباك اند والـFileUpload بيقبلوا HEIC/HEIF. لكن <code>compressImageToFile</code> بيرجّع الملف الأصلي لو المتصفح مش قادر يفكه في canvas، فملف HEIC مرفوع من Chrome ممكن يتخزن <code>.heic</code> زي ما هو. أغلب المتصفحات غير Safari غالبًا مش بتعرض HEIC (مش متأكدين من الحالة الحالية، ومقدرناش نجربها من هنا). التجربة: ارفع ملف .heic كمدرس من Chrome على سؤال، وافتحه كطالب على Chrome وAndroid. لو ظهر مكسور، الحل المحتمل تحويل HEIC لـJPEG/WEBP وقت الرفع (أو رفضه برسالة واضحة).</p>
+      </div>
     </section>
 
     <!-- ================= SERVER SPECS & PROVIDERS ================= -->
@@ -763,7 +771,7 @@
             <h4>تحسينات مستمرة</h4>
             <ul>
               <li>توسيع next/image لباقي الصفحات (المقاس الحالي: 16 من 67، ~24%)</li>
-              <li>مراجعة تدريجية لتحويل صفحات بسيطة (login) لـ Server Components (المقاس الحالي: 46 من 67 page.tsx فيها "use client")</li>
+              <li>مراجعة تدريجية لتحويل صفحات بسيطة (login) لـ Server Components (المقاس الحالي: 40 من 67 page.tsx فيها "use client")</li>
             </ul>
           </div>
         </div>
@@ -783,7 +791,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V33 — ٥ أكتوبر ٢٠٢٦ (بلاغ عميل عن بطء صور الامتحان اتحقق منه بمراجعة كود مباشرة وقفل بكوميت 5 أكتوبر — تصميم eager-loading + انتظار فك ترميز كامل + إيقاف العداد التنازلي + prefetch للسؤال الجاي، محمي باختبارات جديدة. نفس التحقيق كشف بند جديد مفتوح: تسرب base64 لصور HEIC الملصوقة بسبب قايمتين مش متطابقين في shared.ts). مفيش بند حرج ولا نقطة قرار مفتوحة حاليًا. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">V34 — ٨ أكتوبر ٢٠٢٦ (مراجعة كوميتات 7-8 أكتوبر: بند HEIC اتقفل ومؤكد بتشغيل مستقل، مع تصحيح لصياغة V33 اللي ربطته بأعراض البطء؛ 6 صفحات اتقسمت لـpage.tsx رفيع + View بنقل خالص و"use client" بقى 40 من 67 بالقياس الفعلي؛ ملاحظة منخفضة جديدة على RichTextEditor. وتصحيح: عدّاد "بنود مفتوحة" في V33 كان 2 بينما الكروت 3). مفيش بند حرج، ونقطة تأكيد واحدة مفتوحة. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
   </div>
 </footer>
 
