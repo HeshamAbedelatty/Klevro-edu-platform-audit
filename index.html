@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V34 (٨ أكتوبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V35 (٩ أكتوبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -274,14 +274,14 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V34 — ٨ أكتوبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V34</h1>
-    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميتات 7-8 أكتوبر قفلت بند الـHEIC (الـregex بقى مشتق من ALLOWED_MIME_TYPES، مؤكد بتشغيل مستقل واختبار جديد) وقسمت 6 صفحات لـpage.tsx رفيع + View (نقل خالص، "use client" بقى 40 من 67 بالقياس الفعلي). تصحيح من مراجعتنا: ربطنا في V33 تسريب HEIC بأعراض البطء/التحميل المتدرّج، والصياغة دي كانت مبالغ فيها — الشكوى الفعلية عولجت بديف 5 أكتوبر. بقت نقطة تأكيد واحدة: هل صور HEIC المرفوعة كملفات بتظهر للطلاب على Chrome؟ مفيش بند حرج.</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V35 — ٩ أكتوبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V35</h1>
+    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميت 9 أكتوبر غيّر قرار الـHEIC من "مدعوم" لـ"مرفوض": رفض بالنوع والامتداد وبصمة الملف على /api/upload، ورفض أي JSON فيه HEIC مضمّن على كل /api، وحجب من الفرونت — فنقطة "هل HEIC بيظهر على Chrome" اتقفلت لأنها مبقتش ممكنة. كمان قفل ملاحظة RichTextEditor (هروب صيغة المعادلة) وقسّم 4 صفحات إضافية بتمرير الأجزاء الثابتة كـprops من السيرفر، فالمتوقع "use client" 36 (حساب مش قياس). بقت نقطة تأكيد واحدة تحتاج وصول للداتابيز: هل فيه صور HEIC قديمة مضمّنة هتوقّف الحفظ؟ مفيش بند حرج.</p>
 
     <div class="stat-row">
-      <div class="stat-tile open"><span class="n">3</span><span class="l">بند مفتوح — محتاج إصلاح كود (كلهم متوسطة/منخفضة، مفيش حرج)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">1</span><span class="l">نقطة تأكيد مفتوحة — عرض HEIC على Chrome</span></div>
-      <div class="stat-tile fixed"><span class="n">30</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
+      <div class="stat-tile open"><span class="n">2</span><span class="l">بند مفتوح — قياس/تحسين (الاتنين متوسطة، مفيش حرج)</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">1</span><span class="l">نقطة تأكيد مفتوحة — داتا HEIC القديمة (تحتاج وصول للداتابيز)</span></div>
+      <div class="stat-tile fixed"><span class="n">32</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -421,11 +421,28 @@
       </div>
 
       <div class="discovery" style="border-color:var(--good);">
+<span class="d-tag" style="background:var(--good);">✅ اتقفل — كوميت 9 أكتوبر (قرار مقصود، مش إصلاح باج)</span>
+<h3>HEIC/HEIF بقى مرفوض بدل مدعوم — بطبقات متعددة ومحمي باختبارات</h3>
+<p>الطبقات: (1) <code>ALLOWED_MIME_TYPES</code> شالت HEIC/HEIF، والـmulter بيرفض بالنوع وبالامتداد (<code>isHeicUpload</code>، بما فيه <code>heif-sequence</code> والحروف الكبيرة). (2) <code>/api/upload</code> بيقرا أول 64 بايت ويدوّر على brands الـHEVC في صندوق <code>ftyp</code>، فملف HEIC متسمّي <code>.jpg</code> بيتمسح ويرجّع 415، وAVIF ما بيترفضش. (3) الفرونت بيرفض قبل الضغط (<code>assertSupportedImageUpload</code>) و<code>accept</code> في FileUpload شال <code>.heic/.heif</code>، ورسالة الخطأ بتوصل للمستخدم. (4) middleware جديد <code>rejectHeicDataImages</code> على كل <code>/api</code> بيرفض أي JSON فيه <code>data:image/heic|heif;base64,</code> بـ415، عشان الحفظ الأوفلاين/JSON ما يتخطاش مسار الرفع. اختبارات جديدة: <code>uploadImagePolicy.test.ts</code> و<code>uploadPolicyRoutes.test.ts</code>.</p>
+<p><strong>اللي تحققنا منه بأنفسنا:</strong> نقلنا فحص الـmiddleware لـNode — حوالي 50MB من أسئلة مهيكلة اتفحصت في 126ms وسلسلة 90MB في 176ms، فالتكلفة مقبولة. أشكال الـdata URI اللي بتعدّي منه (<code>;charset=...;base64</code>، URL-encoded) مش بيطابقها كمان أي extractor في shared.ts (الاتنين بيشترطوا <code>;base64,</code> مباشرة بعد النوع — اتأكد من الريبو الحالي)، فمفيش تجاوز عملي. مواضع استدعاء <code>extractAndSaveBase64Images</code> كلها حفظ بـJSON في exams.controller وcourses.controller، يعني الـmiddleware بيغطيها، وكمان الـextractor نفسه مربوط بـALLOWED_MIME_TYPES فبيرفض HEIC حتى لو الـmiddleware اتخطّى. نقطة "هل HEIC بيظهر على Chrome" مبقتش مطروحة.</p>
+<p><strong>حدود وملاحظات (من قراءة الكود، مش مجرّبة):</strong> (أ) المسار الوحيد اللي لسه ممكن يكتب ملف <code>.heic</code> هو استعادة النسخ الاحتياطي: <code>normalizeRestoredValue</code> بيستدعي <code>externalizeEmbeddedDataImages</code> (regex بيطابق أي نوع، وخريطة الامتدادات لسه فيها heic حسب ديف 9 أكتوبر). تأثيره منخفض (بيرجّع داتا قديمة كروابط ملفات، والروابط <code>/uploads/*.heic</code> بتعدّي من الـmiddleware)، بس ما شفناش مدخل الـrestore (ملف ولا JSON). (ب) فحص الـdata URI بالنوع المعلن فقط، ومفيش فحص بايتات للصور المضمّنة، فـHEIC معلن <code>image/jpeg</code> هيتحفظ <code>.jpg</code> (صورة مكسورة، مش مشكلة أمان). (ج) JSON متداخل بعمق 5000+ مستوى بيرمي RangeError في فحص الـmiddleware (على نسختنا)، والـmiddleware قبل الـauth؛ فيه error handler عام في index.ts سطر 206 لكن ما شفناش جسمه. تأثير منخفض.</p>
+<div class="resolved">✓ مقفول — سلوك مقصود ومختبر. سؤال الداتا القديمة اللي بيتأثر بالقرار ده مسجّل في قسم نقاط التأكيد تحت.</div>
+</div>
+
+<div class="discovery" style="margin-top:20px; border-color:var(--good);">
+<span class="d-tag" style="background:var(--good);">✅ اتقفل — كوميت 9 أكتوبر</span>
+<h3>RichTextEditor: صيغة المعادلة بقت مهرّبة في كل المسارات، وفك الـentities بقى أحافظ</h3>
+<p>ملاحظتنا المنخفضة من 8 أكتوبر (فرع الـcatch كان بيحط <code>mathFormula</code> خام في الـHTML) اتقفلت: <code>richTextMath.ts</code> بيهرّب <code>&amp; &lt; &gt; " '</code> في الصيغة وفي كل attribute، و<code>buildRichTextMathHtml</code> بتبني نفس الـHTML لمسار الإدراج ومسار التعديل. الاختبار بيشغّل صيغة عدائية (<code>&lt;img onerror&gt;</code>) في Chromium حقيقي عبر Playwright ويتأكد إنها بتتعرض نص ومفيش تنفيذ. تحفظ على الاختبار: بيرجع لمسار Chromium ثابت على Windows (<code>C:/Users/Administrator/...</code>) لو <code>PLAYWRIGHT_EXECUTABLE_PATH</code> مش متظبط، فمش هيشتغل على CI أو جهاز تاني. وبالتوازي، <code>sanitizeHtml</code> في الباك اند و<code>decodeHtmlEntities</code> في الفرونت بقوا بيفكّوا الـentities بس لو النص مفيهوش tags حقيقية — اتجاه أحافظ من القديم (بيفك أقل)، فمفيش سطح XSS جديد، وفيه اختبار لدورة <code>data-latex</code>.</p>
+<div class="resolved">✓ مقفول — مؤكد من الكود + اختبار بمتصفح حقيقي (مع تحفظ المسار الثابت).</div>
+</div>
+
+<div class="discovery" style="border-color:var(--good);">
         <span class="d-tag" style="background:var(--good);">✅ اتقفل — كوميتات 7-8 أكتوبر</span>
         <h3>تسريب صور HEIC/AVIF/BMP كـbase64 خام اتقفل — الـregex بقى مشتق من قايمة الرفع نفسها</h3>
         <p>المشكلة: <code>ALLOWED_MIME_TYPES</code> في shared.ts بتقبل HEIC/HEIF/AVIF/BMP/PJPEG، لكن regex استخراج الـbase64 كان واقف على <code>png|jpeg|jpg|gif|webp</code>، فأي صورة من الأنواع التانية ملصوقة مباشرة كانت بتفضل base64 خام جوه المحتوى. الإصلاح: القايمة والـregex بقوا مشتقين من نفس المصدر (فمفيش drift تاني)، بعلم <code>i</code>، وخريطة امتدادات صريحة، وأي نوع غير معروف بيتساب زي ما هو. كمان اتصلح باج قديم صغير (اسم الملف كان بيُبنى من نوع الـMIME فيطلع <code>.jpeg</code>) وأُضيف حارس للـbase64 الفاضي. اتأكدنا بتشغيل مستقل على القايمة الحقيقية: كل الأنواع المسموحة ليها امتداد، SVG/TIFF بيفضلوا زي ما هما (استبعاد SVG لأمان XSS شغال)، وحمولة 8MB اتعالجت في ~23ms بدون backtracking. اختبار جديد (base64-image-extraction.test.cjs) بيغطي HEIC وAVIF وWEBP وJPEG وSVG. ملاحظة قديمة مش اتغيرت: base64 بصيغة URL-safe بيتقطع عند أول <code>-</code> أو <code>_</code> (المتصفحات بتنتج base64 عادي، فالخطر ضعيف).</p>
         <p><strong>تصحيح لصياغة V33:</strong> كنا كاتبين إن التسريب ده بيدي "نفس أعراض البطء/التحميل المتدرّج" اللي العميل اشتكى منها. ده مبالغ فيه: أغلب المتصفحات غير Safari غالبًا مش بتفك HEIC أصلًا، فالصورة كانت هتظهر مكسورة مش بتحمّل شوية شوية (حالة دعم Chrome/Edge الحالية مش متأكدين منها من هنا). شكوى العميل الفعلية عولجت بديف 5 أكتوبر (eager + decode + إيقاف العداد + prefetch). إصلاح الـHEIC صحيح كاتساق بين القايمتين، بس مش تفسير الشكوى.</p>
-        <div class="resolved">✓ مقفول — مؤكد بتشغيل مستقل + اختبار جديد.</div>
+        <p><strong>تحديث 9 أكتوبر:</strong> القرار اتغيّر بعد كده من "نقبل HEIC ونحوّله لملف" إلى "نرفض HEIC" (البند اللي فوقه). فالـregex المشتق من ALLOWED_MIME_TYPES بقى بيسيب HEIC زي ما هو (اختبار 7-8 أكتوبر اتعدّل يتأكد من كده)، والرفض بيحصل قبله. اشتقاق القايمة والـregex من مصدر واحد لسه صح ومفيد.</p>
+<div class="resolved">✓ مقفول — مؤكد بتشغيل مستقل + اختبار جديد.</div>
       </div>
 
       <div class="discovery" style="border-color:var(--good);">
@@ -555,25 +572,21 @@
     </div>
 
     <section id="frontend-open">
-      <div class="cards">
-        <div class="card sev-info">
-          <div class="card-top"><span class="badge sev-info">منخفض</span><h3>RichTextEditor: فرع الـcatch بيحط صيغة المعادلة خام في الـHTML</h3></div>
-          <span class="loc">front/src/components/RichTextEditor.tsx — handleInsertMath (ميزة تعديل المعادلات الجديدة، كوميت 7-8 أكتوبر)</span>
-          <p class="desc">في المسار العادي الـ<code>data-latex</code> بيتهرّب منه <code>"</code> بس، والمعادلة نفسها بتتحوّل بـKaTeX (آمن). لكن لو KaTeX فشل (نادر مع <code>throwOnError:false</code>)، الـcatch بيحط <code>mathFormula</code> خام جوه <code>innerHTML</code>/<code>insertHTML</code>. الخطورة منخفضة: الكاتب مدرس، والعرض للطلاب بيعدي على DOMPurify في HtmlRenderer (ما راجعناش كل أماكن العرض واحد واحد).</p>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">escape لـ<code>&lt;</code> و<code>&amp;</code> (أو textContent) قبل ما الصيغة تتحط في الـfallback.</span></div>
-        </div>
-        <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image مستخدم في 16 من 67 صفحة (~24%)</h3></div>
-          <span class="loc">front/src/app (page.tsx)</span>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استبدال تدريجي بـ next/image في باقي الصفحات، خصوصًا الأثقل بالصور.</span></div>
-        </div>
-        <div class="card sev-medium">
-          <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client" لسه في 40 من 67 page.tsx (~60%)</h3></div>
-          <span class="loc">front/src/app (page.tsx)</span>
-          <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استمرار المراجعة التدريجية، وإعادة القياس بنفس الأمر بعد كل دفعة. للمكسب الحقيقي: سحب الأجزاء الثابتة (headers، قوايم من بيانات سيرفر) لمكونات سيرفر بدل نقل الصفحة كلها لـView.</span></div>
-        </div>
-      </div>
-    </section>
+<div class="cards">
+<div class="card sev-medium">
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image: آخر قياس 16 من 67 صفحة (~24%) — غير متعاد بعد ديف 9 أكتوبر</h3></div>
+<span class="loc">front/src/app (page.tsx)</span>
+<p class="desc">القياس (<code>grep -rl "next/image" front/src/app --include="page.tsx" | wc -l</code> = 16) على مستوى page.tsx بس؛ الرقم القديم "4 من 67" من V24 طلع غير دقيق. ديف 9 أكتوبر استبدل <code>&lt;img&gt;</code> بـnext/image في مكوّنات (RichTextEditor، معاينة FileUpload) وأضاف <code>shouldSkipImageOptimization</code> للمصادر <code>data:</code> و<code>blob:</code> و<code>http:</code> (لأن remotePatterns https فقط)، لكن ده على مستوى المكوّنات ومش بيغيّر رقم الصفحات. الإجمالي 67 كمان غير متعاد بعد صفحات skills-hub.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شغّل <code>npm run audit:rendering</code> من <code>front/</code> (سكربت جديد بالـAST: إجمالي الصفحات، الصفحات client، وnext/image مقابل <code>&lt;img&gt;</code> على مستوى الـJSX كله) وحدّث الرقم منه. بعدها استبدال تدريجي في الصفحات الأثقل بالصور.</span></div>
+</div>
+<div class="card sev-medium">
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client": آخر قياس 40 من 67 page.tsx، والمتوقع 36 بعد ديف 9 أكتوبر (حساب مش قياس)</h3></div>
+<span class="loc">front/src/app (page.tsx)</span>
+<p class="desc"><strong>اللي مقاس:</strong> 40 بعد ديف 7-8 أكتوبر (PowerShell <code>Select-String</code>، بيعدّ الأسطر المطابقة مش الملفات، وبيساويها طول ما كل ملف فيه تطابق واحد؛ القياسات الأقدم كانت بـ<code>grep -l</code>). <strong>اللي اتغيّر بعده:</strong> ديف 9 أكتوبر شال الـdirective من 4 صفحات إضافية (analytics وsubmissions للـschool-admin والـsuper-admin) — يعني المتوقع 40-4=36. الجديد في الأسلوب ده إن الأجزاء الثابتة (الشعار، العنوان، شاشة التحميل) بقت بتتمرر كـprops من <code>page.tsx</code> (سيرفر) للـView، وده قسمة فعلية مش مجرد نقل الحد. قارنّا الأسطر المشالة بالمضافة: نقل خالص، والفرق بالظبط هو الماركب اللي اتنقل للصفحة + الـprops. تحفظ: الإجمالي 67 غير متعاد، ومحتوى الـView لسه client-rendered فالمكسب في الـbundle متواضع.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شغّل <code>npm run audit:rendering</code> للرقم الفعلي (والإجمالي)، وكمّل بنفس نمط الـprops: سحب الأجزاء الثابتة وقوايم بيانات السيرفر لمكونات سيرفر بدل نقل الصفحة كلها لـView.</span></div>
+</div>
+</div>
+</section>
 
     <div class="part-divider" id="decisions" style="margin-top:40px; background:var(--warn);">
       <div class="part-eyebrow">محتاجة قرار أو تأكيد</div>
@@ -582,10 +595,21 @@
     </div>
 
     <section id="open-decisions" style="margin-top:20px;">
-      <div class="box">
-        <p><strong>تأكيد: هل ملفات HEIC المرفوعة بتظهر للطلاب على Chrome؟</strong> الباك اند والـFileUpload بيقبلوا HEIC/HEIF. لكن <code>compressImageToFile</code> بيرجّع الملف الأصلي لو المتصفح مش قادر يفكه في canvas، فملف HEIC مرفوع من Chrome ممكن يتخزن <code>.heic</code> زي ما هو. أغلب المتصفحات غير Safari غالبًا مش بتعرض HEIC (مش متأكدين من الحالة الحالية، ومقدرناش نجربها من هنا). التجربة: ارفع ملف .heic كمدرس من Chrome على سؤال، وافتحه كطالب على Chrome وAndroid. لو ظهر مكسور، الحل المحتمل تحويل HEIC لـJPEG/WEBP وقت الرفع (أو رفضه برسالة واضحة).</p>
-      </div>
-    </section>
+<div class="box">
+<p><strong>تأكيد داتا HEIC القديمة — يحتاج وصول للداتابيز (خارج نطاق مراجعة الكود).</strong> الـmiddleware الجديد <code>rejectHeicDataImages</code> بيفحص أي JSON بيوصل <code>/api</code>، يعني بيرفض كمان محتوى قديم المحرر بيرجّع يبعته في الحفظ. قبل إصلاح 7-8 أكتوبر، أي صورة HEIC ملصوقة مباشرة كانت بتفضل base64 خام جوه المحتوى. لو فيه سؤال أو درس بالشكل ده في الداتابيز، أي حفظ أو autosave للامتحان/الدرس ده هيرجع 415 لحد ما الصورة تتشال. مش قادرين نعرف من الكود لو الحالة دي موجودة. اللي عنده وصول للداتابيز (مينا) يشغّل بحث للقراءة بس:</p>
+<pre dir="ltr" style="text-align:left; white-space:pre-wrap; font-size:12px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto;">SELECT 'Question' AS tbl, id FROM "Question"
+ WHERE concat_ws(' ', "text","textEn","options","optionsEn","explanation","explanationEn","imageUrl") ILIKE '%data:image/hei%'
+UNION ALL SELECT 'Lesson', id FROM "Lesson"
+ WHERE concat_ws(' ', "content","summary","notes","slides"::text) ILIKE '%data:image/hei%'
+UNION ALL SELECT 'LessonBlock', id FROM "LessonBlock"
+ WHERE concat_ws(' ', "content","options") ILIKE '%data:image/hei%'
+UNION ALL SELECT 'InteractiveActivity', id FROM "InteractiveActivity"
+ WHERE concat_ws(' ', "questionText","questionTextEn","options","optionsEn","explanation","explanationEn") ILIKE '%data:image/hei%'
+UNION ALL SELECT 'Course', id FROM "Course"
+ WHERE concat_ws(' ', "description","coverImage") ILIKE '%data:image/hei%';</pre>
+<p>الأسماء من schema.prisma (بدون @@map) وبافتراض إن لكل جدول عمود <code>id</code>. صفر صفوف = البند يتقفل. لو فيه صفوف: سكربت لمرة واحدة يشيل الصور دي أو يحوّلها، أو استثناء المحتوى القديم من الـmiddleware.</p>
+</div>
+</section>
 
     <!-- ================= SERVER SPECS & PROVIDERS ================= -->
 
@@ -791,7 +815,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V34 — ٨ أكتوبر ٢٠٢٦ (مراجعة كوميتات 7-8 أكتوبر: بند HEIC اتقفل ومؤكد بتشغيل مستقل، مع تصحيح لصياغة V33 اللي ربطته بأعراض البطء؛ 6 صفحات اتقسمت لـpage.tsx رفيع + View بنقل خالص و"use client" بقى 40 من 67 بالقياس الفعلي؛ ملاحظة منخفضة جديدة على RichTextEditor. وتصحيح: عدّاد "بنود مفتوحة" في V33 كان 2 بينما الكروت 3). مفيش بند حرج، ونقطة تأكيد واحدة مفتوحة. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">V35 — ٩ أكتوبر ٢٠٢٦ (مراجعة كوميت 9 أكتوبر: قرار رفض HEIC بدل دعمه — طبقات متعددة ومختبر، مع تحقق مستقل من أداء الـmiddleware ومن مواضع استدعاء الـextractors؛ قفل ملاحظة RichTextEditor؛ 4 صفحات إضافية اتقسمت بتمرير الأجزاء الثابتة كـprops (المتوقع "use client" 36، غير مقاس). نقطة تأكيد واحدة مفتوحة تحتاج وصول للداتابيز. أرقام "use client" وnext/image الفعلية معلّقة على تشغيل npm run audit:rendering). مفيش بند حرج. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
   </div>
 </footer>
 
