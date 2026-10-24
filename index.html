@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V35 (٩ أكتوبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V36 (٢٣ أكتوبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -255,6 +255,7 @@
   .signature .who .name{font-weight:600; font-size:15.5px; color:var(--ink);}
   .signature .who .role{font-size:13px; color:var(--ink-soft);}
   .footer-note{font-family:var(--font-m); font-size:12.5px; color:var(--ink-soft); margin-top:20px; padding-top:16px; border-top:1px dashed var(--line);}
+.more{margin-top:10px;} .more summary{cursor:pointer; font-size:13px; color:var(--signal);} .more p{margin-top:8px;}
 </style>
 </head>
 <body>
@@ -274,14 +275,13 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V35 — ٩ أكتوبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V35</h1>
-    <p class="lead">هذه نسخة مُصفّاة من تقرير المراجعة الكامل، بقاعدة: أي بند بيتحل <strong>مش بيتشال من الصفحة</strong> — بينتقل لقسم "اتحلت مؤخرًا" بعلامة واضحة، عشان يفضل فيه سجل تاريخي لكل بند. كوميت 9 أكتوبر غيّر قرار الـHEIC من "مدعوم" لـ"مرفوض": رفض بالنوع والامتداد وبصمة الملف على /api/upload، ورفض أي JSON فيه HEIC مضمّن على كل /api، وحجب من الفرونت — فنقطة "هل HEIC بيظهر على Chrome" اتقفلت لأنها مبقتش ممكنة. كمان قفل ملاحظة RichTextEditor (هروب صيغة المعادلة) وقسّم 4 صفحات إضافية بتمرير الأجزاء الثابتة كـprops من السيرفر، فالمتوقع "use client" 36 (حساب مش قياس). بقت نقطة تأكيد واحدة تحتاج وصول للداتابيز: هل فيه صور HEIC قديمة مضمّنة هتوقّف الحفظ؟ مفيش بند حرج.</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V36 — ٢٣ أكتوبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V36</h1>
 
     <div class="stat-row">
-      <div class="stat-tile open"><span class="n">2</span><span class="l">بند مفتوح — قياس/تحسين (الاتنين متوسطة، مفيش حرج)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">1</span><span class="l">نقطة تأكيد مفتوحة — داتا HEIC القديمة (تحتاج وصول للداتابيز)</span></div>
-      <div class="stat-tile fixed"><span class="n">32</span><span class="l">بند اتحل/اتصحح مؤخرًا (سجل تاريخي)</span></div>
+      <div class="stat-tile open"><span class="n">12</span><span class="l">بند مفتوح — 1 عالي (availability) + 6 متوسطة + 5 ملاحظات (مفيش حرج)</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">8</span><span class="l">نقاط تأكيد مفتوحة — معظمها عند مينا/إعدادات Dokploy (HEIC، Redis، حدود الحجم، ReDoS على staging…)</span></div>
+      <div class="stat-tile fixed"><span class="n">36</span><span class="l">بند اتحل/اتصحح/اتأكد مؤخرًا (سجل تاريخي — عدّ حرفي؛ V35 كان كاتب 32 والفعلي 31)</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -312,13 +312,13 @@
       <div class="readiness-grid">
         <div class="r-tile">
           <div class="r-title">الأمان</div>
-          <div class="r-score-row"><span class="r-score was">7/10</span><span class="r-arrow">→</span><span class="r-score now good">10/10</span></div>
-          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات/الدروس، بما فيها تحقق TeacherCourse فعلي (مش بس school-level). JWT خرج من localStorage والـresponse body خالص، محمي باختبار تراجع دائم. باب خلفي كامل في تسجيل الدخول اتشال. brute-force lockout بقى fail-closed هيكليًا (Redis أو worker واحد بالإجبار، مفيش حالة وسط ضعيفة). ثغرة IDOR حذف الدروس لـTEACHER وثغرة إدارة امتحان cross-school عبر creatorId — الاتنين اتلقوا واتقفلوا في مراجعة 21-24 سبتمبر. مراجعة 1-2 أكتوبر مدّت نفس تحقق الـownership لعمليات التعديل (مش الحذف الصريح بس) وقفلت تجاوز توجل الحذف عبر تعديل عادي، وفصلت كوكي الجلسة عن كوكي التجديد بـJWT purpose منفصل (مع إصلاح مصاحب في بروكسي الكوكيز كان ممكن يكسر الميزة بصمت). مفيش بند حرج أو عالي مفتوح في محور الأمان دلوقتي.</div>
+          <div class="r-score-row"><span class="r-score was">10/10</span><span class="r-arrow">→</span><span class="r-score now warn">8/10</span></div>
+          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات/الدروس، بما فيها تحقق TeacherCourse فعلي (مش بس school-level). JWT خرج من localStorage والـresponse body خالص، محمي باختبار تراجع دائم. باب خلفي كامل في تسجيل الدخول اتشال. brute-force lockout بقى fail-closed هيكليًا (Redis أو worker واحد بالإجبار، مفيش حالة وسط ضعيفة). ثغرة IDOR حذف الدروس لـTEACHER وثغرة إدارة امتحان cross-school عبر creatorId — الاتنين اتلقوا واتقفلوا في مراجعة 21-24 سبتمبر. مراجعة 1-2 أكتوبر مدّت نفس تحقق الـownership لعمليات التعديل (مش الحذف الصريح بس) وقفلت تجاوز توجل الحذف عبر تعديل عادي، وفصلت كوكي الجلسة عن كوكي التجديد بـJWT purpose منفصل (مع إصلاح مصاحب في بروكسي الكوكيز كان ممكن يكسر الميزة بصمت). تحديث 23 أكتوبر: الميزات الجديدة (Push، شهادات، مسابقات) متصممة بحماية كويسة (details تحت)، لكن اتفتح بند <strong>عالي في الـavailability</strong>: regex تربيعي بيوصله الطالب من 4 مسارات. مفيش تسريب بيانات ولا تنفيذ كود، لكن طلب واحد بيجمّد الـworker — والتقييم 8/10 حكم تقديري مني لحد ما يتأكد على staging وتتحدد حالة Redis/عدد الـinstances. مفيش بند حرج.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
           <div class="r-score-row"><span class="r-score now good">7/10</span></div>
-          <div class="r-verdict">الـ 3 Maps اتقفلت بالكامل — Redis مصدر حقيقة أول للـrate limiting والكاش، وحالة المستخدم بقت فحص DB مباشر بدل كاش. PM2 cluster mode شغال مع حماية من تكرار startup tasks.</div>
+          <div class="r-verdict">الـ 3 Maps اتقفلت بالكامل، وحالة المستخدم بقت فحص DB مباشر بدل كاش. <strong>تصحيح صياغة V35:</strong> Redis بيُستخدم فعليًا لـbrute-force على الدخول بس (fail-closed)؛ <code>checkRateLimit</code> العام مفيهوش أي caller، وباقي الـlimiters (<code>express-rate-limit</code>) على store في الذاكرة لكل worker (مؤكد من إعداد <code>apiLimiter</code>: 15000 طلب/15 دقيقة لكل IP، من غير <code>store</code>). PM2 cluster mode شغال مع حماية من تكرار startup tasks.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">سلامة البيانات</div>
@@ -328,7 +328,7 @@
         <div class="r-tile">
           <div class="r-title">استمرارية التخزين</div>
           <div class="r-score-row"><span class="r-score now good">9/10</span></div>
-          <div class="r-verdict">النسخ الاحتياطي محلي + سحابي ومستقر، ومحمي من Zip Slip. الباك أبات نُقلت من مجلد عام لمجلد خاص. النسخ التلقائي الساعاتي بقى شامل (كان ناقص درجات الطلاب)، وتحديث 23 سبتمبر قفل مشكلة تانية في نفس المنطقة: الكرون الساعاتي كان بيتسجل على كل PM2 worker بدل الأساسي بس (تفاصيل تحت). المتبقي: الملفات لسه على قرص محلي بدل Object Storage خارجي.</div>
+          <div class="r-verdict">النسخ الاحتياطي محلي + سحابي ومستقر، ومحمي من Zip Slip. الباك أبات نُقلت من مجلد عام لمجلد خاص. النسخ التلقائي الساعاتي بقى شامل (كان ناقص درجات الطلاب)، وتحديث 23 سبتمبر قفل مشكلة تانية في نفس المنطقة: الكرون الساعاتي كان بيتسجل على كل PM2 worker بدل الأساسي بس (تفاصيل تحت). المتبقي: الملفات لسه على قرص محلي بدل Object Storage خارجي. تحديث 23 أكتوبر: الشهادات الجديدة بتتخزن base64 جوه Postgres (بند متوسط تحت).</div>
         </div>
       </div>
     </section>
@@ -343,6 +343,41 @@
 
     <section id="resolved-list" style="margin-top:20px;">
       <div class="discovery" style="border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ مقفول — سؤال مفتوح من V35، تأكيد من Dockerfile</span>
+        <h3>الـdeploy بيبني (tsc) من جديد في كل مرة — مش بيشغّل back/dist المحفوظ</h3>
+        <p>الـDockerfile بتاع الباك فيه <code>RUN npm run build</code> (= <code>npx prisma generate &amp;&amp; tsc</code>)، والـruntime stage بياخد <code>/app/dist</code> من الـbuilder، و<code>start-production.js</code> بيشغّل <code>dist/index.js</code> اللي اتبنى جوه الـimage. و<code>tsc</code> بيرجّع exit code غير صفر لو فيه type errors حتى لو طلّع ملفات، فالـbuild بيفشل بدل ما يشحن كود مكسور. يعني نافذة 2–4 أكتوبر (إصلاحات 1–2 أكتوبر قبل ما dist يتبني) على الأغلب ما كانتش موجودة في الإنتاج. <strong>تصحيح لكلامنا في نص المراجعة:</strong> قلنا مؤقتًا إن <code>dist</code> المتأخر ممكن يخلي الميزات الجديدة 404 أو يعطّل middleware الـHEIC — ده بيتطبق بس لو الـdeploy بيشغّل dist المحفوظ، وده طلع غير صحيح. الحقيقة الباقية: <code>back/dist</code> المتعمله commit متأخر عن <code>src</code> (<code>dist/index.js</code> آخر commit 19 أكتوبر مقابل 22 أكتوبر لـ<code>src/index.ts</code>، ومفيش <code>dist</code> لـcompetitions/studentDelivery/studentNotifications) — مضلل للمراجِع (اتضللت بيه أنا) لكن مش مؤثر على الإنتاج (بند ملاحظة تحت).</p>
+        <div class="resolved">✓ مقفول — من Dockerfile + ناتج git. ثقة عالية. متبقي تأكيد صغير: إن Build Type في Dokploy = Dockerfile (مش Nixpacks).</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق — ديف 19–23 أكتوبر (تقسيم الـcontrollers)</span>
+        <h3>تقسيم exams/courses/backups controllers (~8000 سطر) ما شالش أي تحقق ownership</h3>
+        <p>نقلنا المنطق لـPython وقارنّا الأسطر المحذوفة بالمضافة عبر الملفات الجديدة: courses سطر واحد اتغيّر (<code>if (cached) return res.json(cached)</code>)، backups 9 أسطر (domain/sanitize)، exams 166 سطر معظمها handler الـanalytics اللي اتنقل لـ<code>reporting.service.ts</code>. عدّ الفحوص قبل/بعد: <code>canManageExam</code> 16/16، <code>teacherCourse</code> 9/9، <code>creatorId</code> 10/10. الفرق الوحيد في <code>canViewExam</code> (4 → 3) سببه إن الـanalytics اتنقل، و<code>generateReport</code> فيه <code>canViewExam</code> فعلي، والمعلم بقى محصور في فصوله (<code>classroom.teacherId</code>) — تضييق مش تعديل نطاق. مراجعة قراءة للكود، مش اختبار حي.</p>
+        <div class="resolved">✓ مقفول — ثقة عالية في exams/courses/backups. (المتبقي: handler الـanalytics اتغيّر حسابيًا لـ<code>generateReport</code>، لسه ما اتقارنتش الأرقام مع القديم.)</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">↩️ تأكيد — ملاحظة مفتوحة من المراجعة، طلعت مش مشكلة</span>
+        <h3>الـheaders <code>X-Offline-User-Id</code> / <code>X-Offline-School-Id</code> مش مصدر هوية</h3>
+        <p>في <code>auth.ts</code> (سطر 79–91) الـheaders دي بتتقارن بالهوية اللي اتحققت من الكوكي (<code>currentUser.id</code> و<code>schoolId</code>)، ولو مختلفة بيرجّع 409 بكود <code>OFFLINE_SESSION_CHANGED</code>. يعني فحص تطابق بيحمي إعادة تشغيل الكتابات offline من تبديل الحساب، والمستخدم ما يقدرش يتقمّص حد بيها (البروكسي بيمرّر الـheaders كلها، فكان لازم نتأكد).</p>
+        <div class="resolved" style="background:rgba(148,163,184,.14); color:var(--ink-soft);">↩️ مقفول — اتضح إنه مش مشكلة. (ملاحظة صغيرة غير مؤكدة: رسائل الخطأ العربية في الأسطر دي ظهرت حروف مشوّهة في PowerShell — ممكن عرض بس.)</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق جزئي — ميزات 19–23 أكتوبر</span>
+        <h3>Web Push والشهادات والمسابقات والـservice worker: تصميم أمني سليم في اللي اتراجع</h3>
+        <p><strong>Push:</strong> <code>validPushEndpoint</code> بيعمل allowlist للـhosts (FCM/Mozilla/Apple/WNS)، فـ<code>fcm.googleapis.com.evil.com</code> مش هيعدّي (SSRF مقفول)، والـpayload عام من غير بيانات خاصة، و<code>logout</code> بيلغي الاشتراك قبل مسح الكوكي. <strong>Service worker:</strong> بيخزّن <code>/offline.html</code> والأيقونة بس، ومش بيعمل cache لأي API أو صفحة مصادَق عليها. <strong>الشهادات:</strong> التنزيل <code>attachment</code> + CSP sandbox + nosniff، وإلغاء/إصدار محصور بالدور والمدرسة. <strong>المسابقات:</strong> <code>canManageCompetition</code> (SUPER_ADMIN، أو SCHOOL_ADMIN لنفس المدرسة)، التوقيت محسوب على السيرفر من <code>questionStartedAt</code> والإجابة المتأخرة بصفر، <code>@@unique([entryId,questionId])</code> + advisory lock لكل غرفة، السؤال ما بيتبعتش للطالب قبل <code>startedAt</code> وPayload السؤال من غير <code>metadata</code> أو hint أو explanation، ونسخة ثابتة لكل مشارك (<code>questionSnapshot</code>). <strong>الـleaderboard العام:</strong> opt-in متعدد (المنصة + المدرسة + المسابقة + موافقة الطالب)، والافتراضيات كلها false. <strong>التقارير:</strong> الـscoping من الـuser مش الـquery، و<code>canViewExam</code> على الـexam.</p>
+        <div class="resolved">✓ تحقق جزئي — قراءة كود مش اختبار حي، وما اتراجعش سطر بسطر: ~98 ملف components، وتغطية <code>hideKeys</code> لكل أنواع الأسئلة (نقطة تأكيد تحت). البنود اللي طلعت من نفس المراجعة في الكروت المفتوحة.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق بتجربة — تقارير التصدير</span>
+        <h3>CSV/Excel formula injection مقفولة</h3>
+        <p><code>csvCell</code> بتسبق أي قيمة بتبدأ بـ<code>=</code> أو <code>+</code> أو <code>-</code> أو <code>@</code> أو tab/CR (حتى بعد مسافات) بعلامة <code>'</code>. جرّبناها على 11 مدخل (<code>=HYPERLINK(…)</code>، <code>+1+1</code>، <code>-2+3</code>، <code>@SUM(A1)</code>، <code>  =1+1</code>، <code>\t=1</code>…) وكلهم اتحيّدوا؛ و<code>=cmd|…</code> كمان. في الـXLSX جرّبنا الـwriter (<code>xlsx@0.18.5</code>): القيم اللي بتبدأ بـ<code>=</code> بتتكتب خلايا نصية (<code>t:"s"</code>) من غير <code>f</code>. تحفّظ: ما جرّبناش <code>0.20.3</code> (الجديدة في package.json)؛ والحرف fullwidth <code>＝</code> مش بيتحيّد (Excel ما بيعتبرهوش formula على حد علمنا).</p>
+        <div class="resolved">✓ مقفول — مجرَّب (Node في sandbox). ثقة عالية للـCSV، متوسطة-عالية للـXLSX.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
         <span class="d-tag" style="background:var(--good);">✅ تصحيح + حل — اكتشاف أثناء مراجعة كوميت 23 سبتمبر</span>
         <h3>الكرون الساعاتي (بما فيه النسخ الاحتياطي) كان بيتسجل على كل PM2 worker، مش worker أساسي بس</h3>
         <p>راجعنا back/src/index.ts قبل/بعد الكوميت. كان isPrimaryWorker بيحمي initializeStartupData() بس؛ استدعاء initCronJobs() كان جوه callback بتاع app.listen() اللي بيشتغل على كل worker في cluster mode من غير أي حماية. يعني لو فيه أكتر من instance شغالة، الكرون الساعاتي (ومعاه النسخ الاحتياطي) كان بيتسجل ويشتغل مرة لكل worker — تصحيح لبند V24 اللي افترض إن الحماية شاملة لكل startup tasks. كوميت 23 سبتمبر نقل isPrimaryWorker ليحيط بالـsetTimeout كله، فبقى مقصور على worker #0 بس.</p>
@@ -573,17 +608,89 @@
 
     <section id="frontend-open">
 <div class="cards">
+<div class="card sev-high">
+<div class="card-top"><span class="badge sev-high">عالي (availability)</span><h3>ReDoS: regex تربيعي بيتنادى على مدخل الطالب في 4 مسارات — طلب واحد بيجمّد الـworker</h3></div>
+<span class="loc">back/src/shared.ts (600، 1226) · routes/system.ts:227 · lib/competitionQuestions.ts:69,82 · services/translation.service.ts:32</span>
+<p class="desc">regex تربيعي بيتنادى على إجابة الطالب (تسليم، درس، نشاط، مسابقة). طلب واحد بيجمّد الـworker. 100KB = حوالي 7 ثواني (قياس regex مش endpoint).</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">regex خطي + سقف طول قبل أي regex + اختبار انحدار.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><strong>اللي اتأكد من الكود:</strong> <code>stripHtmlAndNormalize</code> (<code>shared.ts:597</code>) بتستخدم <code>/&lt;[^&gt;]*&gt;/g</code> و<code>robustNormalizeText</code> (<code>shared.ts:1221</code>) فيها <code>/&lt;[^&gt;]+&gt;/g</code> بالإضافة لـ<code>&lt;style[^&gt;]*&gt;[\s\S]*?&lt;/style&gt;</code> و<code>&lt;script…</code> — وكلهم تربيعيين على أي <code>&lt;</code> من غير <code>&gt;</code> بعده. <code>isAnswerCorrect</code> → <code>isOptionMatch</code>/<code>stripHtmlAndNormalize</code> بتتنادى على <code>selectedAnswer</code> الخام من: <strong>تسليم الامتحان</strong> (<code>examEditing.ts:540</code>؛ الـhandler بيتحقق من <code>Array.isArray(answers)</code> بس والـroute عليه <code>verifyToken</code> + <code>checkRole</code> بس)، <strong>سؤال الدرس</strong> (<code>progress.ts:530</code>)، <strong>نشاط Skills Hub</strong> (<code>skillsHub.ts:634</code>)، <strong>إجابات المسابقات</strong> (<code>equal()</code> في <code>competitionQuestions.ts:69</code>، حد 100,000 حرف للإجابة). كمان <code>/api/translate</code> (معلم+): دالة الحد نفسها (<code>getEffectiveTranslatableLength</code>، <code>system.ts:227</code>) بتشغّل نفس النمط على النص كله <em>قبل</em> ما ترفضه (فالحد 5000 ما بيحمي). <strong>اللي اتقاس</strong> (Node v22.22.2 في sandbox، الـregex منقول حرفيًا — قياس للـregex مش للـendpoint): <code>&lt;</code> × 99,998 → 7.0 ث على <code>stripHtmlAndNormalize</code>؛ × 100,000 → 6.8 ث (<code>[^&gt;]*</code>) و11.0 ث (<code>[^&gt;]+</code>)؛ × 200,000 → 29.5 ث؛ إجابة مسابقة TEXT بـ99,990 حرف → 10.3 ث؛ <code>/api/translate</code> بـ150KB من <code>&lt;a </code> → 7.6 ث و300KB → 30.5 ث؛ <code>&lt;style </code> × 20,000 (140KB) → 6.3 ث. <strong>آمن:</strong> <code>imports.ts:175</code> (<code>/&lt;[^&gt;]*&gt;?/gm</code> → 0ms، لكنه بيحذف كل اللي بعد أي <code>&lt;</code> مفتوح). <strong>الأثر:</strong> الـregex synchronous، فطلب واحد بيحجز الـevent loop للـworker (المسابقات جوه transaction بـadvisory lock). لو الـAPI شغال instance واحد (أرجح — لسه مستني تأكيد مينا، شوف نقطة Redis تحت) يبقى الطلب يوقف المنصة كلها وقت التنفيذ. الأثر <strong>لحظي مش مخزّن</strong>: <code>calculateSubmissionStats</code> (اللي كانت بتعيد تصحيح إجابات مخزّنة وقت العرض في النسخة القديمة) بقت كود ميت (مفيش caller). <strong>مستنتج مش مقاس:</strong> الحد التربيعي لـ1MB حوالي 12 دقيقة (تقدير من المنحنى). مفيش تسريب بيانات ولا تنفيذ كود. مش اتجرّب على endpoint حي.</p><p class="desc"><strong>الحل بالتفصيل:</strong> (1) دالة <code>stripTags</code> واحدة مشتركة بـ<code>/&lt;[^&lt;&gt;]*&gt;/g</code> وتستبدل كل المواقع (جرّبناها: 3MB في 10ms، وناتج مطابق على HTML عادي؛ الفرق بس في حالات مكسورة زي <code>a&lt;b then &lt;b&gt;bold&lt;/b&gt;</code> والجديد أدق)، ونفس التعديل على <code>&lt;style…&gt;</code>/<code>&lt;script…&gt;</code> في <code>robustNormalizeText</code>. (2) سقف على طول <code>selectedAnswer</code> قبل أي regex في كل handler (تسليم، درس، Skills Hub، مسابقة) — مثلًا 10K — ورفض مبكر بالـ400. (3) في <code>/api/translate</code> فحص <code>text.length</code> الخام قبل <code>getEffectiveTranslatableLength</code>. (4) ملف اختبار انحدار: مدخل عدائي لكل موقع، بيفشل لو أخد أكتر من 100ms.</p></details>
+</div>
+<div class="card sev-medium">
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>ترجمة النص الغني (جديد 23 أكتوبر): تضخيم طلبات خارجية + regex تربيعي إضافي</h3></div>
+<span class="loc">back/src/services/translation.service.ts (translateRichHtml + فرع الـdetection)</span>
+<p class="desc">الترجمة الغنية بتبعت كل جزء نص كطلب خارجي، وفيها regex تربيعي. محدود بحد 5000 حرف ظاهر.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">سقف لعدد الأجزاء + regex خطي.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><code>translateRichHtml</code> بتقسّم الـHTML بـregex كبير وتبعت <strong>كل text run لوحده</strong> للـprovider بدفعات 16 بالتوازي (التصميم القديم كان placeholders = طلب واحد — استنتاج من الاختبار). اتقاس: <code>&lt;i&gt;a&lt;/i&gt;b</code> × 50,000 (450KB) → 100,000 طلب ترجمة؛ والـtag-alternative في الـregex تربيعي (150KB من <code>&lt;a </code> → 7.2 ث؛ الـ<code>.test(/&lt;\/?[a-z][\s\S]*?&gt;/i)</code> اللي بيقرر هل النص HTML → 11.3 ث عند 300KB). دلوقتي الـroute بيحدّ بـ5000 حرف <em>ظاهر</em> (بعد شيل الـtags) و50 عنصر في الـbatch، فالتضخيم محدود بآلاف الطلبات للـcall الواحد (حساب: ≤ حوالي 2500 run للنص × 50 عنصر)، لكن مفيش rate limit خاص بالترجمة. <strong>إيجابي:</strong> النص المترجم بيتعمله escape (<code>&amp; &lt; &gt;</code>) قبل الدمج، فالـprovider ما يقدرش يحقن tags؛ والفرونت (<code>syncRichTextFormatting</code>) بيبني الـDOM في <code>&lt;template&gt;</code> (inert) وبيرجع للترجمة الخام لو عدد الـnodes اتغيّر.</p><p class="desc"><strong>الحل بالتفصيل:</strong> سقف لعدد الـruns (مثلًا 200) وتقليل التوازي، وparser خطي (<code>htmlparser2</code>/<code>parse5</code>) أو <code>[^&lt;&gt;"']</code> بدل <code>[^&gt;"']</code> في الـtag-alternative (جرّبناها: 7.2 ث → 1ms)، و<code>/&lt;\/?[a-z][^&lt;&gt;]*&gt;/i</code> بدل الـdetection (2ms).</p></details>
+</div>
+<div class="card sev-medium">
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>جسم الطلب بحد 100MB: البروكسي بيحمّله كله في الذاكرة والباك بيـparse قبل المصادقة</h3></div>
+<span class="loc">front/src/app/api/[...path]/route.ts + lib/apiProxy.ts · back/src/index.ts:164-165</span>
+<p class="desc">البروكسي بيحمّل لحد 100MiB في الذاكرة (قياس: +208MB). الباك بيـparse 100MB قبل المصادقة.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">حد 1–2MB افتراضي، ورفعه لمسارات محددة.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><code>readProxyBody</code> بتجمّع الـchunks وبعدين تنسخهم في buffer واحد، والحد الافتراضي 100MiB (<code>PROXY_MAX_BODY_BYTES</code>). <strong>اتقاس</strong> (نفس الدالة في Node، body وهمي 100MiB): الـRSS زاد <strong>208MB</strong> في الذروة (حوالي ضعف الحجم). الـDockerfile بتاع الفرونت بيشغّل PM2 بـ<code>--max-memory-restart 512M</code> لكل worker → <strong>تقدير</strong> (RSS الفعلي للـworker مش معروف): كام طلب متوازي بحجم كبير يكفي لإعادة تشغيل worker وقت ما مستخدمين تانيين عليه. البروكسي مفيهوش مصادقة ولا حد لكل مسار (طلب JSON على <code>/api/auth/login</code> نفسه ممكن يوصل 100MiB)، و<code>express.json({limit:'100mb'})</code> و<code>urlencoded</code> بنفس الحد على مستوى الـapp قبل أي <code>verifyToken</code> (بعد <code>apiLimiter</code> اللي بيعدّ طلبات مش بايتات). <strong>مؤكد:</strong> الـ<code>Content-Length</code> المعلن بيترفض بدري، والبايتات الفعلية بتتعدّ، والـmultipart بيتمرّر stream. <strong>مجهول:</strong> هل <code>PROXY_MAX_BODY_BYTES</code> مضبوط في Dokploy، وهل Traefik عنده حد للـbody.</p><p class="desc"><strong>الحل بالتفصيل:</strong> حد صغير افتراضي (1–2MB) على البروكسي والباك، ورفعه على مسارات بعينها بس (حفظ الدروس/الاستيراد/استعادة النسخ) وبعد التحقق من الكوكي.</p></details>
+</div>
+<div class="card sev-medium">
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>فلتر PDF للشهادات بيتخطّاه object stream مضغوط</h3></div>
+<span class="loc">back/src/lib/studentDeliveryPolicy.ts (prepareCertificate) · routes/studentDelivery.ts</span>
+<p class="desc">فلتر PDF بيتخطاه object stream مضغوط (مجرَّب). الخطر على قارئ PDF عند المستلم.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">رفض ObjStm أو قبول صور بس.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc">الفلتر بيدوّر بـregex على البايتات الخام عن <code>/JavaScript</code> و<code>/JS</code> و<code>/OpenAction</code> و<code>/Launch</code> و<code>/AA</code> و<code>/EmbeddedFile</code> و<code>/RichMedia</code> و<code>/XFA</code>. نقلناه لـPython وجرّبنا: PDF فيه <code>/OpenAction</code> عادي → <code>reject</code>؛ نفس المحتوى جوه <code>ObjStm</code> بـFlateDecode → <strong>ACCEPT</strong>. الخطر محدود: الرفع لـSCHOOL_ADMIN/SUPER_ADMIN بس، والتنزيل <code>attachment</code> + CSP sandbox + nosniff، فالتنفيذ لو حصل هيبقى في قارئ PDF عند المستلم مش في أصل الموقع.</p><p class="desc"><strong>الحل بالتفصيل:</strong> رفض أي PDF فيه <code>/ObjStm</code> أو <code>/Filter</code> على الـobjects الحساسة، أو قبول صور بس، أو تمريره على parser حقيقي (qpdf/pdf-lib) بدل regex.</p></details>
+</div>
+<div class="card sev-medium">
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>الشهادات بتتخزن base64 جوه Postgres — حجم الـbulk كبير ومفيش dedup</h3></div>
+<span class="loc">back/prisma/schema.prisma (Certificate.fileData) · routes/studentDelivery.ts</span>
+<p class="desc">الشهادات base64 جوه Postgres. الـbulk لحد ≈1.1GB (حساب).</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تخزين خارجي + dedup.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><code>fileData</code> عمود <code>Text</code> بيخزّن الملف base64. الحد 8MB للملف → حوالي 11.2MB base64، والـbulk بيقبل لحد 100 مستلم والـ<code>fileData</code> بيتكتب مع كل صف: <strong>حساب (مش قياس)</strong> حوالي 1.1GB في transaction واحدة كحد أقصى. كمان <code>Certificate</code> على <code>studentId</code>/<code>schoolId</code> من غير cascade، فحذف مستخدم عنده شهادات هيفشل. بيزوّد ضغط الـDB والنسخ الاحتياطي، ومرتبط ببند "التخزين على قرص محلي".</p><p class="desc"><strong>الحل بالتفصيل:</strong> تخزين الملف في Object Storage (R2) والـDB يحتفظ بـkey وsha256 بس، مع dedup بين المستلمين.</p></details>
+</div>
 <div class="card sev-medium">
 <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image: آخر قياس 16 من 67 صفحة (~24%) — غير متعاد بعد ديف 9 أكتوبر</h3></div>
 <span class="loc">front/src/app (page.tsx)</span>
-<p class="desc">القياس (<code>grep -rl "next/image" front/src/app --include="page.tsx" | wc -l</code> = 16) على مستوى page.tsx بس؛ الرقم القديم "4 من 67" من V24 طلع غير دقيق. ديف 9 أكتوبر استبدل <code>&lt;img&gt;</code> بـnext/image في مكوّنات (RichTextEditor، معاينة FileUpload) وأضاف <code>shouldSkipImageOptimization</code> للمصادر <code>data:</code> و<code>blob:</code> و<code>http:</code> (لأن remotePatterns https فقط)، لكن ده على مستوى المكوّنات ومش بيغيّر رقم الصفحات. الإجمالي 67 كمان غير متعاد بعد صفحات skills-hub.</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شغّل <code>npm run audit:rendering</code> من <code>front/</code> (سكربت جديد بالـAST: إجمالي الصفحات، الصفحات client، وnext/image مقابل <code>&lt;img&gt;</code> على مستوى الـJSX كله) وحدّث الرقم منه. بعدها استبدال تدريجي في الصفحات الأثقل بالصور.</span></div>
+<p class="desc">آخر قياس 16 من 67 صفحة. غير متعاد بعد ديف 9 أكتوبر.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شغّل <code>npm run audit:rendering</code> وحدّث الرقم.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc">القياس (<code>grep -rl "next/image" front/src/app --include="page.tsx" | wc -l</code> = 16) على مستوى page.tsx بس؛ الرقم القديم "4 من 67" من V24 طلع غير دقيق. ديف 9 أكتوبر استبدل <code>&lt;img&gt;</code> بـnext/image في مكوّنات (RichTextEditor، معاينة FileUpload) وأضاف <code>shouldSkipImageOptimization</code> للمصادر <code>data:</code> و<code>blob:</code> و<code>http:</code> (لأن remotePatterns https فقط)، لكن ده على مستوى المكوّنات ومش بيغيّر رقم الصفحات. الإجمالي 67 كمان غير متعاد بعد صفحات skills-hub.</p><p class="desc"><strong>الحل بالتفصيل:</strong> شغّل <code>npm run audit:rendering</code> من <code>front/</code> (سكربت جديد بالـAST: إجمالي الصفحات، الصفحات client، وnext/image مقابل <code>&lt;img&gt;</code> على مستوى الـJSX كله) وحدّث الرقم منه. بعدها استبدال تدريجي في الصفحات الأثقل بالصور.</p></details>
 </div>
 <div class="card sev-medium">
 <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client": آخر قياس 40 من 67 page.tsx، والمتوقع 36 بعد ديف 9 أكتوبر (حساب مش قياس)</h3></div>
 <span class="loc">front/src/app (page.tsx)</span>
-<p class="desc"><strong>اللي مقاس:</strong> 40 بعد ديف 7-8 أكتوبر (PowerShell <code>Select-String</code>، بيعدّ الأسطر المطابقة مش الملفات، وبيساويها طول ما كل ملف فيه تطابق واحد؛ القياسات الأقدم كانت بـ<code>grep -l</code>). <strong>اللي اتغيّر بعده:</strong> ديف 9 أكتوبر شال الـdirective من 4 صفحات إضافية (analytics وsubmissions للـschool-admin والـsuper-admin) — يعني المتوقع 40-4=36. الجديد في الأسلوب ده إن الأجزاء الثابتة (الشعار، العنوان، شاشة التحميل) بقت بتتمرر كـprops من <code>page.tsx</code> (سيرفر) للـView، وده قسمة فعلية مش مجرد نقل الحد. قارنّا الأسطر المشالة بالمضافة: نقل خالص، والفرق بالظبط هو الماركب اللي اتنقل للصفحة + الـprops. تحفظ: الإجمالي 67 غير متعاد، ومحتوى الـView لسه client-rendered فالمكسب في الـbundle متواضع.</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شغّل <code>npm run audit:rendering</code> للرقم الفعلي (والإجمالي)، وكمّل بنفس نمط الـprops: سحب الأجزاء الثابتة وقوايم بيانات السيرفر لمكونات سيرفر بدل نقل الصفحة كلها لـView.</span></div>
+<p class="desc">آخر قياس 40 من 67. المتوقع 36 (حساب مش قياس).</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شغّل <code>npm run audit:rendering</code> للرقم الفعلي.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><strong>اللي مقاس:</strong> 40 بعد ديف 7-8 أكتوبر (PowerShell <code>Select-String</code>، بيعدّ الأسطر المطابقة مش الملفات، وبيساويها طول ما كل ملف فيه تطابق واحد؛ القياسات الأقدم كانت بـ<code>grep -l</code>). <strong>اللي اتغيّر بعده:</strong> ديف 9 أكتوبر شال الـdirective من 4 صفحات إضافية (analytics وsubmissions للـschool-admin والـsuper-admin) — يعني المتوقع 40-4=36. الجديد في الأسلوب ده إن الأجزاء الثابتة (الشعار، العنوان، شاشة التحميل) بقت بتتمرر كـprops من <code>page.tsx</code> (سيرفر) للـView، وده قسمة فعلية مش مجرد نقل الحد. قارنّا الأسطر المشالة بالمضافة: نقل خالص، والفرق بالظبط هو الماركب اللي اتنقل للصفحة + الـprops. تحفظ: الإجمالي 67 غير متعاد، ومحتوى الـView لسه client-rendered فالمكسب في الـbundle متواضع.</p><p class="desc"><strong>الحل بالتفصيل:</strong> شغّل <code>npm run audit:rendering</code> للرقم الفعلي (والإجمالي)، وكمّل بنفس نمط الـprops: سحب الأجزاء الثابتة وقوايم بيانات السيرفر لمكونات سيرفر بدل نقل الصفحة كلها لـView.</p></details>
+</div>
+<div class="card sev-info">
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>back/dist المتعمله commit متأخرة عن src ومضللة للمراجِع</h3></div>
+<span class="loc">back/dist/ (git)</span>
+<p class="desc"><code>dist</code> في git متأخر عن <code>src</code>. مش مؤثر على الإنتاج.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">ضيفه لـ<code>.gitignore</code>.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><code>git log</code>: آخر commit لـ<code>back/dist/index.js</code> = 19 أكتوبر، لـ<code>back/src/index.ts</code> = 22 أكتوبر، و<code>git ls-files back/dist/routes back/dist/services</code> مش لاقي <code>competitions</code>/<code>studentDelivery</code>/<code>studentNotifications</code>. مش مؤثر على الإنتاج (الـDockerfile بيعيد البناء — شوف "اتحلت مؤخرًا")، لكن أي حد بيقرا <code>dist</code> هيستنتج غلط (حصلت معانا).</p><p class="desc"><strong>الحل بالتفصيل:</strong> إضافة <code>back/dist</code> لـ<code>.gitignore</code> وشيله من الـrepo (أو بناؤه في CI).</p></details>
+</div>
+<div class="card sev-info">
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>تسريب رسائل خطأ داخلية في 3 أماكن</h3></div>
+<span class="loc">back/src/routes/reports.ts (fail) · routes/system.ts (/api/translate) · front/.../api/[...path]/route.ts</span>
+<p class="desc">رسائل خطأ داخلية بتوصل للعميل في 3 أماكن.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">رسالة عامة للعميل + log على السيرفر.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><code>fail()</code> بترجّع <code>error.message</code> الخام (بـ400) لو الرسالة فيها <code>date|time|range|policy</code> — رسائل Prisma غالبًا فيها "DateTime" أو "timed out"، فممكن تسرّب أسماء موديلات/حقول؛ و<code>/api/translate</code> بيرجّع <code>details: error.message</code> في الـ500؛ والبروكسي بيرجّع <code>details</code> في الـ502/504. من القراءة بس، ما اتجرّبش تفجير فعلي. كمان <code>proxy_error.log</code> بيتكتب بـ<code>appendFileSync</code> من غير rotation.</p><p class="desc"><strong>الحل بالتفصيل:</strong> رسالة عامة للعميل + log على السيرفر بس.</p></details>
+</div>
+<div class="card sev-info">
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>مسح الإشعارات كل دقيقة لكل طلاب + مفيش retention ظاهر للإشعارات</h3></div>
+<span class="loc">back/src/services/studentNotifications.ts · schema.prisma (StudentNotification، PushDelivery)</span>
+<p class="desc">مسح الإشعارات ≈ 3 queries لكل طالب كل دقيقة (حساب). مفيش retention ظاهر.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">مسح incremental + job retention.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><code>scanStudentContent</code> بتدور كل 60 ثانية وبتعمل 3 queries تقريبًا لكل طالب <code>ACTIVE</code> (<strong>حساب</strong> ≈ 3×N query/دقيقة، غير مقاس) — محصورة على instance 0 بس لو <code>NODE_APP_INSTANCE</code> موجود. ما شفتش في الديف أي job تنظيف لـ<code>StudentNotification</code>/<code>PushDelivery</code>.</p><p class="desc"><strong>الحل بالتفصيل:</strong> مسح incremental بـcursor/timestamp بدل مسح كل الطلاب، وjob retention (مثلًا 90 يوم).</p></details>
+</div>
+<div class="card sev-info">
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>كود ميت وتوثيق مش مطابق للواقع</h3></div>
+<span class="loc">back/src/lib/redis.ts · utils/examPerformance.ts · routes/competitions.ts</span>
+<p class="desc">كود ميت وتوثيق غلط: <code>checkRateLimit</code>، <code>calculateSubmissionStats</code>، مسارات <code>content</code>.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شيله أو اربطه، وصحّح التعليقات.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc">(أ) <code>checkRateLimit</code> مفيهوش أي caller (grep) — فالـrace فيه (INCR ثم EXPIRE منفصلين) كامن مش مفعّل؛ Redis بيُستخدم لـlogin lockout بس. (ب) <code>calculateSubmissionStats</code> معرَّفة فقط (سطر 12)، ومفيش نداء — يعني نتايج الامتحانات القديمة ما بتتعاد تقييمها وقت العرض (اسأل مينا لو ده مقصود). (ج) <code>router.all('/api/competitions/content', … 410)</code> مسجّل قبل GET/PUT على نفس المسار، فالـhandlers دي ما بتتنفّذش أبدًا. (د) تعليق <code>redis.ts</code> بيقول إن الـfallback "silently" وده بيخالف تصميم الـlogin (fail-closed). (هـ) <strong>Redis outage = login outage:</strong> <code>enableOfflineQueue:false</code> + <code>commandTimeout:1000</code> → لو <code>REDIS_URL</code> مضبوط وRedis وقع، كل محاولة دخول (حتى SUPER_ADMIN) بترجع 503. مقصود (fail-closed) لكن لازم تنبيه وخطة طوارئ.</p><p class="desc"><strong>الحل بالتفصيل:</strong> شيل الكود الميت أو اربطه بـLua زي الـlogin، وصحّح التعليقات، وحط تنبيه على Redis.</p></details>
+</div>
+<div class="card sev-info">
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>نظافة الريبو: src_backup وعشرات سكربتات patch وملفات log/backup ظاهرة في شجرة الملفات</h3></div>
+<span class="loc">front/ (fix_*.js، patch_*.js، …) · front/src_backup/ · front/proxy_error.log · back/*.json</span>
+<p class="desc"><code>src_backup</code> وسكربتات patch وlogs في شجرة الملفات.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تنضيف + <code>.gitignore</code>.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc">شجرة الملفات (<code>tree /f</code>) فيها <code>front/src_backup</code> (نسخة قديمة كاملة من <code>route.ts</code> وغيره)، وحوالي 100 سكربت <code>fix_*/patch_*/refactor_*</code> في جذر <code>front/</code>، و<code>proxy_error.log</code> و<code>dev-server.log</code>، وملفات <code>backup-2026-…json</code> و<code>restored_exams_clean.json</code> و<code>recovery.json</code> في <code>back/</code>. <strong>مش مؤكد</strong> إن ده متعمله commit (الشجرة من نظام الملفات مش من git) — لو متعمله، ملفات الـbackup JSON ممكن تحتوي بيانات حقيقية (شوف نقطة التأكيد تحت). بيصعّب المراجعة في كل الأحوال.</p><p class="desc"><strong>الحل بالتفصيل:</strong> تنضيف الـrepo و<code>.gitignore</code> لـ<code>*.log</code> و<code>backup*.json</code> و<code>src_backup</code>.</p></details>
 </div>
 </div>
 </section>
@@ -608,6 +715,39 @@ UNION ALL SELECT 'InteractiveActivity', id FROM "InteractiveActivity"
 UNION ALL SELECT 'Course', id FROM "Course"
  WHERE concat_ws(' ', "description","coverImage") ILIKE '%data:image/hei%';</pre>
 <p>الأسماء من schema.prisma (بدون @@map) وبافتراض إن لكل جدول عمود <code>id</code>. صفر صفوف = البند يتقفل. لو فيه صفوف: سكربت لمرة واحدة يشيل الصور دي أو يحوّلها، أو استثناء المحتوى القديم من الـmiddleware.</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>Redis وعدد الـinstances وحدود الحجم — إعدادات Dokploy (محتاجة مينا؛ هشام ملوش وصول للسيرفر).</strong></p>
+<p>الأثر: لو <code>REDIS_URL</code> مش مضبوط، <code>start-production.js</code> بيجبر PM2 على instance واحد، وأي طلب ReDoS ناجح يوقف الـAPI كله. <strong>دليل غير حاسم:</strong> <code>REDIS_URL</code> موجود في <code>.env.example</code> و<code>docker-compose.yml</code> (فيه service لـRedis)، لكن <strong>مش موجود</strong> في <code>.env.dokploy.example</code> ولا <code>DOKPLOY_DEPLOY.md</code> ولا <code>DEPLOYMENT_GUIDE.md</code>، والإنتاج على Dokploy بالـDockerfile (مش compose). الأرجح (ثقة متوسطة، استنتاج) إنه مش مضبوط — ممكن يكون مضبوط من واجهة Dokploy ومش موثّق. اسأل مينا (من غير القيم):</p>
+<p>(1) هل <code>REDIS_URL</code> موجود في Environment بتاع الباك؟ ولوج بدء التشغيل فيه <code>Connected successfully to shared cache store</code> ولا <code>REDIS_URL not configured</code>؟ (2) هل <code>PROXY_MAX_BODY_BYTES</code> و<code>INTERNAL_BACKEND_URL</code> مضبوطين؟ (3) هل Build Type = Dockerfile؟ (4) هل حد شاف <code>Too many requests, please try again later</code> في الاستخدام الفعلي؟</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>الـrate limits: هل كل المستخدمين بيتحسبوا IP واحد؟ — اختبار من غير سيرفر.</strong></p>
+<p><code>apiLimiter</code>: 15000 طلب/15 دقيقة لكل IP (≈1000/دقيقة)، store في الذاكرة لكل worker، بيتخطى loopback. البروكسي بيمرّر كل الـheaders (<code>X-Forwarded-For</code> من Traefik) وبالتالي الـIP الحقيقي بيوصل <em>لو</em> الـNext بيكلّم الباك عبر <code>INTERNAL_BACKEND_URL</code> (داخلي). لو بيمشي عبر الدومين العام (<code>NEXT_PUBLIC_BACKEND_ORIGIN</code> أو الـfallback <code>https://api.klevro.tech</code>)، Traefik بيضيف IP السيرفر ومع <code>trust proxy = 1</code> الباك هيشوف IP واحد لكل المستخدمين (bucket مشترك ≈ 17 طلب/ثانية للمنصة كلها — حساب). الاختبار:</p>
+<p><pre dir="ltr" style="text-align:left; white-space:pre-wrap; font-size:12px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto;">(Invoke-WebRequest "https://&lt;الدومين&gt;/api/health" -UseBasicParsing).Headers | Out-String -Width 200</pre></p>
+<p>شغّله من جهازين على شبكتين مختلفتين (لابتوب + موبايل بيانات) وبص على <code>RateLimit-Limit</code> و<code>RateLimit-Remaining</code>. لو العدّاد بيتناقص مشترك بين الجهازين = bucket واحد للكل. (لو أكتر من worker العدّاد ممكن يتلخبط — خد 2–3 قراءات. ولو <code>/api/health</code> مش موجود جرّب أي GET عام.)</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>تأكيد ReDoS على staging — مينا.</strong></p>
+<p>القياسات في بند الـReDoS قياس للـregex في Node v22 sandbox، مش للـendpoint. التأكيد الأنضف: على بيئة اختبار (مش الإنتاج)، تسليم امتحان بإجابة <code>'&lt;'.repeat(100000)</code> وقياس زمن الرد (المتوقع حوالي 7 ثواني) وإن طلب تاني بالتوازي بيتأخر. ولو فيه middleware تحقق في <code>routes/exams.ts</code> غير اللي ظهر في الـgrep (<code>verifyToken</code> + <code>checkRole</code> بس)، يتقال.</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>تغطية <code>hideKeys</code> لكل أنواع أسئلة المسابقات.</strong></p>
+<p>الـpayload للطالب بيحجب مفاتيح بأسماء معينة (<code>answer</code>/<code>solution</code>/<code>correct*</code>…) وفيه اختبارات لـMCQ ومعاينة المعلم، لكن مراجعتنا ما غطّتش شكل <code>options</code> لكل الـ24 نوع تفاعلي — ممكن نوع يحط الإجابة تحت اسم تاني. المطلوب: عينة payload خام (<code>options</code> قبل التنقية) لكل نوع، أو اختبار آلي يقارن الخام بالمُرسل.</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>قرارات تصميم لمينا/صاحب المنتج.</strong></p>
+<p>(أ) الـleaderboard العام بيعرض أول اسم ومدرسة الطالب بموافقة الطالب نفسه (<code>publicName</code>) — الطلاب قُصّر، فهل موافقة الطالب وحدها كفاية أم تحتاج موافقة المدرسة/ولي الأمر؟ (ب) <code>ADMIN_ROLES</code> في المسابقات مفيهاش TEACHER، و<code>reportRoles</code> في التقارير مفيهاش SUPERVISOR رغم إنه دور في controllers الامتحانات — مقصود؟ (ج) <code>calculateSubmissionStats</code> الميتة: نتايج الامتحانات القديمة اللي اتصححت بمنطق أقدم هتفضل زي ما هي — مقصود؟</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>الاعتماديات: <code>xlsx</code> من CDN، و<code>npm install</code> في الـDockerfiles.</strong></p>
+<p><code>back/package.json</code> نقل <code>xlsx</code> من <code>^0.18.5</code> (عليه CVE معروفة بتتحل في 0.20.x) لـ<code>xlsx-0.20.3</code> من <code>cdn.sheetjs.com</code>، وشال <code>@xenova/transformers</code> — تحسين أمني، لكن الـbuild بقى بيعتمد على CDN خارجي (لو وقع، الـdeploy يفشل). محتاجين نتأكد إن الـlockfile فيه <code>integrity</code> للـtarball ده. وكمان الـDockerfiles (باك وفرونت) بتستخدم <code>npm install</code> مش <code>npm ci</code>، فالبناء مش مضمون يطابق الـlockfile بالظبط. التقارير بتستخدم <code>xlsx</code> للكتابة بس (تقليل أثر ثغرات الـparsing).</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>هل ملفات الـbackup والـlog متعمل لها commit؟</strong></p>
+<p>شجرة الملفات فيها <code>back/backup-2026-05-29….json</code> و<code>back/backups/*.json</code> و<code>restored_exams_clean.json</code> و<code>front/proxy_error.log</code> — ممكن بيانات حقيقية (طلاب/نتايج) أو URLs داخلية. الأمر:</p>
+<p><pre dir="ltr" style="text-align:left; white-space:pre-wrap; font-size:12px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto;">git ls-files back/backup* back/backups back/restored_exams_clean.json back/recovery.json front/proxy_error.log front/dev-server.log</pre></p>
+<p>لو رجّع أي ملف، يتشال من الـrepo (ومن التاريخ لو فيه بيانات حقيقية) ويتحط في <code>.gitignore</code>.</p>
 </div>
 </section>
 
@@ -773,9 +913,21 @@ UNION ALL SELECT 'Course', id FROM "Course"
 
     <section id="plan">
       <h2>خطة العمل</h2>
-      <p class="section-sub">الوضع العام: مفيش بند حرج (critical) مفتوح — آخر بند حرج (IDOR حذف الدروس) اتقفل في مراجعة 24 سبتمبر، وبند autosave المتوسط اتقفل في مراجعة 30 سبتمبر. الترتيب تحت حسب الأولوية.</p>
+      <p class="section-sub">الوضع العام: مفيش بند حرج (critical) مفتوح — آخر بند حرج (IDOR حذف الدروس) اتقفل في مراجعة 24 سبتمبر. في V36 اتفتح بند عالي (availability) واحد: ReDoS. الترتيب تحت حسب الأولوية.</p>
 
       <div class="timeline">
+        <div class="tl-item urgent">
+          <div class="tl-dot"></div>
+          <div class="tl-day">مرحلة 0 — عاجل (أيام)</div>
+          <div class="tl-body">
+            <h4>إقفال الـReDoS وتأكيد بيئة التشغيل</h4>
+            <ul>
+              <li>استبدال <code>/&lt;[^&gt;]*&gt;/g</code> و<code>/&lt;[^&gt;]+&gt;/g</code> بـ<code>/&lt;[^&lt;&gt;]*&gt;/g</code> في <code>shared.ts</code> (600، 1226 + style/script) و<code>competitionQuestions.ts:82</code> و<code>system.ts:227</code> و<code>translation.service.ts:32</code> + الـdetection، وسقف على طول <code>selectedAnswer</code> قبل أي regex في التسليم والدرس وSkills Hub والمسابقة</li>
+              <li>ملف اختبار انحدار (مدخل عدائي لكل موقع، حد 100ms) واختبار حي على staging</li>
+              <li>تأكيد حالة Redis وعدد الـinstances، وحد body صغير افتراضي على البروكسي والباك</li>
+            </ul>
+          </div>
+        </div>
         <div class="tl-item mid">
           <div class="tl-dot"></div>
           <div class="tl-day">مرحلة 1 — الجاهزية للتوسع (أسابيع، مش عاجل)</div>
@@ -784,6 +936,7 @@ UNION ALL SELECT 'Course', id FROM "Course"
             <ul>
               <li>نسخ احتياطي تلقائي لتخزين خارجي (S3-compatible)</li>
               <li><strong>الملفات لسه على قرص السيرفر المحلي</strong> (multer.diskStorage، حد رفع 150MB) — نقلها لـ Cloudflare R2 (الـ dependency @aws-sdk/client-s3 موجودة بالفعل في package.json، الموضوع تفعيل مش تركيب من الصفر)</li>
+              <li>شهادات الطلاب (base64 في Postgres) — تنتقل لـObject Storage مع باقي الملفات</li>
               <li>ملاحظة صغيرة: reconcileCriticalSchema (شبكة أمان SQL خام مؤقتة أثناء انتقال الـ migrations) ممكن تتشال بعد ما نتأكد كل البيئات على baseline موحّد</li>
             </ul>
           </div>
@@ -815,7 +968,7 @@ UNION ALL SELECT 'Course', id FROM "Course"
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V35 — ٩ أكتوبر ٢٠٢٦ (مراجعة كوميت 9 أكتوبر: قرار رفض HEIC بدل دعمه — طبقات متعددة ومختبر، مع تحقق مستقل من أداء الـmiddleware ومن مواضع استدعاء الـextractors؛ قفل ملاحظة RichTextEditor؛ 4 صفحات إضافية اتقسمت بتمرير الأجزاء الثابتة كـprops (المتوقع "use client" 36، غير مقاس). نقطة تأكيد واحدة مفتوحة تحتاج وصول للداتابيز. أرقام "use client" وnext/image الفعلية معلّقة على تشغيل npm run audit:rendering). مفيش بند حرج. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.</p>
+    <p class="footer-note">V36 — ٢٣ أكتوبر ٢٠٢٦ (مراجعة ديف 19–23 أكتوبر، ~712 ملف / 6MB، ومعاه ديف صغير 23 أكتوبر لترجمة الـhint والنص الغني. المنهجية: قراءة الكود مباشرة؛ ونقل المنطق لـNode/Python وتشغيله لـ: مقارنة تقسيم الـcontrollers (الأسطر المحذوفة مقابل المضافة)، وقياس الـregexes على مدخلات عدائية (Node v22.22.2 في sandbox — قياس للـregex مش للـendpoint)، وقياس ذاكرة بروكسي 100MiB، واختبار فلتر PDF وcsvCell وكتابة XLSX. الأرقام الموصوفة "حساب" أو "تقدير" مش قياس. اتفتح: بند عالي (ReDoS) + 4 متوسطة جديدة + 5 ملاحظات + 7 نقاط تأكيد جديدة. اتقفل: سؤال الـdeploy (الـDockerfile بيبني)، و<code>X-Offline-*</code> مش مشكلة. تصحيح: عدّاد "اتحلت" في V35 كان 32 والفعلي 31. تصحيح صياغة: Redis لـlogin lockout بس مش لكل الـrate limiting. لسه مش متراجع: ~98 ملف components، قياسات next/image و"use client" (معلّقة على <code>npm run audit:rendering</code>)، وتغطية <code>hideKeys</code>. مفيش بند حرج. الملف الحي المُحدَّث باستمرار هو "Klevro open issues only" بدون رقم نسخة. التقرير الكامل (68 بند مُصلح) متاح كملف منفصل لو احتجت الرجوع للتاريخ الكامل.)</p>
   </div>
 </footer>
 
