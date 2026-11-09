@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V38 (٢ نوفمبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V39 (٧ نوفمبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -275,14 +275,13 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V38 — ٢ نوفمبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V38</h1>
-    <p class="lead">نسخة مُصفّاة بالمفتوح بس. V38 بتغطّي ديف 2 نوفمبر (503 ملف، أغلبه حذف): مينا قفل معظم بنود V37 (ReDoS، bucket الـproxy، حد الـbody، ميزانية الـAI، race الـlimiter، فلتر PDF، retention). الإصلاحات اتراجعت بالكود، وجرّبنا الدوال الجديدة على مدخلات 200K (أبطأ 32ms)، <strong>لكن ما اتجرّبتش على إنتاج أو staging</strong>. اتفتح بند <strong>عالي</strong>: ملفات backup لسه في تاريخ git وفيها هاشات bcrypt. مفيش بند حرج. <strong>مش متراجع:</strong> UI الـAI الجديد، و~98 component قديمة، وقياسات next/image و"use client".</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V39 — ٧ نوفمبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V39</h1>
 
     <div class="stat-row">
-      <div class="stat-tile open"><span class="n">7</span><span class="l">بند مفتوح — 1 عالي + 3 متوسطة + 3 ملاحظات (مفيش حرج)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">8</span><span class="l">نقاط تأكيد مفتوحة — اختبارات staging لإصلاحات 2 نوفمبر، وقرارات الخصوصية، وإعدادات Dokploy</span></div>
-      <div class="stat-tile fixed"><span class="n">15</span><span class="l">بند اتقفل/اتأكد مؤخرًا (V36–V38). السجل الأقدم في V35</span></div>
+      <div class="stat-tile open"><span class="n">8</span><span class="l">بند مفتوح — 1 عالي + 5 متوسطة + 2 ملاحظات (مفيش حرج)</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">7</span><span class="l">نقاط تأكيد مفتوحة — إعدادات Dokploy، واختبارات staging، وقرارات الخصوصية والرسائل</span></div>
+      <div class="stat-tile fixed"><span class="n">22</span><span class="l">بند اتقفل/اتأكد مؤخرًا (V36–V39). السجل الأقدم في V35</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -314,12 +313,12 @@
         <div class="r-tile">
           <div class="r-title">الأمان</div>
           <div class="r-score-row"><span class="r-score was">10/10</span><span class="r-arrow">→</span><span class="r-score now warn">8/10</span></div>
-          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات/الدروس، بما فيها تحقق TeacherCourse فعلي (مش بس school-level). JWT خرج من localStorage والـresponse body خالص، محمي باختبار تراجع دائم. باب خلفي كامل في تسجيل الدخول اتشال. brute-force lockout بقى fail-closed هيكليًا (Redis أو worker واحد بالإجبار، مفيش حالة وسط ضعيفة). ثغرة IDOR حذف الدروس لـTEACHER وثغرة إدارة امتحان cross-school عبر creatorId — الاتنين اتلقوا واتقفلوا في مراجعة 21-24 سبتمبر. مراجعة 1-2 أكتوبر مدّت نفس تحقق الـownership لعمليات التعديل (مش الحذف الصريح بس) وقفلت تجاوز توجل الحذف عبر تعديل عادي، وفصلت كوكي الجلسة عن كوكي التجديد بـJWT purpose منفصل (مع إصلاح مصاحب في بروكسي الكوكيز كان ممكن يكسر الميزة بصمت). تحديث 2 نوفمبر: مينا قفل بنود الـavailability (ReDoS، حدود الـbody، bucket الـproxy، ميزانية الـAI) — الكود اتراجع وجُرّبت الدوال، لكن مش على إنتاج. اتفتح بند عالي واحد: <strong>هاشات bcrypt في تاريخ git</strong> (ملفات backup اتشالت من الشجرة وباقية في التاريخ). 8/10 حكم تقديري مني. مفيش بند حرج.</div>
+          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات/الدروس، بما فيها تحقق TeacherCourse فعلي (مش بس school-level). JWT خرج من localStorage والـresponse body خالص، محمي باختبار تراجع دائم. باب خلفي كامل في تسجيل الدخول اتشال. brute-force lockout بقى fail-closed هيكليًا (Redis أو worker واحد بالإجبار، مفيش حالة وسط ضعيفة). ثغرة IDOR حذف الدروس لـTEACHER وثغرة إدارة امتحان cross-school عبر creatorId — الاتنين اتلقوا واتقفلوا في مراجعة 21-24 سبتمبر. مراجعة 1-2 أكتوبر مدّت نفس تحقق الـownership لعمليات التعديل (مش الحذف الصريح بس) وقفلت تجاوز توجل الحذف عبر تعديل عادي، وفصلت كوكي الجلسة عن كوكي التجديد بـJWT purpose منفصل (مع إصلاح مصاحب في بروكسي الكوكيز كان ممكن يكسر الميزة بصمت). تحديث 7 نوفمبر: مينا قفل <code>hideKeys</code> وبنود الـlimiter والخصوصية (الكود اتراجع، مش على إنتاج). مفتوح: <strong>هاشات bcrypt في تاريخ git</strong> (الريبو كان public، والتنضيف وإعادة تعيين كلمات المرور لسه)، وحساب demo بباسورد ثابت، وRedis كنقطة فشل. 8/10 حكم تقديري مني. مفيش بند حرج.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
           <div class="r-score-row"><span class="r-score now good">7/10</span></div>
-          <div class="r-verdict">الـ 3 Maps اتقفلت بالكامل، وحالة المستخدم بقت فحص DB مباشر بدل كاش. <strong>تصحيح صياغة V35:</strong> Redis بيُستخدم لـbrute-force على الدخول وللحدود الصارمة للـAI (Lua atomic، fail-closed). باقي الـlimiters (<code>express-rate-limit</code>) على store في الذاكرة لكل worker (مؤكد من إعداد <code>apiLimiter</code>: 15000 طلب/15 دقيقة لكل IP، من غير <code>store</code>). PM2 cluster mode شغال مع حماية من تكرار startup tasks.</div>
+          <div class="r-verdict">الـ 3 Maps اتقفلت بالكامل، وحالة المستخدم بقت فحص DB مباشر بدل كاش. <strong>تحديث 7 نوفمبر:</strong> الـlimiter العام للـAPI بقى مشترك عبر Redis (<code>apiRateLimit</code>)، وكمان login lockout وحدود الـAI. باقي الـlimiters (<code>express-rate-limit</code> في المسابقات والترجمة) لسه على store في الذاكرة لكل worker (مؤكد من إعدادها). تحذير: الـlimiter العام fail-closed (بند Redis تحت). PM2 cluster mode شغال مع حماية من تكرار startup tasks.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">سلامة البيانات</div>
@@ -345,18 +344,32 @@
     <section id="frontend-open">
 <div class="cards">
 <div class="card sev-high">
-<div class="card-top"><span class="badge sev-high">عالي</span><h3>ملفات الـbackup لسه في تاريخ git — فيها هاشات bcrypt لمستخدمين</h3></div>
+<div class="card-top"><span class="badge sev-high">عالي</span><h3>ملفات الـbackup لسه في تاريخ git — والريبو كان public (حسب وثيقة مينا)</h3></div>
 <span class="loc">git history: back/backup-2026-05-29….json · back/backups/*.json · back/restored_exams_clean.json</span>
-<p class="desc">الملفات اتشالت من الشجرة الحالية (2 نوفمبر) لكنها باقية في التاريخ. فيها هاشات bcrypt وأسماء وأدوار (منها SUPER_ADMIN). مش عارف لو الحسابات حقيقية.</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">تأكد إن الريبو private، نضّف التاريخ (<code>git filter-repo</code>) و<code>force-push</code>، وأعد تعيين كلمات المرور (SUPER_ADMIN أولًا).</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc"><strong>اللي اتأكد منه</strong> (من الأسطر المحذوفة في ديف 2 نوفمبر): هاشات bcrypt (<code>$2…$NN$</code>) في حقل <code>password</code> — عدد القيم الفريدة: 6 في <code>backup-2026-05-29…</code>، و69 في <code>backup-2026-06-30…</code>، و51 في <code>recovery.json</code>. الأدوار: الأول STUDENT 4 + SCHOOL_ADMIN 1 + SUPER_ADMIN 1؛ التاني SUPER_ADMIN 1 + SCHOOL_ADMIN 11 + TEACHER 18 + STUDENT 39؛ التالت SCHOOL_ADMIN 28 + STUDENT 16 + TEACHER 6 + SUPER_ADMIN 1. فيها كمان أسماء مستخدمين وأسماء أشخاص وإجابات طلاب. مفيش كلمات مرور plaintext اتلاقت. وثيقة مينا نفسها بتقول إن التاريخ ما اتمسحش.</p><p class="desc"><strong>مش عارفه:</strong> هل الحسابات حقيقية ولا تجريبية (أسماء مستخدمين <code>recovery.json</code> شكلها أكواد حقيقية)؛ هل الريبو private ومين عنده وصول أو clone؛ قوة كلمات المرور (الهاش bcrypt بطيء الكسر لكن كلمة ضعيفة بتتكسر). الأثر: لو الملف اتسرّب، كسر أوفلاين لهاشات أي حساب، وSUPER_ADMIN أخطرهم.</p><p class="desc"><strong>الخطوات:</strong> (1) تأكيد visibility الريبو وقايمة الوصول. (2) <code>git filter-repo</code> أو BFG لمسح الملفات من كل التاريخ، <code>force-push</code>، وإبلاغ كل من عمل clone (أو إعادة clone). (3) إجبار تغيير كلمات المرور للحسابات دي، وأولها SUPER_ADMIN. (4) فحص أي نسخ تانية (forks، CI artifacts، صور Docker قديمة).</p></details>
+<p class="desc">اتشالت من الشجرة، وباقية في التاريخ، وفيها هاشات bcrypt لمستخدمين (منها SUPER_ADMIN). ريبو <code>minasamir1401/course-back</code> كان public وبقى private. تنضيف التاريخ جاهز لكن <strong>ما اتنفّذش</strong>، ولا إعادة تعيين كلمات المرور.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">اعتبر الهاشات مكشوفة: نفّذ تنضيف التاريخ، وأجبر تغيير كلمات المرور لكل الحسابات اللي في الملفات (مش SUPER_ADMIN بس).</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><strong>اللي اتأكد منه:</strong> هاشات bcrypt في حقل <code>password</code> — القيم الفريدة: 6 في <code>backup-2026-05-29…</code>، 69 في <code>backup-2026-06-30…</code>، 51 في <code>recovery.json</code>. الأدوار: الأول STUDENT 4 + SCHOOL_ADMIN 1 + SUPER_ADMIN 1؛ التاني SUPER_ADMIN 1 + SCHOOL_ADMIN 11 + TEACHER 18 + STUDENT 39؛ التالت SCHOOL_ADMIN 28 + STUDENT 16 + TEACHER 6 + SUPER_ADMIN 1. فيها أسماء مستخدمين وأسماء أشخاص وإجابات طلاب. مفيش كلمات مرور plaintext.</p><p class="desc"><strong>جديد 7 نوفمبر (من <code>REMEDIATION-2026-11.md</code>، ما تحققتش منه بنفسي):</strong> ريبو <code>course-back</code> اتحوّل من public لـprivate (تحقق عبر GitHub API)، والريبو الرئيسي كان private أصلًا. نسخة مفلترة (<code>history-cleanup-2026-11-06.git</code>) جاهزة، من غير push ولا استبدال تاريخ، وبدون محو الـPR refs والـforks والـcaches. أمر <code>npm run reset:superadmin</code> موجود (SUPER_ADMIN بحساب واحد، وأكثر من 16 حرف عبر متغير بيئة، ويسجّل نشاط)، لكن ما اتنفّذش، ومفيش أداة لباقي الحسابات.</p><p class="desc"><strong>مش عارفه:</strong> هل الحسابات حقيقية ولا تجريبية؛ مدة الفترة اللي كان فيها الريبو public ومين عمل clone/fork؛ قوة كلمات المرور. الأثر: كسر أوفلاين لهاش أي حساب، وSUPER_ADMIN أخطرهم.</p><p class="desc"><strong>الخطوات:</strong> (1) تحديد مدة الـpublic وقايمة الـforks/clones. (2) تنفيذ التنضيف + <code>force-with-lease</code> وإبلاغ كل من عمل clone. (3) إجبار تغيير كلمات المرور لكل الحسابات في الملفات (سكربت جديد لباقي الأدوار). (4) فحص أي نسخ تانية (CI artifacts، صور Docker قديمة، GitHub caches).</p></details>
 </div>
 <div class="card sev-medium">
-<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>الشهادات: تخزين خاص جاهز في الكود لكنه غير مفعّل، والقديم inline</h3></div>
-<span class="loc">back/src/lib/certificateStorage.ts · schema.prisma (Certificate)</span>
-<p class="desc">كود S3/R2 الخاص اتضاف (2 نوفمبر) لكنه مش شغال إلا لو <code>CERTIFICATE_S3_BUCKET</code> اتضبط. من غيره الشهادات لسه base64 في Postgres (≈1.1GB للـbulk، حساب).</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">اضبط bucket خاص مخصص + الـenv، وانقل القديم (backfill) أو احتفظ به inline عن قصد.</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc">الكود يمنع استخدام الـbucket العام (يرفض لو نفس <code>S3_BUCKET</code>/<code>R2_BUCKET</code>)، والمفتاح <code>certificates/&lt;sha256&gt;</code> (dedup)، والتحميل بيتحقق من الحجم والـsha256 وبحد على البايتات الفعلية، والـACL والـheaders ما اتغيّروش (التنزيل attachment). الـmigration <code>20261101000000_availability_hardening</code> بتضيف العمود. <strong>مجهول:</strong> هل env الـbucket اتضبط في الإنتاج، وهل فيه backfill للشهادات القديمة (وثيقة مينا بتتكلم عن "existing inline" لكن ما اتأكدتش من التفاصيل). كمان <code>Certificate</code> لسه من غير cascade على الطالب (من فحص سابق، ما اتأكدتش من تغييره).</p></details>
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>الشهادات: كود التخزين الخاص وسكربت النقل جاهزين لكن مش متنفّذين</h3></div>
+<span class="loc">back/src/lib/certificateStorage.ts · scripts/backfillCertificatesToS3.ts · schema.prisma (Certificate)</span>
+<p class="desc">كود S3/R2 الخاص و<code>npm run migrate:certificates:s3</code> (معاينة، ثم <code>-- --apply</code>) اتضافوا، لكن مش شغّالين إلا لو <code>CERTIFICATE_S3_BUCKET</code> اتضبط. من غيره الشهادات base64 في Postgres (≈1.1GB للـbulk، حساب).</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">اضبط bucket خاص مخصص + الـenv، وبعد نسخة احتياطية نفّذ المعاينة ثم <code>--apply</code>.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc">الكود يرفض استخدام الـbucket العام، والمفتاح <code>certificates/&lt;sha256&gt;</code> (dedup)، والتحميل بيتحقق من الحجم والـsha256. السكربت (حسب الوثيقة) بيعالج ملف واحد في المرة، وبينزّل ويتحقق من البايتات والهاش، وبيستخدم conditional updates قبل مسح النسخة المضمّنة. وثيقة مينا بتقول إن الـmigration <code>20261101000000</code> و<code>20261105000000</code> لازم يتنفّذوا قبل الـapp، وإن الـbucket مش مضبوط محليًا. <strong>مجهول:</strong> حالة الإنتاج (الـenv، الـmigration، الـbackfill). <code>Certificate</code> لسه من غير cascade على الطالب (من فحص سابق، ما اتأكدتش من تغييره).</p></details>
+</div>
+<div class="card sev-medium">
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>حساب معلم تجريبي بباسورد ثابت بيتنزّل تلقائيًا في الإنتاج</h3></div>
+<span class="loc">back/src/services/minaTeacherDemo.ts · scripts/start-production.js · back/.env.example</span>
+<p class="desc">الـseeder بيشتغل عند إقلاع الإنتاج على أي DB جديدة ويعمل معلم <code>mina_samy_teacher_demo</code> بباسورد ثابت في الكود. مفعّل افتراضيًا.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text"><code>MINA_TEACHER_DEMO_ENABLED=false</code> في الإنتاج، أو <code>MINA_TEACHER_DEMO_PASSWORD</code> عشوائي.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><strong>اللي اتأكد منه (قراءة كود):</strong> <code>MINA_DEMO_PASSWORD = 'MinaDemo!2026'</code> مكتوب في المصدر (وفي ريبو كان public). <code>start-production.js</code> بيشغّل <code>seed-mina-teacher-demo.js</code> بعد الـmigrations، والتعطيل بـ<code>MINA_TEACHER_DEMO_ENABLED=false</code> أو <code>0</code> بس، و<code>.env.example</code> مفعّله. بيعمل مدرسة منفصلة (<code>mina-samy-teacher-demo</code>) ومعلم role TEACHER، و8 طلاب وأولياء أمور بباسوردات عشوائية، وكورس وامتحان ومسابقات بيانات وهمية، ومعاه marker في <code>SystemSetting</code> يمنع إعادة التنصيب.</p><p class="desc"><strong>الأثر:</strong> حساب معلم بباسورد معروف علنًا. نطاقه مدرسته التجريبية (الـscoping سليم)، لكن أي حد يعرفه يقدر يرفع ملفات ويستخدم <code>/api/translate</code> ويبعت رسائل ويدير مسابقات في المدرسة دي. <strong>مش عارف</strong> لو اتنزّل في الإنتاج فعلًا. فحص: ابحث في لوحة SUPER_ADMIN عن "مدرسة تجربة المعلم — مينا سامي". التعليق في الـenv بيقول إنه "requested public teacher demo"، فممكن مقصود.</p></details>
+</div>
+<div class="card sev-medium">
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>Redis بقى نقطة فشل لكل الـAPI (الـlimiter العام fail-closed)</h3></div>
+<span class="loc">back/src/middleware/apiRateLimit.ts</span>
+<p class="desc">لو <code>REDIS_URL</code> مضبوط وRedis وقع أو بطيء (مهلة ثانية)، كل <code>/api/*</code> بيرجّع 503. ولو مش مضبوط ومفيش <code>LOGIN_RATE_LIMIT_SINGLE_WORKER=1</code>، برضه 503.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">الـlimiter العام يرجع لمحلي لو Redis وقع (fail-open)، والدخول والـAI fail-closed.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc"><code>apiRateLimit</code> (production بس، وبيتخطى loopback) بيعمل <code>checkRateLimit(…, strict=true)</code> على كل طلب: أي خطأ Redis = 503، وكل طلب بقى فيه round-trip لـRedis. قبل كده الأثر كان على الدخول بس. <strong>مش مقاس:</strong> الأثر الفعلي بيعتمد على إعداد الإنتاج (Redis مضبوط ولا لأ؟ — صندوق Dokploy تحت). الـCMD بتاع الـDockerfile بيعدّي على <code>start-production.js</code> (اللي بيضبط single-worker)، فمفيش 503 دايم من غير Redis طالما الـwrapper شغال.</p></details>
 </div>
 <div class="card sev-medium">
 <div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image: آخر قياس 16 من 67 صفحة (~24%) — غير متعاد بعد ديف 9 أكتوبر</h3></div>
@@ -371,13 +384,6 @@
 <p class="desc">آخر قياس 40 من 67. المتوقع 36 (حساب مش قياس).</p>
 <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شغّل <code>npm run audit:rendering</code> للرقم الفعلي.</span></div>
 <details class="more"><summary>التفاصيل</summary><p class="desc"><strong>اللي مقاس:</strong> 40 بعد ديف 7-8 أكتوبر (PowerShell <code>Select-String</code>، بيعدّ الأسطر المطابقة مش الملفات، وبيساويها طول ما كل ملف فيه تطابق واحد؛ القياسات الأقدم كانت بـ<code>grep -l</code>). <strong>اللي اتغيّر بعده:</strong> ديف 9 أكتوبر شال الـdirective من 4 صفحات إضافية (analytics وsubmissions للـschool-admin والـsuper-admin) — يعني المتوقع 40-4=36. الجديد في الأسلوب ده إن الأجزاء الثابتة (الشعار، العنوان، شاشة التحميل) بقت بتتمرر كـprops من <code>page.tsx</code> (سيرفر) للـView، وده قسمة فعلية مش مجرد نقل الحد. قارنّا الأسطر المشالة بالمضافة: نقل خالص، والفرق بالظبط هو الماركب اللي اتنقل للصفحة + الـprops. تحفظ: الإجمالي 67 غير متعاد، ومحتوى الـView لسه client-rendered فالمكسب في الـbundle متواضع.</p><p class="desc"><strong>الحل بالتفصيل:</strong> شغّل <code>npm run audit:rendering</code> للرقم الفعلي (والإجمالي)، وكمّل بنفس نمط الـprops: سحب الأجزاء الثابتة وقوايم بيانات السيرفر لمكونات سيرفر بدل نقل الصفحة كلها لـView.</p></details>
-</div>
-<div class="card sev-info">
-<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3><code>/api/ready</code> مفتوح من غير مصادقة ويعرض حالة الـDB وRedis</h3></div>
-<span class="loc">back/src/routes/system.ts</span>
-<p class="desc">الـendpoint الجديد بيرجّع <code>database</code> و<code>redis</code> (connected / not_configured / unavailable). مفيد للمراقبة، ومعلومة بنية تحتية لأي حد.</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">يرجّع 200/503 بدون تفاصيل لغير المراقبة، أو يتقيّد بـIP داخلي.</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc">ملاحظة منخفضة. بالمناسبة: ده أسهل طريق تعرف بيه إعداد Redis في الإنتاج من غير وصول للسيرفر.</p></details>
 </div>
 <div class="card sev-info">
 <div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>مواقع <code>&lt;[^&gt;]+&gt;</code> متبقية بعد الإصلاح</h3></div>
@@ -399,64 +405,10 @@
     <div class="part-divider" id="decisions" style="margin-top:40px; background:var(--warn);">
       <div class="part-eyebrow">محتاجة قرار أو تأكيد</div>
       <h2>نقاط لسه مفتوحة — مش بالضرورة إصلاح كود</h2>
-      <p>الفرق عن الكروت فوق: دول محتاجين تأكيد (ملف، سلوك متجرَّب، نيّة تصميم) قبل ما نقفلهم، مش مجرد سطر كود. لو مفيش مختبر متاح، البند بيتحوّل لمينا.</p>
+
     </div>
 
     <section id="open-decisions" style="margin-top:20px;">
-<div class="box">
-<p><strong>تأكيد داتا HEIC القديمة — يحتاج وصول للداتابيز (خارج نطاق مراجعة الكود).</strong> الـmiddleware الجديد <code>rejectHeicDataImages</code> بيفحص أي JSON بيوصل <code>/api</code>، يعني بيرفض كمان محتوى قديم المحرر بيرجّع يبعته في الحفظ. قبل إصلاح 7-8 أكتوبر، أي صورة HEIC ملصوقة مباشرة كانت بتفضل base64 خام جوه المحتوى. لو فيه سؤال أو درس بالشكل ده في الداتابيز، أي حفظ أو autosave للامتحان/الدرس ده هيرجع 415 لحد ما الصورة تتشال. مش قادرين نعرف من الكود لو الحالة دي موجودة. اللي عنده وصول للداتابيز (مينا) يشغّل بحث للقراءة بس:</p>
-<pre dir="ltr" style="text-align:left; white-space:pre-wrap; font-size:12px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto;">SELECT 'Question' AS tbl, id FROM "Question"
- WHERE concat_ws(' ', "text","textEn","options","optionsEn","explanation","explanationEn","imageUrl") ILIKE '%data:image/hei%'
-UNION ALL SELECT 'Lesson', id FROM "Lesson"
- WHERE concat_ws(' ', "content","summary","notes","slides"::text) ILIKE '%data:image/hei%'
-UNION ALL SELECT 'LessonBlock', id FROM "LessonBlock"
- WHERE concat_ws(' ', "content","options") ILIKE '%data:image/hei%'
-UNION ALL SELECT 'InteractiveActivity', id FROM "InteractiveActivity"
- WHERE concat_ws(' ', "questionText","questionTextEn","options","optionsEn","explanation","explanationEn") ILIKE '%data:image/hei%'
-UNION ALL SELECT 'Course', id FROM "Course"
- WHERE concat_ws(' ', "description","coverImage") ILIKE '%data:image/hei%';</pre>
-<p>الأسماء من schema.prisma (بدون @@map) وبافتراض إن لكل جدول عمود <code>id</code>. صفر صفوف = البند يتقفل. لو فيه صفوف: سكربت لمرة واحدة يشيل الصور دي أو يحوّلها، أو استثناء المحتوى القديم من الـmiddleware.</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>Redis وعدد الـinstances وحدود الحجم — إعدادات Dokploy (محتاجة مينا؛ هشام ملوش وصول للسيرفر).</strong></p>
-<p>الأثر: لو <code>REDIS_URL</code> مش مضبوط، <code>start-production.js</code> بيجبر PM2 على instance واحد، وأي طلب ReDoS ناجح يوقف الـAPI كله. <strong>دليل غير حاسم:</strong> <code>REDIS_URL</code> موجود في <code>.env.example</code> و<code>docker-compose.yml</code> (فيه service لـRedis)، لكن <strong>مش موجود</strong> في <code>.env.dokploy.example</code> ولا <code>DOKPLOY_DEPLOY.md</code> ولا <code>DEPLOYMENT_GUIDE.md</code>، والإنتاج على Dokploy بالـDockerfile (مش compose). الأرجح (ثقة متوسطة، استنتاج) إنه مش مضبوط — ممكن يكون مضبوط من واجهة Dokploy ومش موثّق. اسأل مينا (من غير القيم):</p>
-<p>(1) هل <code>REDIS_URL</code> موجود في Environment بتاع الباك؟ ولوج بدء التشغيل فيه <code>Connected successfully to shared cache store</code> ولا <code>REDIS_URL not configured</code>؟ (2) هل <code>PROXY_MAX_BODY_BYTES</code> و<code>INTERNAL_BACKEND_URL</code> مضبوطين؟ (3) هل Build Type = Dockerfile؟ (4) هل حد شاف <code>Too many requests, please try again later</code> في الاستخدام الفعلي؟</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>الـrate limits: هل الـIP الحقيقي هو اللي بيوصل؟ — اختبار من غير سيرفر (بعد ما <code>proxy.ts</code> بقى يمرّر <code>x-forwarded-for</code> في 2 نوفمبر).</strong></p>
-<p><code>apiLimiter</code>: 15000 طلب/15 دقيقة لكل IP (≈1000/دقيقة)، store في الذاكرة لكل worker، بيتخطى loopback. البروكسي بيمرّر كل الـheaders (<code>X-Forwarded-For</code> من Traefik) وبالتالي الـIP الحقيقي بيوصل <em>لو</em> الـNext بيكلّم الباك عبر <code>INTERNAL_BACKEND_URL</code> (داخلي). لو بيمشي عبر الدومين العام (<code>NEXT_PUBLIC_BACKEND_ORIGIN</code> أو الـfallback <code>https://api.klevro.tech</code>)، Traefik بيضيف IP السيرفر ومع <code>trust proxy = 1</code> الباك هيشوف IP واحد لكل المستخدمين (bucket مشترك ≈ 17 طلب/ثانية للمنصة كلها — حساب). الاختبار:</p>
-<p><pre dir="ltr" style="text-align:left; white-space:pre-wrap; font-size:12px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto;">(Invoke-WebRequest "https://&lt;الدومين&gt;/api/health" -UseBasicParsing).Headers | Out-String -Width 200</pre></p>
-<p>شغّله من جهازين على شبكتين مختلفتين (لابتوب + موبايل بيانات) وبص على <code>RateLimit-Limit</code> و<code>RateLimit-Remaining</code>. لو العدّاد بيتناقص مشترك بين الجهازين = bucket واحد للكل. (لو أكتر من worker العدّاد ممكن يتلخبط — خد 2–3 قراءات. ولو <code>/api/health</code> مش موجود جرّب أي GET عام.)</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>تغطية <code>hideKeys</code> لكل أنواع أسئلة المسابقات.</strong></p>
-<p>الـpayload للطالب بيحجب مفاتيح بأسماء معينة (<code>answer</code>/<code>solution</code>/<code>correct*</code>…) وفيه اختبارات لـMCQ ومعاينة المعلم، لكن مراجعتنا ما غطّتش شكل <code>options</code> لكل الـ24 نوع تفاعلي — ممكن نوع يحط الإجابة تحت اسم تاني. المطلوب: عينة payload خام (<code>options</code> قبل التنقية) لكل نوع، أو اختبار آلي يقارن الخام بالمُرسل.</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>قرارات تصميم لمينا/صاحب المنتج.</strong></p>
-<p>(أ) الـleaderboard العام بيعرض أول اسم ومدرسة الطالب بموافقة الطالب نفسه (<code>publicName</code>) — الطلاب قُصّر، فهل موافقة الطالب وحدها كفاية أم تحتاج موافقة المدرسة/ولي الأمر؟ (ب) <code>ADMIN_ROLES</code> في المسابقات مفيهاش TEACHER، و<code>reportRoles</code> في التقارير مفيهاش SUPERVISOR رغم إنه دور في controllers الامتحانات — مقصود؟ (ج) <code>calculateSubmissionStats</code> الميتة: نتايج الامتحانات القديمة اللي اتصححت بمنطق أقدم هتفضل زي ما هي — مقصود؟</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>الاعتماديات: <code>xlsx</code> من CDN، و<code>npm install</code> في الـDockerfiles.</strong></p>
-<p><code>back/package.json</code> نقل <code>xlsx</code> من <code>^0.18.5</code> (عليه CVE معروفة بتتحل في 0.20.x) لـ<code>xlsx-0.20.3</code> من <code>cdn.sheetjs.com</code>، وشال <code>@xenova/transformers</code> — تحسين أمني، لكن الـbuild بقى بيعتمد على CDN خارجي (لو وقع، الـdeploy يفشل). محتاجين نتأكد إن الـlockfile فيه <code>integrity</code> للـtarball ده. وكمان الـDockerfiles (باك وفرونت) بتستخدم <code>npm install</code> مش <code>npm ci</code>، فالبناء مش مضمون يطابق الـlockfile بالظبط. التقارير بتستخدم <code>xlsx</code> للكتابة بس (تقليل أثر ثغرات الـparsing).</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>تأكيد إصلاحات 2 نوفمبر على staging (مينا) — الكود اتراجع لكن ما اتجرّبش حي.</strong></p>
-<p>(1) <strong>ReDoS:</strong> تسليم امتحان بإجابة 100KB من <code>&lt;</code> → المتوقع 400 فورًا (مش 7 ثواني).</p>
-<p>(2) <strong>413 على 3 مسارات اتصنفوا small (2MB):</strong> <code>POST /api/exams</code> (امتحان جديد بـ300 سؤال طويل)، <code>POST /api/skills-hub/lessons/:id/upload-excel</code> (إكسل بـ3000 صف)، <code>POST /api/school/users</code> (استيراد 10,000 طالب). لو أي واحد رجّع 413 → أضف المسار للـregex في <code>requestBodyPolicy.ts</code> و<code>apiProxy.ts</code> (لازم متطابقين). باقي مسارات الدروس والكورسات والامتحانات والـbackup اتصنفت صح (راجعناها من الـroutes).</p>
-<p>(3) <strong>PDF:</strong> فلتر الشهادات بقى يرفض <code>ObjStm</code> و<code>Encrypt</code>. جرّب شهادات PDF سليمة من الأدوات اللي بتصدروا منها (Word/Canva/Chrome) إنها ما تترفضش.</p>
-<p>(4) <strong>الشهادات:</strong> <code>CERTIFICATE_S3_BUCKET</code> مضبوط على bucket خاص مخصص؟ (شوف كارت الشهادات).</p>
-<p>(5) <strong>الـAI العام:</strong> الافتراضي 200 طلب/يوم و30/دقيقة (<code>AI_PUBLIC_DAILY_REQUEST_LIMIT</code>) مناسب؟ ولسه محتاج حد إنفاق عند المزوّد نفسه (الحد داخل التطبيق مش بديل).</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>مساعد الـAI: خصوصية ومفاتيح — قرارات (مينا + صاحب المنتج).</strong></p>
-<p>(1) <strong>الخصوصية:</strong> سياق الطالب (الاسم، الصف، المدرسة، الفصل، اسم المعلم، الدرجات والمهارات والإشعارات) بيتبعت لمزوّدين خارجيين (Groq/OpenRouter/OpenAI/Gemini). هل فيه موافقة ولي الأمر أو سياسة خصوصية؟ والمحادثات بتتخزن من غير retention (الطالب بس يقدر يمسحها).</p>
-<p>(2) <strong>كشف المفتاح:</strong> <code>GET /api/ai/admin/providers/:id/credential</code> بيرجّع المفتاح plaintext للـSUPER_ADMIN (حد 10/دقيقة، من غير audit log). نشيله أو نسجّله؟</p>
-<p>(3) <strong>AI_ENCRYPTION_KEY:</strong> مفتاح واحد من غير rotation (صيغة <code>v1</code>). لو اتفقد، كل مفاتيح المزوّدين تبوظ. تأكد إن فيه نسخة محفوظة، ومن غير ما تتعمل commit.</p>
-<p>(4) <strong>الإنتاج:</strong> هل المساعد مفعّل؟ بأي مزوّدين؟ وهل مفاتيح الشات العام منفصلة عن مفاتيح الطلاب وعليها حد إنفاق؟</p>
-<p>(5) <strong>تأكيد صغير:</strong> روابط ردود الـAI بتسمح بـ<code>/login?…</code>؛ تأكد إن صفحة login بتتحقق من <code>next</code> (مسار نسبي بس). والتصميم الآمن اللي اتأكد منه في المساعد (SSRF، التشفير، الملكية، عرض الردود) موثّق في الفوتر.</p>
-</div>
-</section>
 
     <!-- ================= SERVER SPECS & PROVIDERS ================= -->
 
@@ -464,12 +416,61 @@ UNION ALL SELECT 'Course', id FROM "Course"
 
     <div class="part-divider" id="resolved-recently" style="margin-top:40px; background:var(--good);">
       <div class="part-eyebrow" style="color:#fff;">اتحلت مؤخرًا</div>
-      <h2>بنود اتقفلت من V36 لـV38</h2>
-      <p>15 بند. السجل الأقدم (31 بند) في V35 والتقرير الكامل.</p>
+      <h2>بنود اتقفلت من V36 لـV39</h2>
+      <p>22 بند. السجل الأقدم (31 بند) في V35 والتقرير الكامل.</p>
     </div>
 
     <section id="resolved-list" style="margin-top:20px;">
       <div class="discovery" style="border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <h3>صلاحيات المعلم محصورة في اللي أنشأه، والـmiddleware متطبّق على كل المسارات</h3>
+        <p><code>teacherContentAccess</code> على 34 مسار كورسات و43 مسار امتحانات، وبيفشل مغلق (503). المعلم يشوف محتواه ومدرسته وطلابه المرتبطين، ونتايج امتحانات مادته بس. شكّينا في نقطتين وطلعوا سليمين: نسخ الدروس (<code>copy-*</code>) عليها <code>checkRole(SUPER_ADMIN)</code> بس، وبحث المستخدمين بيستخدم <code>where.AND</code> فما بيمسحش الـscope. الـimpersonation (مدير مدرسة ← معلمي مدرسته) منطقه سليم وفيه اختبارات.</p>
+        <div class="resolved">✓ تحقق بقراءة الكود. تغيير سلوك: معلم معيّن على كورس أنشأه الأدمن مابقاش يشوفه (اسأل لو مقصود).</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <h3>تغطية <code>hideKeys</code> لمسابقات الـ25 نوع</h3>
+        <p>قايمة بيضاء لحقول العرض لكل نوع (<code>PUBLIC_COMPETITION_FIELDS</code>)، وأي حقل جديد خاص افتراضيًا. اختبار fixture لكل نوع (WORD_SCRAMBLE بيشيل <code>word</code>، وCROSSWORD بيدّي الطول بس، وMIND_MAP بيحط الفراغات في bank مستقل).</p>
+        <div class="resolved">✓ اتقفل. باقي تأكيد خلط SEQUENCE_ORDER/SENTENCE_REORDER (صندوق التأكيد).</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <h3>الـIP الحقيقي في الـlimiter</h3>
+        <p><code>trust proxy</code> بقى <code>loopback, linklocal, uniquelocal</code> (كان 1)، والـlimiter العام مشترك عبر Redis بمفاتيح IPv6/56 وheaders صادقة.</p>
+        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة، ما شغّلتش اختبارات مينا، ومش على إنتاج. (تأكيد الـIP الحقيقي: اختبار <code>RateLimit-Remaining</code>.)</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <h3>الـAI: تسجيل كشف المفتاح، وتقليل بيانات الطالب، وretention</h3>
+        <p><code>GET /api/ai/admin/providers/:id/credential</code> بيكتب <code>ActivityLog</code> (الـid والـIP، من غير المفتاح) <em>قبل</em> ما يرجّع المفتاح، وفشل الكتابة = رفض. السياق المهيكل للمزوّد بقى بالصف فقط. والمحادثات بتتمسح بعد 30 يوم (حسب وثيقة مينا ووجود <code>aiRetention.service</code>، ما قريتش كوده).</p>
+        <div class="resolved">✓ تسجيل الكشف اتأكدت منه بالكود. باقي بنود الخصوصية في الصناديق.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <h3><code>/api/health</code> و<code>/api/ready</code> بدون تفاصيل</h3>
+        <p>الرد لغير loopback بقى <code>status</code> بس، مع <code>Cache-Control: no-store</code>.</p>
+        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة، ما شغّلتش اختبارات مينا، ومش على إنتاج.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <h3><code>next</code> في صفحة الدخول</h3>
+        <p><code>safeLoginNext</code> بيرفض <code>//</code> والـbackslash والـcolon وحروف التحكم، وبيرجّع مسار نسبي بنفس الأصل بس. (ده كان تأكيد صغير من V37.)</p>
+        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة، ما شغّلتش اختبارات مينا، ومش على إنتاج.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <h3><code>xlsx</code> من الريبو (vendored) و<code>npm ci</code></h3>
+        <p><code>xlsx-0.20.3.tgz</code> جوه <code>vendor/</code> في الباك والفرونت، والـDockerfiles بتستخدم <code>npm ci</code> وPM2 من الـlock، و<code>NODE_ENV=production</code> صريح. مفيش اعتماد على CDN وقت الـbuild.</p>
+        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة، ما شغّلتش اختبارات مينا، ومش على إنتاج.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
         <span class="d-tag" style="background:var(--good);">✅ اتقفل — V38 (ديف 2 نوفمبر)</span>
         <h3>الـReDoS في كل مسارات مدخل المستخدم</h3>
         <p><code>stripTags</code> خطية، وسقف 10,000 حرف للإجابة عند التسليم والدرس وSkills Hub والمسابقة، و<code>textOnly</code> بيقص قبل الـregex. جرّبنا الدوال على 14 نوع مدخل عدائي بحجم 200K: أبطأ نتيجة 32ms (كانت 7–40 ثانية).</p>
@@ -736,18 +737,19 @@ UNION ALL SELECT 'Course', id FROM "Course"
 
     <section id="plan">
       <h2>خطة العمل</h2>
-      <p class="section-sub">الوضع العام: مفيش بند حرج (critical) مفتوح — آخر بند حرج (IDOR حذف الدروس) اتقفل في مراجعة 24 سبتمبر. في V38 بند عالي واحد: هاشات bcrypt في تاريخ git. الترتيب تحت حسب الأولوية.</p>
+      <p class="section-sub">الوضع العام: مفيش بند حرج (critical) مفتوح — آخر بند حرج (IDOR حذف الدروس) اتقفل في مراجعة 24 سبتمبر. في V39 بند عالي واحد: هاشات bcrypt في تاريخ git (والريبو كان public). الترتيب تحت حسب الأولوية.</p>
 
       <div class="timeline">
         <div class="tl-item urgent">
           <div class="tl-dot"></div>
           <div class="tl-day">مرحلة 0 — عاجل (أيام)</div>
           <div class="tl-body">
-            <h4>أمان التاريخ وتأكيد إصلاحات 2 نوفمبر</h4>
+            <h4>أمان التاريخ والحسابات</h4>
             <ul>
-              <li>تأكيد إن الريبو private، تنضيف تاريخ git من ملفات الـbackup، وإجبار تغيير كلمات المرور (SUPER_ADMIN أولًا)</li>
-              <li>اختبارات staging: ReDoS، و413 على 3 مسارات، وشهادات PDF سليمة (صندوق التأكيد)</li>
-              <li>ضبط <code>CERTIFICATE_S3_BUCKET</code> (bucket خاص) وسقف إنفاق عند مزوّد الـAI</li>
+              <li>تنفيذ تنضيف تاريخ git، وتحديد مدة الـpublic، وإجبار تغيير كلمات المرور لكل الحسابات في ملفات الـbackup (SUPER_ADMIN أولًا)</li>
+              <li>تعطيل حساب المعلم التجريبي في الإنتاج (<code>MINA_TEACHER_DEMO_ENABLED=false</code>) أو تغيير باسورده</li>
+              <li>الـlimiter العام: fail-open لما Redis يقع، وتأكيد حالة Redis في الإنتاج</li>
+              <li>اختبارات staging (صندوق التأكيد) وضبط <code>CERTIFICATE_S3_BUCKET</code> وسقف إنفاق عند مزوّد الـAI</li>
             </ul>
           </div>
         </div>
@@ -788,10 +790,9 @@ UNION ALL SELECT 'Course', id FROM "Course"
       <div class="avatar-circle"><img src="https://res.cloudinary.com/dnkuwemxn/image/upload/v1784559494/logo_riydzz.png" alt="شعار المنصة"></div>
       <div class="who">
         <div class="name">Hesham Ahmed Abdelatty</div>
-        <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
+        <div class="role"> Full Stack Engineer — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V38 — ٢ نوفمبر ٢٠٢٦ (مراجعة ديف 2 نوفمبر: 503 ملف، أغلبه حذف لـ<code>back/dist</code> و<code>front/src_backup</code> وlogs وbackups، + وثيقة <code>AVAILABILITY-HARDENING.md</code> + إصلاحات). المنهجية: قراءة الكود، وتشغيل دوال <code>textSafety</code> و<code>translationInput</code> بعد تحويلها (TypeScript → Node) على 14 نوع مدخل عدائي بحجم 200K (أبطأ نتيجة 32ms)، وتصنيف مسارات حفظ المحتوى مقابل regex سياسة الـbody (الباك والفرونت متطابقين)، وقراءة الأسطر المحذوفة في الديف لفحص الـbackups. الأرقام الموصوفة "حساب" مش قياس. ما شغّلتش اختبارات مينا، وما اتجرّبش حاجة على إنتاج. <strong>اتقفل في الكود (V37 → V38):</strong> الـReDoS في كل المسارات (تسليم، درس، Skills Hub، مسابقة، ترجمة، AI)، bucket الـproxy (يمرّر XFF)، حد الـbody (2MB افتراضي، ومسارات المحتوى 100MB بعد المصادقة)، ترجمة النص الغني (سقف 200 run)، ميزانية الـAI العام، race الـlimiter (Lua)، فلتر PDF (<code>ObjStm</code>/<code>Encrypt</code>)، تسريب رسائل الأخطاء، retention الإشعارات (90 يوم) ومسح الإشعارات المرحلي، و<code>back/dist</code> وsrc_backup. <strong>اتفتح:</strong> backups في تاريخ git (عالي). <strong>لسه مش متراجع:</strong> UI الـAI الجديد، و~98 component قديمة، وقياسات next/image و"use client" (<code>npm run audit:rendering</code>)، وتغطية <code>hideKeys</code>. مفيش بند حرج. الملف الحي هو "Klevro open issues only" بدون رقم نسخة.)</p>
   </div>
 </footer>
 
