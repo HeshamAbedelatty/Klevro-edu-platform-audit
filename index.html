@@ -413,65 +413,8 @@
     <div class="part-divider" id="decisions" style="margin-top:40px; background:var(--warn);">
       <div class="part-eyebrow">محتاجة قرار أو تأكيد</div>
       <h2>نقاط لسه مفتوحة — مش بالضرورة إصلاح كود</h2>
-      <p>الفرق عن الكروت فوق: دول محتاجين تأكيد (ملف، سلوك متجرَّب، نيّة تصميم) قبل ما نقفلهم، مش مجرد سطر كود. لو مفيش مختبر متاح، البند بيتحوّل لمينا.</p>
     </div>
 
-    <section id="open-decisions" style="margin-top:20px;">
-<div class="box">
-<p><strong>تأكيد داتا HEIC القديمة — يحتاج وصول للداتابيز (خارج نطاق مراجعة الكود).</strong> الـmiddleware الجديد <code>rejectHeicDataImages</code> بيفحص أي JSON بيوصل <code>/api</code>، يعني بيرفض كمان محتوى قديم المحرر بيرجّع يبعته في الحفظ. قبل إصلاح 7-8 أكتوبر، أي صورة HEIC ملصوقة مباشرة كانت بتفضل base64 خام جوه المحتوى. لو فيه سؤال أو درس بالشكل ده في الداتابيز، أي حفظ أو autosave للامتحان/الدرس ده هيرجع 415 لحد ما الصورة تتشال. مش قادرين نعرف من الكود لو الحالة دي موجودة. اللي عنده وصول للداتابيز (مينا) يشغّل بحث للقراءة بس:</p>
-<pre dir="ltr" style="text-align:left; white-space:pre-wrap; font-size:12px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto;">SELECT 'Question' AS tbl, id FROM "Question"
- WHERE concat_ws(' ', "text","textEn","options","optionsEn","explanation","explanationEn","imageUrl") ILIKE '%data:image/hei%'
-UNION ALL SELECT 'Lesson', id FROM "Lesson"
- WHERE concat_ws(' ', "content","summary","notes","slides"::text) ILIKE '%data:image/hei%'
-UNION ALL SELECT 'LessonBlock', id FROM "LessonBlock"
- WHERE concat_ws(' ', "content","options") ILIKE '%data:image/hei%'
-UNION ALL SELECT 'InteractiveActivity', id FROM "InteractiveActivity"
- WHERE concat_ws(' ', "questionText","questionTextEn","options","optionsEn","explanation","explanationEn") ILIKE '%data:image/hei%'
-UNION ALL SELECT 'Course', id FROM "Course"
- WHERE concat_ws(' ', "description","coverImage") ILIKE '%data:image/hei%';</pre>
-<p>الأسماء من schema.prisma (بدون @@map) وبافتراض إن لكل جدول عمود <code>id</code>. صفر صفوف = البند يتقفل. لو فيه صفوف: سكربت لمرة واحدة يشيل الصور دي أو يحوّلها، أو استثناء المحتوى القديم من الـmiddleware.</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>Redis وعدد الـinstances وحدود الحجم — إعدادات Dokploy (محتاجة مينا؛ هشام ملوش وصول للسيرفر).</strong></p>
-<p>الأثر: لو <code>REDIS_URL</code> مش مضبوط، <code>start-production.js</code> بيجبر PM2 على instance واحد، وأي طلب ReDoS ناجح يوقف الـAPI كله. <strong>دليل غير حاسم:</strong> <code>REDIS_URL</code> موجود في <code>.env.example</code> و<code>docker-compose.yml</code> (فيه service لـRedis)، لكن <strong>مش موجود</strong> في <code>.env.dokploy.example</code> ولا <code>DOKPLOY_DEPLOY.md</code> ولا <code>DEPLOYMENT_GUIDE.md</code>، والإنتاج على Dokploy بالـDockerfile (مش compose). الأرجح (ثقة متوسطة، استنتاج) إنه مش مضبوط — ممكن يكون مضبوط من واجهة Dokploy ومش موثّق. اسأل مينا (من غير القيم):</p>
-<p>(1) هل <code>REDIS_URL</code> موجود في Environment بتاع الباك؟ ولوج بدء التشغيل فيه <code>Connected successfully to shared cache store</code> ولا <code>REDIS_URL not configured</code>؟ (2) هل <code>PROXY_MAX_BODY_BYTES</code> و<code>INTERNAL_BACKEND_URL</code> مضبوطين؟ (3) هل Build Type = Dockerfile؟ (4) هل حد شاف <code>Too many requests, please try again later</code> في الاستخدام الفعلي؟</p>
-<p>(5) هل <code>MINA_TEACHER_DEMO_ENABLED</code> متعطّل في الإنتاج؟ وهل مدرسة "تجربة المعلم — مينا سامي" موجودة؟ (6) هل Redis مضبوط ومستقر؟ الـlimiter العام دلوقتي بيعتمد عليه (بند Redis فوق).</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>الـrate limits: هل الـIP الحقيقي هو اللي بيوصل؟ — اختبار من غير سيرفر.</strong></p>
-<p>الـlimiter العام بقى مشترك عبر Redis (15000 طلب/15 دقيقة لكل IP) و<code>trust proxy</code> بقى <code>loopback, linklocal, uniquelocal</code> (7 نوفمبر)، و<code>proxy.ts</code> بيمرّر <code>x-forwarded-for</code>. لو Next بيكلّم الباك عبر الشبكة الداخلية فالـIP الحقيقي بيوصل؛ لو عبر الدومين العام (<code>NEXT_PUBLIC_BACKEND_ORIGIN</code> أو الـfallback <code>https://api.klevro.tech</code>) Traefik بيضيف IP السيرفر ويرجع bucket واحد. الاختبار:</p>
-<pre dir="ltr" style="text-align:left; white-space:pre-wrap; font-size:12px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto;">(Invoke-WebRequest "https://&lt;الدومين&gt;/api/health" -UseBasicParsing).Headers | Out-String -Width 200</pre>
-<p>شغّله من جهازين على شبكتين مختلفتين وبص على <code>RateLimit-Remaining</code>. لو العدّاد بيتناقص مشترك = bucket واحد للكل.</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>قرارات تصميم لمينا/صاحب المنتج.</strong></p>
-<p>(أ) الـleaderboard العام بيعرض أول اسم ومدرسة الطالب بموافقة الطالب نفسه (<code>publicName</code>) — الطلاب قُصّر، فهل موافقة الطالب وحدها كفاية أم تحتاج موافقة المدرسة/ولي الأمر؟ (ب) <code>reportRoles</code> في التقارير مفيهاش SUPERVISOR رغم إنه دور في controllers الامتحانات — مقصود؟ (المعلم بقى يدير مسابقاته من 3 نوفمبر.) (ج) اتحسمت: درجات الامتحانات القديمة تفضل زي ما هي بطلب صريح (من وثيقة مينا).</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>تأكيد إصلاحات 2 نوفمبر على staging (مينا) — الكود اتراجع لكن ما اتجرّبش حي.</strong></p>
-<p>(1) <strong>ReDoS:</strong> تسليم امتحان بإجابة 100KB من <code>&lt;</code> → المتوقع 400 فورًا (مش 7 ثواني).</p>
-<p>(2) <strong>413 على 3 مسارات اتصنفوا small (2MB):</strong> <code>POST /api/exams</code> (امتحان جديد بـ300 سؤال طويل)، <code>POST /api/skills-hub/lessons/:id/upload-excel</code> (إكسل بـ3000 صف)، <code>POST /api/school/users</code> (استيراد 10,000 طالب). لو أي واحد رجّع 413 → أضف المسار للـregex في <code>requestBodyPolicy.ts</code> و<code>apiProxy.ts</code> (لازم متطابقين). باقي مسارات الدروس والكورسات والامتحانات والـbackup اتصنفت صح (راجعناها من الـroutes).</p>
-<p>(3) <strong>PDF:</strong> فلتر الشهادات بقى يرفض <code>ObjStm</code> و<code>Encrypt</code>. جرّب شهادات PDF سليمة من الأدوات اللي بتصدروا منها (Word/Canva/Chrome) إنها ما تترفضش.</p>
-<p>(4) <strong>الشهادات:</strong> <code>CERTIFICATE_S3_BUCKET</code> مضبوط على bucket خاص مخصص؟ (شوف كارت الشهادات).</p>
-<p>(5) <strong>الـAI العام:</strong> الافتراضي 200 طلب/يوم و30/دقيقة (<code>AI_PUBLIC_DAILY_REQUEST_LIMIT</code>) مناسب؟ ولسه محتاج حد إنفاق عند المزوّد نفسه (الحد داخل التطبيق مش بديل).</p>
-<p>(6) <strong>المسابقات:</strong> تأكد إن ترتيب <code>SEQUENCE_ORDER</code> و<code>SENTENCE_REORDER</code> بيتخلط (اختبار مينا بيقارن بعد <code>sort</code> فما بيثبتش الخلط).</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>مساعد الـAI: خصوصية وإنفاق ومفاتيح — اللي لسه (مينا + صاحب المنتج).</strong></p>
-<p>(1) <strong>الخصوصية:</strong> السياق المهيكل بقى بالصف فقط (من غير اسم أو مدرسة أو فصل أو معلم، حسب وثيقة مينا)، لكن النص الحر والمحادثات ممكن فيها بيانات شخصية، والمحادثات بتتمسح بعد 30 يوم. هل فيه سياسة خصوصية وموافقة ولي الأمر؟ (الوثيقة نفسها بتقول إنه قرار مش متاخد.)</p>
-<p>(2) <strong>الإنفاق:</strong> الحد داخل التطبيق 200/يوم و30/دقيقة للعام، لكن لازم حد إنفاق عند المزوّد، ومفاتيح العام منفصلة عن الطلاب.</p>
-<p>(3) <strong>مفتاح التشفير:</strong> <code>AI_ENCRYPTION_KEY</code> — في أداة <code>rotate:ai-encryption</code> الآن، لكن النسخة الاحتياطية المذكورة محلية. عايزين ترتيب لاسترجاع مفتاح الإنتاج.</p>
-<p>(4) <strong>الإنتاج:</strong> هل المساعد مفعّل؟ بأي مزوّدين؟ (كشف مفتاح المزوّد بقى بيتسجل في <code>ActivityLog</code> قبل ما يرجع.)</p>
-</div>
-<div class="box" style="margin-top:20px;">
-<p><strong>قرارات المعلم والرسائل (صاحب المنتج + مينا).</strong></p>
-<p>(1) <strong>بيانات أولياء الأمور:</strong> <code>/api/teaching/students/:id/export</code> بيصدّر اسم وتليفون وإيميل ولي الأمر (CSV/XLSX) للمعلم، من غير سجل تصدير. مقبول؟</p>
-<p>(2) <strong>رسائل الطلاب للمعلمين:</strong> الملكية سليمة (الطالب يراسل معلمه بس)، لكن بحد 60 رسالة/دقيقة و4000 حرف، من غير retention أو آلية بلاغ. الطلاب قُصّر. نضيف retention وبلاغ وحد لكل مستلم؟</p>
-<p>(3) <strong>ثقل <code>/api/teaching/overview</code>:</strong> ممكن يحمّل لحد 50 ألف صف تقدم و100 ألف نشاط و10 آلاف تسليم في الطلب (حساب مش قياس). نضيف cache أو حد؟ <strong>(8 نوفمبر)</strong> لوحة تحكم مدير المدرسة والمعلم بقت بتناديه تلقائيًا عند كل فتح (<code>limit=4</code> بيحد الرد مش الاستعلام)، فالتكلفة بقت مع كل زيارة للوحة.</p>
-</div>
-</section>
-
-    <!-- ================= SERVER SPECS & PROVIDERS ================= -->
 
     <!-- ================= RECENTLY RESOLVED ================= -->
 
