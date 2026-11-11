@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V39 (٧ نوفمبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V40 (٩ نوفمبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -275,13 +275,14 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V39 — ٧ نوفمبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V39</h1>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V40 — ٩ نوفمبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V40</h1>
+    <p class="lead">نسخة مُصفّاة بالمفتوح، مع قسم "اتحلت مؤخرًا" لبنود V36–V40. V40 بتضيف ديف 8 و9 نوفمبر (UI ولصق وعرض المعادلات): مفيش ثغرات، وبند واحد منخفض. V39 غطّت ديف 3 و6–7 نوفمبر: تحويل صلاحيات المعلم لـ"المنشئ فقط"، ومساحة متابعة المعلم والرسائل والتقويم، وإصلاحات مينا لبنود V38 (<code>hideKeys</code>، limiter، خصوصية الـAI، <code>/ready</code>، <code>xlsx</code>). <strong>اتفتح:</strong> حساب معلم تجريبي بباسورد ثابت بيتنزّل تلقائيًا في الإنتاج، وRedis بقى نقطة فشل لكل الـAPI. <strong>وبند الـbackups العالي</strong> بقى أخطر: الريبو كان public حسب وثيقة مينا، وتنضيف التاريخ وإعادة تعيين كلمات المرور لسه ما اتنفّذوش. مفيش بند حرج. الإصلاحات اتراجعت بالكود (ما شغّلتش اختبارات مينا، وما اتجرّبش حاجة على إنتاج). <strong>مش متراجع:</strong> UI المتابعة والرسائل الجديد (فحصنا أنماطه الخطرة آليًا بس)، و~98 component قديمة، وقياسات next/image و"use client".</p>
 
     <div class="stat-row">
-      <div class="stat-tile open"><span class="n">8</span><span class="l">بند مفتوح — 1 عالي + 5 متوسطة + 2 ملاحظات (مفيش حرج)</span></div>
+      <div class="stat-tile open"><span class="n">9</span><span class="l">بند مفتوح — 1 عالي + 5 متوسطة + 3 ملاحظات (مفيش حرج)</span></div>
       <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">7</span><span class="l">نقاط تأكيد مفتوحة — إعدادات Dokploy، واختبارات staging، وقرارات الخصوصية والرسائل</span></div>
-      <div class="stat-tile fixed"><span class="n">22</span><span class="l">بند اتقفل/اتأكد مؤخرًا (V36–V39). السجل الأقدم في V35</span></div>
+      <div class="stat-tile fixed"><span class="n">23</span><span class="l">بند اتقفل/اتأكد مؤخرًا (V36–V40). السجل الأقدم في V35</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -399,16 +400,76 @@
 <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شيلها أو شيل الـ410.</span></div>
 <details class="more"><summary>التفاصيل</summary><p class="desc">كود ميت مش مشكلة أمنية. من قراءة ديف 19–23 أكتوبر، ما اتأكدتش من تغييره بعدها.</p></details>
 </div>
+<div class="card sev-info">
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>عرض المعادلات للطالب من غير <code>maxSize</code> و<code>maxExpand</code></h3></div>
+<span class="loc">front/src/components/HtmlRenderer.tsx · RichTextEditor.tsx</span>
+<p class="desc"><code>AiPractice</code> بيحط <code>maxExpand:500</code> و<code>maxSize:15</code>، لكن عرض محتوى المعلم للطالب لأ. معادلة بحجم ضخم (<code>\rule{1e9em}{1e9em}</code>) ممكن تعطّل تاب الطالب.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">أضف الاتنين في <code>katex.renderToString</code> في HtmlRenderer والمحرر.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc">الـ<code>trust</code> مش مفعّل في أي مكان (grep على HtmlRenderer والمحرر والـlib: مفيش نتيجة غير <code>trust:false</code> في <code>AiPractice</code>)، فالأثر DoS على تاب الطالب من محتوى معلم، مش XSS. اقتراح من توثيق KaTeX، ما جرّبتهوش في المتصفح.</p></details>
+</div>
 </div>
 </section>
 
     <div class="part-divider" id="decisions" style="margin-top:40px; background:var(--warn);">
       <div class="part-eyebrow">محتاجة قرار أو تأكيد</div>
       <h2>نقاط لسه مفتوحة — مش بالضرورة إصلاح كود</h2>
-
+      <p>الفرق عن الكروت فوق: دول محتاجين تأكيد (ملف، سلوك متجرَّب، نيّة تصميم) قبل ما نقفلهم، مش مجرد سطر كود. لو مفيش مختبر متاح، البند بيتحوّل لمينا.</p>
     </div>
 
     <section id="open-decisions" style="margin-top:20px;">
+<div class="box">
+<p><strong>تأكيد داتا HEIC القديمة — يحتاج وصول للداتابيز (خارج نطاق مراجعة الكود).</strong> الـmiddleware الجديد <code>rejectHeicDataImages</code> بيفحص أي JSON بيوصل <code>/api</code>، يعني بيرفض كمان محتوى قديم المحرر بيرجّع يبعته في الحفظ. قبل إصلاح 7-8 أكتوبر، أي صورة HEIC ملصوقة مباشرة كانت بتفضل base64 خام جوه المحتوى. لو فيه سؤال أو درس بالشكل ده في الداتابيز، أي حفظ أو autosave للامتحان/الدرس ده هيرجع 415 لحد ما الصورة تتشال. مش قادرين نعرف من الكود لو الحالة دي موجودة. اللي عنده وصول للداتابيز (مينا) يشغّل بحث للقراءة بس:</p>
+<pre dir="ltr" style="text-align:left; white-space:pre-wrap; font-size:12px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto;">SELECT 'Question' AS tbl, id FROM "Question"
+ WHERE concat_ws(' ', "text","textEn","options","optionsEn","explanation","explanationEn","imageUrl") ILIKE '%data:image/hei%'
+UNION ALL SELECT 'Lesson', id FROM "Lesson"
+ WHERE concat_ws(' ', "content","summary","notes","slides"::text) ILIKE '%data:image/hei%'
+UNION ALL SELECT 'LessonBlock', id FROM "LessonBlock"
+ WHERE concat_ws(' ', "content","options") ILIKE '%data:image/hei%'
+UNION ALL SELECT 'InteractiveActivity', id FROM "InteractiveActivity"
+ WHERE concat_ws(' ', "questionText","questionTextEn","options","optionsEn","explanation","explanationEn") ILIKE '%data:image/hei%'
+UNION ALL SELECT 'Course', id FROM "Course"
+ WHERE concat_ws(' ', "description","coverImage") ILIKE '%data:image/hei%';</pre>
+<p>الأسماء من schema.prisma (بدون @@map) وبافتراض إن لكل جدول عمود <code>id</code>. صفر صفوف = البند يتقفل. لو فيه صفوف: سكربت لمرة واحدة يشيل الصور دي أو يحوّلها، أو استثناء المحتوى القديم من الـmiddleware.</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>Redis وعدد الـinstances وحدود الحجم — إعدادات Dokploy (محتاجة مينا؛ هشام ملوش وصول للسيرفر).</strong></p>
+<p>الأثر: لو <code>REDIS_URL</code> مش مضبوط، <code>start-production.js</code> بيجبر PM2 على instance واحد، وأي طلب ReDoS ناجح يوقف الـAPI كله. <strong>دليل غير حاسم:</strong> <code>REDIS_URL</code> موجود في <code>.env.example</code> و<code>docker-compose.yml</code> (فيه service لـRedis)، لكن <strong>مش موجود</strong> في <code>.env.dokploy.example</code> ولا <code>DOKPLOY_DEPLOY.md</code> ولا <code>DEPLOYMENT_GUIDE.md</code>، والإنتاج على Dokploy بالـDockerfile (مش compose). الأرجح (ثقة متوسطة، استنتاج) إنه مش مضبوط — ممكن يكون مضبوط من واجهة Dokploy ومش موثّق. اسأل مينا (من غير القيم):</p>
+<p>(1) هل <code>REDIS_URL</code> موجود في Environment بتاع الباك؟ ولوج بدء التشغيل فيه <code>Connected successfully to shared cache store</code> ولا <code>REDIS_URL not configured</code>؟ (2) هل <code>PROXY_MAX_BODY_BYTES</code> و<code>INTERNAL_BACKEND_URL</code> مضبوطين؟ (3) هل Build Type = Dockerfile؟ (4) هل حد شاف <code>Too many requests, please try again later</code> في الاستخدام الفعلي؟</p>
+<p>(5) هل <code>MINA_TEACHER_DEMO_ENABLED</code> متعطّل في الإنتاج؟ وهل مدرسة "تجربة المعلم — مينا سامي" موجودة؟ (6) هل Redis مضبوط ومستقر؟ الـlimiter العام دلوقتي بيعتمد عليه (بند Redis فوق).</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>الـrate limits: هل الـIP الحقيقي هو اللي بيوصل؟ — اختبار من غير سيرفر.</strong></p>
+<p>الـlimiter العام بقى مشترك عبر Redis (15000 طلب/15 دقيقة لكل IP) و<code>trust proxy</code> بقى <code>loopback, linklocal, uniquelocal</code> (7 نوفمبر)، و<code>proxy.ts</code> بيمرّر <code>x-forwarded-for</code>. لو Next بيكلّم الباك عبر الشبكة الداخلية فالـIP الحقيقي بيوصل؛ لو عبر الدومين العام (<code>NEXT_PUBLIC_BACKEND_ORIGIN</code> أو الـfallback <code>https://api.klevro.tech</code>) Traefik بيضيف IP السيرفر ويرجع bucket واحد. الاختبار:</p>
+<pre dir="ltr" style="text-align:left; white-space:pre-wrap; font-size:12px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; overflow-x:auto;">(Invoke-WebRequest "https://&lt;الدومين&gt;/api/health" -UseBasicParsing).Headers | Out-String -Width 200</pre>
+<p>شغّله من جهازين على شبكتين مختلفتين وبص على <code>RateLimit-Remaining</code>. لو العدّاد بيتناقص مشترك = bucket واحد للكل.</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>قرارات تصميم لمينا/صاحب المنتج.</strong></p>
+<p>(أ) الـleaderboard العام بيعرض أول اسم ومدرسة الطالب بموافقة الطالب نفسه (<code>publicName</code>) — الطلاب قُصّر، فهل موافقة الطالب وحدها كفاية أم تحتاج موافقة المدرسة/ولي الأمر؟ (ب) <code>reportRoles</code> في التقارير مفيهاش SUPERVISOR رغم إنه دور في controllers الامتحانات — مقصود؟ (المعلم بقى يدير مسابقاته من 3 نوفمبر.) (ج) اتحسمت: درجات الامتحانات القديمة تفضل زي ما هي بطلب صريح (من وثيقة مينا).</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>تأكيد إصلاحات 2 نوفمبر على staging (مينا) — الكود اتراجع لكن ما اتجرّبش حي.</strong></p>
+<p>(1) <strong>ReDoS:</strong> تسليم امتحان بإجابة 100KB من <code>&lt;</code> → المتوقع 400 فورًا (مش 7 ثواني).</p>
+<p>(2) <strong>413 على 3 مسارات اتصنفوا small (2MB):</strong> <code>POST /api/exams</code> (امتحان جديد بـ300 سؤال طويل)، <code>POST /api/skills-hub/lessons/:id/upload-excel</code> (إكسل بـ3000 صف)، <code>POST /api/school/users</code> (استيراد 10,000 طالب). لو أي واحد رجّع 413 → أضف المسار للـregex في <code>requestBodyPolicy.ts</code> و<code>apiProxy.ts</code> (لازم متطابقين). باقي مسارات الدروس والكورسات والامتحانات والـbackup اتصنفت صح (راجعناها من الـroutes).</p>
+<p>(3) <strong>PDF:</strong> فلتر الشهادات بقى يرفض <code>ObjStm</code> و<code>Encrypt</code>. جرّب شهادات PDF سليمة من الأدوات اللي بتصدروا منها (Word/Canva/Chrome) إنها ما تترفضش.</p>
+<p>(4) <strong>الشهادات:</strong> <code>CERTIFICATE_S3_BUCKET</code> مضبوط على bucket خاص مخصص؟ (شوف كارت الشهادات).</p>
+<p>(5) <strong>الـAI العام:</strong> الافتراضي 200 طلب/يوم و30/دقيقة (<code>AI_PUBLIC_DAILY_REQUEST_LIMIT</code>) مناسب؟ ولسه محتاج حد إنفاق عند المزوّد نفسه (الحد داخل التطبيق مش بديل).</p>
+<p>(6) <strong>المسابقات:</strong> تأكد إن ترتيب <code>SEQUENCE_ORDER</code> و<code>SENTENCE_REORDER</code> بيتخلط (اختبار مينا بيقارن بعد <code>sort</code> فما بيثبتش الخلط).</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>مساعد الـAI: خصوصية وإنفاق ومفاتيح — اللي لسه (مينا + صاحب المنتج).</strong></p>
+<p>(1) <strong>الخصوصية:</strong> السياق المهيكل بقى بالصف فقط (من غير اسم أو مدرسة أو فصل أو معلم، حسب وثيقة مينا)، لكن النص الحر والمحادثات ممكن فيها بيانات شخصية، والمحادثات بتتمسح بعد 30 يوم. هل فيه سياسة خصوصية وموافقة ولي الأمر؟ (الوثيقة نفسها بتقول إنه قرار مش متاخد.)</p>
+<p>(2) <strong>الإنفاق:</strong> الحد داخل التطبيق 200/يوم و30/دقيقة للعام، لكن لازم حد إنفاق عند المزوّد، ومفاتيح العام منفصلة عن الطلاب.</p>
+<p>(3) <strong>مفتاح التشفير:</strong> <code>AI_ENCRYPTION_KEY</code> — في أداة <code>rotate:ai-encryption</code> الآن، لكن النسخة الاحتياطية المذكورة محلية. عايزين ترتيب لاسترجاع مفتاح الإنتاج.</p>
+<p>(4) <strong>الإنتاج:</strong> هل المساعد مفعّل؟ بأي مزوّدين؟ (كشف مفتاح المزوّد بقى بيتسجل في <code>ActivityLog</code> قبل ما يرجع.)</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>قرارات المعلم والرسائل (صاحب المنتج + مينا).</strong></p>
+<p>(1) <strong>بيانات أولياء الأمور:</strong> <code>/api/teaching/students/:id/export</code> بيصدّر اسم وتليفون وإيميل ولي الأمر (CSV/XLSX) للمعلم، من غير سجل تصدير. مقبول؟</p>
+<p>(2) <strong>رسائل الطلاب للمعلمين:</strong> الملكية سليمة (الطالب يراسل معلمه بس)، لكن بحد 60 رسالة/دقيقة و4000 حرف، من غير retention أو آلية بلاغ. الطلاب قُصّر. نضيف retention وبلاغ وحد لكل مستلم؟</p>
+<p>(3) <strong>ثقل <code>/api/teaching/overview</code>:</strong> ممكن يحمّل لحد 50 ألف صف تقدم و100 ألف نشاط و10 آلاف تسليم في الطلب (حساب مش قياس). نضيف cache أو حد؟ <strong>(8 نوفمبر)</strong> لوحة تحكم مدير المدرسة والمعلم بقت بتناديه تلقائيًا عند كل فتح (<code>limit=4</code> بيحد الرد مش الاستعلام)، فالتكلفة بقت مع كل زيارة للوحة.</p>
+</div>
+</section>
 
     <!-- ================= SERVER SPECS & PROVIDERS ================= -->
 
@@ -416,12 +477,19 @@
 
     <div class="part-divider" id="resolved-recently" style="margin-top:40px; background:var(--good);">
       <div class="part-eyebrow" style="color:#fff;">اتحلت مؤخرًا</div>
-      <h2>بنود اتقفلت من V36 لـV39</h2>
-      <p>22 بند. السجل الأقدم (31 بند) في V35 والتقرير الكامل.</p>
+      <h2>بنود اتقفلت من V36 لـV40</h2>
+      <p>23 بند. السجل الأقدم (31 بند) في V35 والتقرير الكامل.</p>
     </div>
 
     <section id="resolved-list" style="margin-top:20px;">
       <div class="discovery" style="border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ تحقق — V40 (ديف 8–9 نوفمبر)</span>
+        <h3>لصق وعرض المعادلات: مفيش XSS ولا ReDoS</h3>
+        <p><code>normalizeMathFormula</code> بقت بترجّع النص المهرّب (<code>\textbackslash href…</code>) لأوامر LaTeX حقيقية. جرّبناها (KaTeX 0.16.47، Node): 7 أوامر خطيرة (<code>\href</code> بـ<code>javascript:</code>، <code>\url</code>، <code>\htmlClass</code>، <code>\htmlData</code>، <code>\htmlId</code>، <code>\htmlStyle</code>، <code>\includegraphics</code>) بتتعرض كنص من غير <code>&lt;a&gt;</code> أو <code>href</code> أو <code>onclick</code>، لأن <code>trust</code> مش مفعّل (grep أكّد). ومدخلات عدائية 200K: أبطأ 25ms. ديف 8 نوفمبر (شهادة الاجتياز، لوحة المتابعة): نضيف.</p>
+        <div class="resolved">✓ مقفول بتجربة محلية. شرط: <code>trust</code> يفضل غير مفعّل.</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
         <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
         <h3>صلاحيات المعلم محصورة في اللي أنشأه، والـmiddleware متطبّق على كل المسارات</h3>
         <p><code>teacherContentAccess</code> على 34 مسار كورسات و43 مسار امتحانات، وبيفشل مغلق (503). المعلم يشوف محتواه ومدرسته وطلابه المرتبطين، ونتايج امتحانات مادته بس. شكّينا في نقطتين وطلعوا سليمين: نسخ الدروس (<code>copy-*</code>) عليها <code>checkRole(SUPER_ADMIN)</code> بس، وبحث المستخدمين بيستخدم <code>where.AND</code> فما بيمسحش الـscope. الـimpersonation (مدير مدرسة ← معلمي مدرسته) منطقه سليم وفيه اختبارات.</p>
@@ -790,9 +858,10 @@
       <div class="avatar-circle"><img src="https://res.cloudinary.com/dnkuwemxn/image/upload/v1784559494/logo_riydzz.png" alt="شعار المنصة"></div>
       <div class="who">
         <div class="name">Hesham Ahmed Abdelatty</div>
-        <div class="role"> Full Stack Engineer — أعدّ هذا التقرير</div>
+        <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
+    <p class="footer-note">V40 — ٩ نوفمبر ٢٠٢٦ (مراجعة ديف 8 و9 نوفمبر فوق V39: 3–7 نوفمبر). المنهجية: قراءة الكود، وتشغيل <code>normalizeMathFormula</code> على 6 أنواع مدخل عدائي بحجم 200K وعلى 7 أوامر KaTeX خطيرة (KaTeX 0.16.47)، وفحص آلي لأنماط خطرة في الكود الجديد، وgrep لـ<code>trust</code> (نتيجته من هشام). ما شغّلتش اختبارات مينا، وما اتجرّبش حاجة على إنتاج. الأرقام "حساب" مش قياس. <strong>اتقفل في V39 (ديف 3–7 نوفمبر):</strong> صلاحيات المعلم (ونقطتين اشتبهنا فيهم طلعوا سليمين)، <code>hideKeys</code>، الـIP في الـlimiter، تسجيل كشف مفتاح الـAI، <code>/health</code> و<code>/ready</code>، <code>next</code> في الدخول، <code>xlsx</code>. <strong>اتفتح:</strong> حساب demo بباسورد ثابت، وRedis كنقطة فشل، وقرارات المعلم والرسائل، وملاحظة <code>maxSize</code>. والـbackups العالي (الريبو كان public). <strong>لسه مش متراجع:</strong> UI المتابعة والرسائل الجديد، و~98 component قديمة، وقياسات next/image و"use client" (<code>npm run audit:rendering</code>). مفيش بند حرج. الملف الحي هو "Klevro open issues only" بدون رقم نسخة.)</p>
   </div>
 </footer>
 
