@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Klevro — المشاكل المفتوحة حاليًا V40 (٩ نوفمبر ٢٠٢٦)</title>
+<title>Klevro — المشاكل المفتوحة حاليًا V42 (١٩ نوفمبر ٢٠٢٦)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -275,14 +275,14 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V40 — ٩ نوفمبر ٢٠٢٦</p>
-    <h1>المشاكل المفتوحة حاليًا — V40</h1>
-    <p class="lead">نسخة مُصفّاة بالمفتوح، مع قسم "اتحلت مؤخرًا" لبنود V36–V40. V40 بتضيف ديف 8 و9 نوفمبر (UI ولصق وعرض المعادلات): مفيش ثغرات، وبند واحد منخفض. V39 غطّت ديف 3 و6–7 نوفمبر: تحويل صلاحيات المعلم لـ"المنشئ فقط"، ومساحة متابعة المعلم والرسائل والتقويم، وإصلاحات مينا لبنود V38 (<code>hideKeys</code>، limiter، خصوصية الـAI، <code>/ready</code>، <code>xlsx</code>). <strong>اتفتح:</strong> حساب معلم تجريبي بباسورد ثابت بيتنزّل تلقائيًا في الإنتاج، وRedis بقى نقطة فشل لكل الـAPI. <strong>وبند الـbackups العالي</strong> بقى أخطر: الريبو كان public حسب وثيقة مينا، وتنضيف التاريخ وإعادة تعيين كلمات المرور لسه ما اتنفّذوش. مفيش بند حرج. الإصلاحات اتراجعت بالكود (ما شغّلتش اختبارات مينا، وما اتجرّبش حاجة على إنتاج). <strong>مش متراجع:</strong> UI المتابعة والرسائل الجديد (فحصنا أنماطه الخطرة آليًا بس)، و~98 component قديمة، وقياسات next/image و"use client".</p>
+    <p class="eyebrow">تقرير فني · منصة Klevro التعليمية · V42 — ١٩ نوفمبر ٢٠٢٦</p>
+    <h1>المشاكل المفتوحة حاليًا — V42</h1>
+    <p class="lead">V42 تغطّي ديف 18–19 نوفمبر وحادث العميل. فحص الإنتاج (من مينا) ما أظهرش فقد في الدروس الحية، لكن دروس عربية اتحذفت 6 سبتمبر وممكن تكون محتوى حقيقي. 27 حساب لسه ما اتعاد تعيينهم. مفيش بند حرج. أرقام الإنتاج من مينا، مش متحقق منها.</p>
 
     <div class="stat-row">
-      <div class="stat-tile open"><span class="n">9</span><span class="l">بند مفتوح — 1 عالي + 5 متوسطة + 3 ملاحظات (مفيش حرج)</span></div>
-      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">7</span><span class="l">نقاط تأكيد مفتوحة — إعدادات Dokploy، واختبارات staging، وقرارات الخصوصية والرسائل</span></div>
-      <div class="stat-tile fixed"><span class="n">23</span><span class="l">بند اتقفل/اتأكد مؤخرًا (V36–V40). السجل الأقدم في V35</span></div>
+      <div class="stat-tile open"><span class="n">12</span><span class="l">بند مفتوح — 2 عالي + 5 متوسطة + 5 ملاحظات</span></div>
+      <div class="stat-tile bonus"><span class="n" style="color:#F0A39B;">8</span><span class="l">نقاط قرار (أسئلة مينا في قسم منفصل)</span></div>
+      <div class="stat-tile fixed"><span class="n">33</span><span class="l">بند اتقفل/اتأكد مؤخرًا (V36–V42)</span></div>
     </div>
 
     <div id="dynamic-issue-summary" class="dynamic-stats"></div>
@@ -298,10 +298,9 @@
     <ul>
       <li><a href="#readiness">لوحة الجاهزية الحالية</a></li>
       <li><a href="#open-now" class="nav-h">المشاكل المفتوحة — كروت</a></li>
-      <li><a href="#decisions" class="nav-h">نقاط محتاجة قرار/تأكيد</a></li>
+      <li><a href="#decisions" class="nav-h">نقاط قرار</a></li>
+      <li><a href="#mina-questions" class="nav-h">أسئلة لمينا</a></li>
       <li><a href="#resolved-recently" style="color:var(--good);">✅ اتحلت مؤخرًا</a></li>
-      <li><a href="#server-specs" class="nav-h">اقتراح إمكانيات ومزودي السيرفرات</a></li>
-      <li><a href="#architecture" class="nav-h">قاعدة البيانات والمعمارية</a></li>
       <li><a href="#plan" class="nav-h">خطة العمل</a></li>
     </ul>
   </nav>
@@ -314,22 +313,22 @@
         <div class="r-tile">
           <div class="r-title">الأمان</div>
           <div class="r-score-row"><span class="r-score was">10/10</span><span class="r-arrow">→</span><span class="r-score now warn">8/10</span></div>
-          <div class="r-verdict">تحقق الملكية شامل ومزدوج على كل مسارات الامتحانات/الموديولات/الدروس، بما فيها تحقق TeacherCourse فعلي (مش بس school-level). JWT خرج من localStorage والـresponse body خالص، محمي باختبار تراجع دائم. باب خلفي كامل في تسجيل الدخول اتشال. brute-force lockout بقى fail-closed هيكليًا (Redis أو worker واحد بالإجبار، مفيش حالة وسط ضعيفة). ثغرة IDOR حذف الدروس لـTEACHER وثغرة إدارة امتحان cross-school عبر creatorId — الاتنين اتلقوا واتقفلوا في مراجعة 21-24 سبتمبر. مراجعة 1-2 أكتوبر مدّت نفس تحقق الـownership لعمليات التعديل (مش الحذف الصريح بس) وقفلت تجاوز توجل الحذف عبر تعديل عادي، وفصلت كوكي الجلسة عن كوكي التجديد بـJWT purpose منفصل (مع إصلاح مصاحب في بروكسي الكوكيز كان ممكن يكسر الميزة بصمت). تحديث 7 نوفمبر: مينا قفل <code>hideKeys</code> وبنود الـlimiter والخصوصية (الكود اتراجع، مش على إنتاج). مفتوح: <strong>هاشات bcrypt في تاريخ git</strong> (الريبو كان public، والتنضيف وإعادة تعيين كلمات المرور لسه)، وحساب demo بباسورد ثابت، وRedis كنقطة فشل. 8/10 حكم تقديري مني. مفيش بند حرج.</div>
+          <div class="r-verdict">مفيش بند حرج. مفتوح: 27 حساب هاشاتهم كانت مكشوفة لسه ما اتعاد تعيينها، وحساب demo بباسورد في المصدر. الباقي اتقفل في الكود (ما اتجرّبش على إنتاج). الدرجات تقدير مني.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">الأداء</div>
           <div class="r-score-row"><span class="r-score now good">7/10</span></div>
-          <div class="r-verdict">الـ 3 Maps اتقفلت بالكامل، وحالة المستخدم بقت فحص DB مباشر بدل كاش. <strong>تحديث 7 نوفمبر:</strong> الـlimiter العام للـAPI بقى مشترك عبر Redis (<code>apiRateLimit</code>)، وكمان login lockout وحدود الـAI. باقي الـlimiters (<code>express-rate-limit</code> في المسابقات والترجمة) لسه على store في الذاكرة لكل worker (مؤكد من إعدادها). تحذير: الـlimiter العام fail-closed (بند Redis تحت). PM2 cluster mode شغال مع حماية من تكرار startup tasks.</div>
+          <div class="r-verdict">الـlimiter العام مشترك عبر Redis وfail-open. triggers سجل المحتوى ممكن تبطّئ الاستيراد الكبير (مش مقاس).</div>
         </div>
         <div class="r-tile">
           <div class="r-title">سلامة البيانات</div>
-          <div class="r-score-row"><span class="r-score now good">8/10</span></div>
-          <div class="r-verdict">مفيش db push في أي مسار تشغيل، وبقى فيه نظام migrations رسمي (baseline + migrations حقيقية) بدل الاعتماد الكامل على raw SQL. الامتحانات المنشورة بتحافظ على حالتها بعد autosave. مشكلة تكرار الأسئلة اتحلت من جذورها، وتحديث 23 سبتمبر قفل تفصيلة إضافية في نفس الموضوع (توقيع التكرار كان بيتجاهل الاختيارات والصور، فكان بيسبب تصادم غلط لأسئلة الهندسة القصيرة — التفاصيل في V35). حذف الأسئلة المحفوظة (SUPER_ADMIN فقط) اتأكد كسياسة مقصودة ومحمية باختبار. مزامنة الأسئلة المستقلة بالفرونت شغالة. تحسينات أداء الحفظ/التعديل مراجَعة وآمنة. تحديث 30 سبتمبر: منطق مطابقة الـIDs والـdedup في الـautosave (اللي كان عليه بند مفتوح من مراجعة 28 سبتمبر) اتقفل بالكامل — 3 مراحل matching صريحة، منع كامل للـindex fallback عن أي سؤال بمحتوى، وتنظيف الأسئلة المستقلة المكررة من الـstate نفسه مش الـpayload بس. مؤكد باختبار مستقل ومحمي باختبارات مخصصة جديدة (التفاصيل في V35).</div>
+          <div class="r-score-row"><span class="r-score was">8/10</span><span class="r-arrow">→</span><span class="r-score now warn">6/10</span></div>
+          <div class="r-verdict">حادث الدروس قيد التحقيق. الأسباب القديمة (مطابقة الدرس بالعنوان، وحفظ كورس بيحذف الناقص) اتصلحت، ومن 19 نوفمبر فيه سجل محتوى.</div>
         </div>
         <div class="r-tile">
           <div class="r-title">استمرارية التخزين</div>
-          <div class="r-score-row"><span class="r-score now good">9/10</span></div>
-          <div class="r-verdict">النسخ الاحتياطي محلي + سحابي ومستقر، ومحمي من Zip Slip. الباك أبات نُقلت من مجلد عام لمجلد خاص. النسخ التلقائي الساعاتي بقى شامل (كان ناقص درجات الطلاب)، وتحديث 23 سبتمبر قفل مشكلة تانية في نفس المنطقة: الكرون الساعاتي كان بيتسجل على كل PM2 worker بدل الأساسي بس (التفاصيل في V35). المتبقي: الملفات لسه على قرص محلي بدل Object Storage خارجي. تحديث 23 أكتوبر: الشهادات الجديدة بتتخزن base64 جوه Postgres (بند متوسط تحت).</div>
+          <div class="r-score-row"><span class="r-score was">9/10</span><span class="r-arrow">→</span><span class="r-score now warn">5/10</span></div>
+          <div class="r-verdict">النسخ كلها على نفس السيرفر، ومفيش نسخة بين 7 سبتمبر و15 نوفمبر. R2 اتأجّل.</div>
         </div>
       </div>
     </section>
@@ -345,422 +344,405 @@
     <section id="frontend-open">
 <div class="cards">
 <div class="card sev-high">
-<div class="card-top"><span class="badge sev-high">عالي</span><h3>ملفات الـbackup لسه في تاريخ git — والريبو كان public (حسب وثيقة مينا)</h3></div>
-<span class="loc">git history: back/backup-2026-05-29….json · back/backups/*.json · back/restored_exams_clean.json</span>
-<p class="desc">اتشالت من الشجرة، وباقية في التاريخ، وفيها هاشات bcrypt لمستخدمين (منها SUPER_ADMIN). ريبو <code>minasamir1401/course-back</code> كان public وبقى private. تنضيف التاريخ جاهز لكن <strong>ما اتنفّذش</strong>، ولا إعادة تعيين كلمات المرور.</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">اعتبر الهاشات مكشوفة: نفّذ تنضيف التاريخ، وأجبر تغيير كلمات المرور لكل الحسابات اللي في الملفات (مش SUPER_ADMIN بس).</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc"><strong>اللي اتأكد منه:</strong> هاشات bcrypt في حقل <code>password</code> — القيم الفريدة: 6 في <code>backup-2026-05-29…</code>، 69 في <code>backup-2026-06-30…</code>، 51 في <code>recovery.json</code>. الأدوار: الأول STUDENT 4 + SCHOOL_ADMIN 1 + SUPER_ADMIN 1؛ التاني SUPER_ADMIN 1 + SCHOOL_ADMIN 11 + TEACHER 18 + STUDENT 39؛ التالت SCHOOL_ADMIN 28 + STUDENT 16 + TEACHER 6 + SUPER_ADMIN 1. فيها أسماء مستخدمين وأسماء أشخاص وإجابات طلاب. مفيش كلمات مرور plaintext.</p><p class="desc"><strong>جديد 7 نوفمبر (من <code>REMEDIATION-2026-11.md</code>، ما تحققتش منه بنفسي):</strong> ريبو <code>course-back</code> اتحوّل من public لـprivate (تحقق عبر GitHub API)، والريبو الرئيسي كان private أصلًا. نسخة مفلترة (<code>history-cleanup-2026-11-06.git</code>) جاهزة، من غير push ولا استبدال تاريخ، وبدون محو الـPR refs والـforks والـcaches. أمر <code>npm run reset:superadmin</code> موجود (SUPER_ADMIN بحساب واحد، وأكثر من 16 حرف عبر متغير بيئة، ويسجّل نشاط)، لكن ما اتنفّذش، ومفيش أداة لباقي الحسابات.</p><p class="desc"><strong>مش عارفه:</strong> هل الحسابات حقيقية ولا تجريبية؛ مدة الفترة اللي كان فيها الريبو public ومين عمل clone/fork؛ قوة كلمات المرور. الأثر: كسر أوفلاين لهاش أي حساب، وSUPER_ADMIN أخطرهم.</p><p class="desc"><strong>الخطوات:</strong> (1) تحديد مدة الـpublic وقايمة الـforks/clones. (2) تنفيذ التنضيف + <code>force-with-lease</code> وإبلاغ كل من عمل clone. (3) إجبار تغيير كلمات المرور لكل الحسابات في الملفات (سكربت جديد لباقي الأدوار). (4) فحص أي نسخ تانية (CI artifacts، صور Docker قديمة، GitHub caches).</p></details>
+<div class="card-top"><span class="badge sev-high">عالي</span><h3>حادث العميل: اختفاء/استبدال دروس — قيد التحقيق</h3></div>
+<span class="loc">الإنتاج · courseManagement.ts · محرر الكورسات</span>
+<p class="desc">العميل بيقول دروس اختفت. فحص مينا ما لقاش فقد في الدروس الحية. اتكشف: دروس عربية (15 أغسطس) اتحذفت كلها 6 سبتمبر، وممكن تكون محتوى حقيقي.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">اسأل العميل عن الأسماء دي، وراجع محتواها، واسترجع نسخة واحدة من كل درس لو حقيقي.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc">• <strong>اتأكد (كلام مينا):</strong> 80 درس حي + 21 في السلة. <code>Work, energy &amp; power</code> بنفس البصمة في 3 نسخ. مفيش كورس <code>SAAT_Chemistry</code>، والكيمياء اسمها <code>Physical  Chemistry</code> (13).</p><p class="desc">• <strong>السلة:</strong> 21 درس (فيزياء/كيمياء/عربي للصف الأول الثانوي، 5 نسخ لكل كورس) كلهم <code>deletedAt</code> = 6 سبتمبر 20:16:10. مفيش نسخة حية منهم. العناوين شكلها منهج حقيقي. الاسترجاع ممكن (الحذف النهائي معطّل).</p><p class="desc">• <strong>أسباب من الكود القديم (اتصلحت 13–15 نوفمبر):</strong> مطابقة الدرس بالعنوان، وحفظ كورس بيحذف الناقص، ومسودات قديمة، وملخّصات من غير slides.</p><p class="desc">• <strong>فرضية:</strong> من 3 نوفمبر المعلم بيشوف اللي أنشأه بس، فكورس معيّن عليه ممكن يظهر "0 دروس".</p><p class="desc">• <strong>اتنفى:</strong> فرضية <code>SYSTEM</code> للنسخ. وفرضية سكربت الترجمة ضعيفة (<code>updatedAt</code> المتطابق = حفظ كورس واحد).</p><p class="desc">• <strong>مش مفسّر:</strong> 16 من الـ21 مش في نسخة 19:00 رغم <code>deletedAt</code> واحد، ومين حفظ الفيزياء 19 نوفمبر 08:58. من 19 نوفمبر فيه سجل محتوى.</p></details>
+</div>
+<div class="card sev-high">
+<div class="card-top"><span class="badge sev-high">عالي</span><h3>27 حساب هاشاتهم كانت مكشوفة لسه ما اتعاد تعيينهم</h3></div>
+<span class="loc">exposedCredentials.ts · super-admin/users (EXPOSED_RESET)</span>
+<p class="desc">21 دخولهم مرفوض (منهم 4 مدراء مدارس)، و6 لسه شغّالين (منهم <code>superadmin</code>). أدوات الـreset جاهزة ولسه ما اتنفّذتش.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text"><code>superadmin</code> أولًا، بعدين جماعي من تبويب <code>EXPOSED_RESET</code>، وبلّغ العميل.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc">• الهاشات كانت في backups داخل ريبو public. مينا عمل rewrite للتاريخ 11 نوفمبر (ما تحققتش). الأرقام من مينا.</p><p class="desc">• ده سبب شكوى العميل "طُلب إعادة تعيين الباسورد": إجراء أمني متعمد، من غير إبلاغ.</p></details>
 </div>
 <div class="card sev-medium">
-<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>الشهادات: كود التخزين الخاص وسكربت النقل جاهزين لكن مش متنفّذين</h3></div>
-<span class="loc">back/src/lib/certificateStorage.ts · scripts/backfillCertificatesToS3.ts · schema.prisma (Certificate)</span>
-<p class="desc">كود S3/R2 الخاص و<code>npm run migrate:certificates:s3</code> (معاينة، ثم <code>-- --apply</code>) اتضافوا، لكن مش شغّالين إلا لو <code>CERTIFICATE_S3_BUCKET</code> اتضبط. من غيره الشهادات base64 في Postgres (≈1.1GB للـbulk، حساب).</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">اضبط bucket خاص مخصص + الـenv، وبعد نسخة احتياطية نفّذ المعاينة ثم <code>--apply</code>.</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc">الكود يرفض استخدام الـbucket العام، والمفتاح <code>certificates/&lt;sha256&gt;</code> (dedup)، والتحميل بيتحقق من الحجم والـsha256. السكربت (حسب الوثيقة) بيعالج ملف واحد في المرة، وبينزّل ويتحقق من البايتات والهاش، وبيستخدم conditional updates قبل مسح النسخة المضمّنة. وثيقة مينا بتقول إن الـmigration <code>20261101000000</code> و<code>20261105000000</code> لازم يتنفّذوا قبل الـapp، وإن الـbucket مش مضبوط محليًا. <strong>مجهول:</strong> حالة الإنتاج (الـenv، الـmigration، الـbackfill). <code>Certificate</code> لسه من غير cascade على الطالب (من فحص سابق، ما اتأكدتش من تغييره).</p></details>
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>النسخ الاحتياطية: كلها على نفس السيرفر، ومفيش نسخة بين 7 سبتمبر و15 نوفمبر</h3></div>
+<span class="loc">cronService.ts · fullR2Backup.ts · الإنتاج</span>
+<p class="desc">R2 اتأجّل (قرار د. إيهاب)، وPostgres في Dokploy من غير نسخ. المحلية يومية، من غير تنضيف، ومش مشفّرة.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">نسخة خارجية (حتى أسبوعيًا يدويًا)، ونسخ Postgres في Dokploy.</span></div>
+<details class="more"><summary>التفاصيل</summary><p class="desc">• <strong>فرضية:</strong> تغيير مسار التخزين في <code>981907ab</code> (6 سبتمبر) خلّى النسخ في مكان مش دائم فاتمسحت مع النشر (مش مثبت).</p><p class="desc">• التنبيه بقى موجود: لو فات ميعاد النسخة اليومية بيظهر تنبيه.</p></details>
 </div>
 <div class="card sev-medium">
-<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>حساب معلم تجريبي بباسورد ثابت بيتنزّل تلقائيًا في الإنتاج</h3></div>
-<span class="loc">back/src/services/minaTeacherDemo.ts · scripts/start-production.js · back/.env.example</span>
-<p class="desc">الـseeder بيشتغل عند إقلاع الإنتاج على أي DB جديدة ويعمل معلم <code>mina_samy_teacher_demo</code> بباسورد ثابت في الكود. مفعّل افتراضيًا.</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text"><code>MINA_TEACHER_DEMO_ENABLED=false</code> في الإنتاج، أو <code>MINA_TEACHER_DEMO_PASSWORD</code> عشوائي.</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc"><strong>اللي اتأكد منه (قراءة كود):</strong> <code>MINA_DEMO_PASSWORD = 'MinaDemo!2026'</code> مكتوب في المصدر (وفي ريبو كان public). <code>start-production.js</code> بيشغّل <code>seed-mina-teacher-demo.js</code> بعد الـmigrations، والتعطيل بـ<code>MINA_TEACHER_DEMO_ENABLED=false</code> أو <code>0</code> بس، و<code>.env.example</code> مفعّله. بيعمل مدرسة منفصلة (<code>mina-samy-teacher-demo</code>) ومعلم role TEACHER، و8 طلاب وأولياء أمور بباسوردات عشوائية، وكورس وامتحان ومسابقات بيانات وهمية، ومعاه marker في <code>SystemSetting</code> يمنع إعادة التنصيب.</p><p class="desc"><strong>الأثر:</strong> حساب معلم بباسورد معروف علنًا. نطاقه مدرسته التجريبية (الـscoping سليم)، لكن أي حد يعرفه يقدر يرفع ملفات ويستخدم <code>/api/translate</code> ويبعت رسائل ويدير مسابقات في المدرسة دي. <strong>مش عارف</strong> لو اتنزّل في الإنتاج فعلًا. فحص: ابحث في لوحة SUPER_ADMIN عن "مدرسة تجربة المعلم — مينا سامي". التعليق في الـenv بيقول إنه "requested public teacher demo"، فممكن مقصود.</p></details>
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>حساب معلم تجريبي بباسورد في الكود لسه نشط</h3></div>
+<span class="loc">minaTeacherDemo.ts · الإنتاج</span>
+<p class="desc"><code>mina_samy_teacher_demo</code> (و<code>DTK123</code>) موجودين، وباسورد <code>MinaDemo!2026</code> في المصدر. الـseeder بقى opt-in.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">غيّر الباسورد أو احذف المدرسة التجريبية.</span></div>
 </div>
 <div class="card sev-medium">
-<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>Redis بقى نقطة فشل لكل الـAPI (الـlimiter العام fail-closed)</h3></div>
-<span class="loc">back/src/middleware/apiRateLimit.ts</span>
-<p class="desc">لو <code>REDIS_URL</code> مضبوط وRedis وقع أو بطيء (مهلة ثانية)، كل <code>/api/*</code> بيرجّع 503. ولو مش مضبوط ومفيش <code>LOGIN_RATE_LIMIT_SINGLE_WORKER=1</code>، برضه 503.</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">الـlimiter العام يرجع لمحلي لو Redis وقع (fail-open)، والدخول والـAI fail-closed.</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc"><code>apiRateLimit</code> (production بس، وبيتخطى loopback) بيعمل <code>checkRateLimit(…, strict=true)</code> على كل طلب: أي خطأ Redis = 503، وكل طلب بقى فيه round-trip لـRedis. قبل كده الأثر كان على الدخول بس. <strong>مش مقاس:</strong> الأثر الفعلي بيعتمد على إعداد الإنتاج (Redis مضبوط ولا لأ؟ — صندوق Dokploy تحت). الـCMD بتاع الـDockerfile بيعدّي على <code>start-production.js</code> (اللي بيضبط single-worker)، فمفيش 503 دايم من غير Redis طالما الـwrapper شغال.</p></details>
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>الشهادات: التخزين الخاص جاهز لكن مش مفعّل</h3></div>
+<span class="loc">certificateStorage.ts</span>
+<p class="desc"><code>CERTIFICATE_S3_BUCKET</code> مش مضبوط، والشهادات القديمة base64 في Postgres (≈1.1GB للـbulk، حساب).</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">اضبط bucket خاص، وبعد نسخة احتياطية نفّذ <code>migrate:certificates:s3</code> (معاينة ثم <code>--apply</code>).</span></div>
 </div>
 <div class="card sev-medium">
-<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image: آخر قياس 16 من 67 صفحة (~24%) — غير متعاد بعد ديف 9 أكتوبر</h3></div>
-<span class="loc">front/src/app (page.tsx)</span>
-<p class="desc">آخر قياس 16 من 67 صفحة. غير متعاد بعد ديف 9 أكتوبر.</p>
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>next/image</h3></div>
+<span class="loc">front (صفحات page.tsx)</span>
+<p class="desc">آخر قياس 16 من 67 صفحة. غير متعاد.</p>
 <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شغّل <code>npm run audit:rendering</code> وحدّث الرقم.</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc">القياس (<code>grep -rl "next/image" front/src/app --include="page.tsx" | wc -l</code> = 16) على مستوى page.tsx بس؛ الرقم القديم "4 من 67" من V24 طلع غير دقيق. ديف 9 أكتوبر استبدل <code>&lt;img&gt;</code> بـnext/image في مكوّنات (RichTextEditor، معاينة FileUpload) وأضاف <code>shouldSkipImageOptimization</code> للمصادر <code>data:</code> و<code>blob:</code> و<code>http:</code> (لأن remotePatterns https فقط)، لكن ده على مستوى المكوّنات ومش بيغيّر رقم الصفحات. الإجمالي 67 كمان غير متعاد بعد صفحات skills-hub.</p><p class="desc"><strong>الحل بالتفصيل:</strong> شغّل <code>npm run audit:rendering</code> من <code>front/</code> (سكربت جديد بالـAST: إجمالي الصفحات، الصفحات client، وnext/image مقابل <code>&lt;img&gt;</code> على مستوى الـJSX كله) وحدّث الرقم منه. بعدها استبدال تدريجي في الصفحات الأثقل بالصور.</p></details>
 </div>
 <div class="card sev-medium">
-<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client": آخر قياس 40 من 67 page.tsx، والمتوقع 36 بعد ديف 9 أكتوبر (حساب مش قياس)</h3></div>
-<span class="loc">front/src/app (page.tsx)</span>
-<p class="desc">آخر قياس 40 من 67. المتوقع 36 (حساب مش قياس).</p>
+<div class="card-top"><span class="badge sev-medium">متوسط</span><h3>"use client"</h3></div>
+<span class="loc">front (صفحات page.tsx)</span>
+<p class="desc">آخر قياس 40 من 67، المتوقع 36 (حساب مش قياس).</p>
 <div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شغّل <code>npm run audit:rendering</code> للرقم الفعلي.</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc"><strong>اللي مقاس:</strong> 40 بعد ديف 7-8 أكتوبر (PowerShell <code>Select-String</code>، بيعدّ الأسطر المطابقة مش الملفات، وبيساويها طول ما كل ملف فيه تطابق واحد؛ القياسات الأقدم كانت بـ<code>grep -l</code>). <strong>اللي اتغيّر بعده:</strong> ديف 9 أكتوبر شال الـdirective من 4 صفحات إضافية (analytics وsubmissions للـschool-admin والـsuper-admin) — يعني المتوقع 40-4=36. الجديد في الأسلوب ده إن الأجزاء الثابتة (الشعار، العنوان، شاشة التحميل) بقت بتتمرر كـprops من <code>page.tsx</code> (سيرفر) للـView، وده قسمة فعلية مش مجرد نقل الحد. قارنّا الأسطر المشالة بالمضافة: نقل خالص، والفرق بالظبط هو الماركب اللي اتنقل للصفحة + الـprops. تحفظ: الإجمالي 67 غير متعاد، ومحتوى الـView لسه client-rendered فالمكسب في الـbundle متواضع.</p><p class="desc"><strong>الحل بالتفصيل:</strong> شغّل <code>npm run audit:rendering</code> للرقم الفعلي (والإجمالي)، وكمّل بنفس نمط الـprops: سحب الأجزاء الثابتة وقوايم بيانات السيرفر لمكونات سيرفر بدل نقل الصفحة كلها لـView.</p></details>
 </div>
 <div class="card sev-info">
-<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>مواقع <code>&lt;[^&gt;]+&gt;</code> متبقية بعد الإصلاح</h3></div>
-<span class="loc">back/src/routes/deduplicate.ts:103 · back/src/scripts/clean-duplicates-and-empty.ts:8</span>
-<p class="desc">الموقعين دول ما ظهروش في ديف 2 نوفمبر، فالأرجح لسه بالنمط التربيعي القديم. مش على مدخل مستخدم مباشر، لكن <code>deduplicate</code> بيشتغل على نص مخزّن.</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استبدلهم بـ<code>stripTags</code> من <code>textSafety.ts</code>.</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc">من grep سابق على <code>&lt;[^&gt;]</code>: 8 مواقع، منها 6 اتعالجوا في 2 نوفمبر. <code>imports.ts:175</code> (<code>/&lt;[^&gt;]*&gt;?/gm</code>) آمن (0ms في قياسنا). النص المخزّن غالبًا بيتنضّف قبل الحفظ، فالأثر منخفض. ما اتأكدتش من الملفين بقراءة الكود الحالي.</p></details>
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>regex تربيعية متبقية (أثرها صغير)</h3></div>
+<span class="loc">deduplicate.ts:103 · answerEvaluation.ts · courseExcelTranslate.ts</span>
+<p class="desc"><code>&lt;[^&gt;]*&gt;</code> و<code>\s+\S+$</code> (≤0.9 ث عند 30K). مدخلها محدود: نص مخزّن، متصفح الطالب، خلية Excel.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">استبدلها بـ<code>stripTags</code>.</span></div>
 </div>
 <div class="card sev-info">
-<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>مسارات <code>/api/competitions/content</code> (GET/PUT) ميتة</h3></div>
-<span class="loc">back/src/routes/competitions.ts</span>
-<p class="desc"><code>router.all(…, 410)</code> مسجّل قبلها، فالـhandlers دي ما بتتنفّذش أبدًا.</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شيلها أو شيل الـ410.</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc">كود ميت مش مشكلة أمنية. من قراءة ديف 19–23 أكتوبر، ما اتأكدتش من تغييره بعدها.</p></details>
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>مسارات <code>/api/competitions/content</code> ميتة</h3></div>
+<span class="loc">competitions.ts</span>
+<p class="desc"><code>router.all(…, 410)</code> قبلها، فالـhandlers ما بتتنفّذش.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">شيلها.</span></div>
 </div>
 <div class="card sev-info">
-<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>عرض المعادلات للطالب من غير <code>maxSize</code> و<code>maxExpand</code></h3></div>
-<span class="loc">front/src/components/HtmlRenderer.tsx · RichTextEditor.tsx</span>
-<p class="desc"><code>AiPractice</code> بيحط <code>maxExpand:500</code> و<code>maxSize:15</code>، لكن عرض محتوى المعلم للطالب لأ. معادلة بحجم ضخم (<code>\rule{1e9em}{1e9em}</code>) ممكن تعطّل تاب الطالب.</p>
-<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">أضف الاتنين في <code>katex.renderToString</code> في HtmlRenderer والمحرر.</span></div>
-<details class="more"><summary>التفاصيل</summary><p class="desc">الـ<code>trust</code> مش مفعّل في أي مكان (grep على HtmlRenderer والمحرر والـlib: مفيش نتيجة غير <code>trust:false</code> في <code>AiPractice</code>)، فالأثر DoS على تاب الطالب من محتوى معلم، مش XSS. اقتراح من توثيق KaTeX، ما جرّبتهوش في المتصفح.</p></details>
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>عرض المعادلات من غير <code>maxSize</code>/<code>maxExpand</code></h3></div>
+<span class="loc">HtmlRenderer.tsx</span>
+<p class="desc">معادلة ضخمة من معلم ممكن تعطّل تاب الطالب (<code>trust</code> غير مفعّل، فمفيش XSS).</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">أضف الاتنين في <code>renderToString</code>.</span></div>
+</div>
+<div class="card sev-info">
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>رفع Excel لحد 150MB بيتحلّل على السيرفر</h3></div>
+<span class="loc">imports.ts</span>
+<p class="desc">الحد الوحيد حجم الملف (معلم فما فوق). الأثر تقدير، ما قستش.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">حد 10–20MB + حد صفوف/أوراق.</span></div>
+</div>
+<div class="card sev-info">
+<div class="card-top"><span class="badge sev-info">ملاحظة</span><h3>triggers سجل المحتوى لكل صف</h3></div>
+<span class="loc">migration 20261119 · contentAudit.ts</span>
+<p class="desc"><code>to_jsonb</code> لكل صف محدّث (دروس slides 100–180KB) ممكن تبطّئ الاستيراد الكبير. مش مقاس.</p>
+<div class="fix"><span class="fix-label">الحل</span><span class="fix-text">قيّم على staging قبل استيراد كبير.</span></div>
 </div>
 </div>
 </section>
 
     <div class="part-divider" id="decisions" style="margin-top:40px; background:var(--warn);">
-      <div class="part-eyebrow">محتاجة قرار أو تأكيد</div>
-      <h2>نقاط لسه مفتوحة — مش بالضرورة إصلاح كود</h2>
+      <div class="part-eyebrow">قرارات</div>
+      <h2>نقاط قرار لهشام والعميل</h2>
+      <p>مش إصلاح كود.</p>
     </div>
 
+    <section id="open-decisions" style="margin-top:20px;">
+<div class="box" style="margin-top:20px;">
+<p><strong>قرارات الخصوصية</strong></p>
+<p>1) الـleaderboard العام بموافقة الطالب وحده؟ (قُصّر)</p>
+<p>2) تصدير اسم وتليفون وإيميل ولي الأمر للمعلم (CSV/XLSX) من غير سجل؟</p>
+<p>3) رسائل الطلاب للمعلمين: 60/دقيقة، 4000 حرف، من غير retention أو بلاغ — نضيف؟</p>
+<p>4) مساعد الـAI: سياسة خصوصية وموافقة ولي الأمر؟ (المحادثات 30 يوم)</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>قرارات التشغيل</strong></p>
+<p>5) نسخة خارجية (R2) بدل سيرفر واحد؟ قرار د. إيهاب بتأجيلها.</p>
+<p>6) حد إنفاق للـAI عند المزوّد (الحد داخل التطبيق 200/يوم و30/دقيقة).</p>
+<p>7) إبلاغ العميل بسبب إعادة تعيين الباسوردات، وموعد التنفيذ.</p>
+<p>8) حذف حساب/مدرسة الـdemo أو الإبقاء عليهم؟</p>
+</div>
+</section>
+
+    <div class="part-divider" id="mina-questions" style="margin-top:40px; background:var(--warn);">
+      <div class="part-eyebrow" style="color:#fff;">أسئلة</div>
+      <h2>أسئلة لمينا</h2>
+      <p>قراءة فقط. ما تعملش restore ولا <code>--apply</code> على الإنتاج.</p>
+    </div>
+
+    <section id="mina-questions-list">
+<div class="box" style="margin-top:20px;">
+<p><strong>أ) حادث الدروس</strong></p>
+<p>1) الدروس العربية (الصف الأول الثانوي) المحذوفة 6 سبتمبر 20:16:10: حقيقية ولا تجريبية؟ إيه اللي اتشغّل الليلة دي؟</p>
+<p>2) ليه الـ21 كلهم <code>deletedAt</code> واحد، ونسخة 19:00 فيها 5 حية بس؟</p>
+<p>3) مين حفظ كورس الفيزياء يوم 19 نوفمبر 08:58 و15 نوفمبر؟ (شوف سجل المحتوى.)</p>
+<p>4) هل <code>translateMetadata.ts</code> أو <code>backfill-*</code> اتشغّل على الإنتاج؟</p>
+<p>5) هل الـDB اتعمل لها restore قبل 17 سبتمبر؟ عدد الصفوف بالشهر لـ<code>Exam</code> و<code>ExamSubmission</code> و<code>User</code> و<code>Question</code>.</p>
+<p>6) كام معلم معيّن على كورسات ما أنشأهاش (<code>TeacherCourse</code>)؟ دول فقدوا الرؤية من 3 نوفمبر.</p>
+<p>7) <code>force-restore-work</code>: عنوان الدرس <code>e4d57cff…</code>، ومتى ولماذا، واتنادى مؤخرًا؟</p>
+<p>8) زر "حذف نهائي" من السلة لسه بيحذف؟ ولا <code>writePlan</code> بيصفّر <code>deletedAt</code>؟</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>ب) النسخ الاحتياطية</strong></p>
+<p>9) النسخ بعد 6 سبتمبر راحت فين؟ مسار التخزين بعد <code>981907ab</code> كان دائم؟</p>
+<p>10) نسخة خارجية (ولو أسبوعيًا يدويًا)، ونسخ Postgres في Dokploy؟</p>
+<p>11) أداء triggers سجل المحتوى على استيراد كبير (staging).</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>ج) الأمان والنشر</strong></p>
+<p>12) <code>superadmin</code> ثم الـ27 حساب: متى؟ وهل <code>--apply</code> اتنفّذ؟</p>
+<p>13) حساب demo (<code>mina_samy_teacher_demo</code> و<code>DTK123</code>): تغيير باسورد أو حذف؟</p>
+<p>14) staging: إجابة 100KB من <code>&lt;</code> ترجع 400؟ و413 على <code>POST /api/exams</code> و<code>upload-excel</code> و<code>POST /api/school/users</code>؟ شهادات PDF سليمة ما تترفضش؟</p>
+<p>15) <code>CERTIFICATE_S3_BUCKET</code> مضبوط على bucket خاص؟</p>
+<p>16) hash الـcommit المنشور بعد 18–19 نوفمبر.</p>
+<p>17) هل في محتوى قديم فيه <code>data:image/heic</code> في الـDB؟ (الـmiddleware بيرفض حفظه 415.)</p>
+</div>
+<div class="box" style="margin-top:20px;">
+<p><strong>د) من العميل (هشام)</strong></p>
+<p>18) رابط الصفحة اللي بتعرض "0 دروس"، والحساب والدومين.</p>
+<p>19) أسماء الدروس الناقصة، ومتى لاحظوا. وهل الأسماء العربية دي كورساتهم؟</p>
+</div>
+</section>
 
     <!-- ================= RECENTLY RESOLVED ================= -->
 
     <div class="part-divider" id="resolved-recently" style="margin-top:40px; background:var(--good);">
       <div class="part-eyebrow" style="color:#fff;">اتحلت مؤخرًا</div>
-      <h2>بنود اتقفلت من V36 لـV40</h2>
-      <p>23 بند. السجل الأقدم (31 بند) في V35 والتقرير الكامل.</p>
+      <h2>بنود اتقفلت من V36 لـV42</h2>
+      <p>33 بند. الأقدم (31 بند) في V35.</p>
     </div>
 
     <section id="resolved-list" style="margin-top:20px;">
       <div class="discovery" style="border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ تحقق — V40 (ديف 8–9 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V42</span>
+        <h3>سجل المحتوى (content audit)</h3>
+        <p>triggers بتسجّل مين/متى/أي حقول اتغيّرت على الكورسات والدروس والامتحانات والأسئلة، مع شاشة للـSUPER_ADMIN. (أداء الـtriggers مش مقاس.)</p>
+        <div class="resolved">✓ اتقفل</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ V42</span>
+        <h3>استرجاع ورفع النسخ آمنين</h3>
+        <p>الاسترجاع بيحافظ على باسوردات وصلاحيات الحاليين، ورفع ZIP بيتحقق من المسارات وما بيكتبش فوق ملف.</p>
+        <div class="resolved">✓ اتقفل</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ V42</span>
+        <h3>إزالة التوكن من الـURL</h3>
+        <p><code>auth.ts</code> ما بقاش يقبل <code>?token=</code>.</p>
+        <div class="resolved">✓ اتقفل</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ V42</span>
+        <h3>نقل الأسئلة بتحقق</h3>
+        <p>الـmodule والـsub-exam لازم يتبعوا الامتحان الهدف، والسؤال يتبع المصدر.</p>
+        <div class="resolved">✓ اتقفل</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ V42</span>
+        <h3>حزم محدّثة</h3>
+        <p><code>express</code> و<code>multer</code> و<code>body-parser</code> و<code>follow-redirects</code>.</p>
+        <div class="resolved">✓ اتقفل</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ V41</span>
+        <h3>حفظ الكورس بقى مش بيكتب فوق دروس موجودة</h3>
+        <p><code>expectedUpdatedAt</code> لكل كورس ودرس، وUUID للدرس الجديد بدل مطابقة العنوان، وملخّصات الدروس بتحافظ على الـslides.</p>
+        <div class="resolved">✓ اتقفل</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ V41</span>
+        <h3>استيراد Excel والاسترجاع بقوا غير مدمّرين</h3>
+        <p>الاستيراد بيحدّث ويضيف ولا يمسح، والاسترجاع بيضيف نسخة بـUUID جديد، و<code>force-restore-work</code> اتحذف.</p>
+        <div class="resolved">✓ اتقفل</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ V41</span>
+        <h3>Redis مش نقطة فشل للـAPI</h3>
+        <p>الـlimiter العام بقى fail-open لو Redis وقع.</p>
+        <div class="resolved">✓ اتقفل</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ V41</span>
+        <h3>الحذف النهائي من السلة معطّل + تصدير مسودات المتصفح</h3>
+        <p>الحذف النهائي معطّل افتراضيًا، وتصدير مسودات المتصفح بيشيل الـheaders.</p>
+        <div class="resolved">✓ اتقفل</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ V41</span>
+        <h3>أدوات إعادة تعيين الباسوردات سليمة (التنفيذ لسه)</h3>
+        <p>للـSUPER_ADMIN فقط، bcrypt 12، <code>ActivityLog</code>، وباسورد مؤقت يظهر مرة واحدة. (التنفيذ لسه.)</p>
+        <div class="resolved">✓ اتقفل (التنفيذ لسه)</div>
+      </div>
+
+      <div class="discovery" style="margin-top:20px; border-color:var(--good);">
+        <span class="d-tag" style="background:var(--good);">✅ V40</span>
         <h3>لصق وعرض المعادلات: مفيش XSS ولا ReDoS</h3>
-        <p><code>normalizeMathFormula</code> بقت بترجّع النص المهرّب (<code>\textbackslash href…</code>) لأوامر LaTeX حقيقية. جرّبناها (KaTeX 0.16.47، Node): 7 أوامر خطيرة (<code>\href</code> بـ<code>javascript:</code>، <code>\url</code>، <code>\htmlClass</code>، <code>\htmlData</code>، <code>\htmlId</code>، <code>\htmlStyle</code>، <code>\includegraphics</code>) بتتعرض كنص من غير <code>&lt;a&gt;</code> أو <code>href</code> أو <code>onclick</code>، لأن <code>trust</code> مش مفعّل (grep أكّد). ومدخلات عدائية 200K: أبطأ 25ms. ديف 8 نوفمبر (شهادة الاجتياز، لوحة المتابعة): نضيف.</p>
-        <div class="resolved">✓ مقفول بتجربة محلية. شرط: <code>trust</code> يفضل غير مفعّل.</div>
+        <p>7 أوامر KaTeX خطيرة بتتعرض كنص (<code>trust</code> مش مفعّل)، ومدخلات 200K ≤ 25ms.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V39</span>
         <h3>صلاحيات المعلم محصورة في اللي أنشأه، والـmiddleware متطبّق على كل المسارات</h3>
-        <p><code>teacherContentAccess</code> على 34 مسار كورسات و43 مسار امتحانات، وبيفشل مغلق (503). المعلم يشوف محتواه ومدرسته وطلابه المرتبطين، ونتايج امتحانات مادته بس. شكّينا في نقطتين وطلعوا سليمين: نسخ الدروس (<code>copy-*</code>) عليها <code>checkRole(SUPER_ADMIN)</code> بس، وبحث المستخدمين بيستخدم <code>where.AND</code> فما بيمسحش الـscope. الـimpersonation (مدير مدرسة ← معلمي مدرسته) منطقه سليم وفيه اختبارات.</p>
-        <div class="resolved">✓ تحقق بقراءة الكود. تغيير سلوك: معلم معيّن على كورس أنشأه الأدمن مابقاش يشوفه (اسأل لو مقصود).</div>
+        <p>الـmiddleware على 34 مسار كورسات و43 امتحانات، بيفشل مغلق. المعلم يشوف اللي أنشأه بس.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V39</span>
         <h3>تغطية <code>hideKeys</code> لمسابقات الـ25 نوع</h3>
-        <p>قايمة بيضاء لحقول العرض لكل نوع (<code>PUBLIC_COMPETITION_FIELDS</code>)، وأي حقل جديد خاص افتراضيًا. اختبار fixture لكل نوع (WORD_SCRAMBLE بيشيل <code>word</code>، وCROSSWORD بيدّي الطول بس، وMIND_MAP بيحط الفراغات في bank مستقل).</p>
-        <div class="resolved">✓ اتقفل. باقي تأكيد خلط SEQUENCE_ORDER/SENTENCE_REORDER (صندوق التأكيد).</div>
+        <p>قايمة بيضاء لحقول الـ25 نوع مسابقة، واختبار لكل نوع.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V39</span>
         <h3>الـIP الحقيقي في الـlimiter</h3>
-        <p><code>trust proxy</code> بقى <code>loopback, linklocal, uniquelocal</code> (كان 1)، والـlimiter العام مشترك عبر Redis بمفاتيح IPv6/56 وheaders صادقة.</p>
-        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة، ما شغّلتش اختبارات مينا، ومش على إنتاج. (تأكيد الـIP الحقيقي: اختبار <code>RateLimit-Remaining</code>.)</div>
+        <p><code>trust proxy</code> بقى <code>loopback, linklocal, uniquelocal</code>.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V39</span>
         <h3>الـAI: تسجيل كشف المفتاح، وتقليل بيانات الطالب، وretention</h3>
-        <p><code>GET /api/ai/admin/providers/:id/credential</code> بيكتب <code>ActivityLog</code> (الـid والـIP، من غير المفتاح) <em>قبل</em> ما يرجّع المفتاح، وفشل الكتابة = رفض. السياق المهيكل للمزوّد بقى بالصف فقط. والمحادثات بتتمسح بعد 30 يوم (حسب وثيقة مينا ووجود <code>aiRetention.service</code>، ما قريتش كوده).</p>
-        <div class="resolved">✓ تسجيل الكشف اتأكدت منه بالكود. باقي بنود الخصوصية في الصناديق.</div>
+        <p>كشف مفتاح المزوّد بيتسجّل قبل الإرجاع، وسياق الطالب بالصف فقط، وretention 30 يوم (حسب مينا).</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V39</span>
         <h3><code>/api/health</code> و<code>/api/ready</code> بدون تفاصيل</h3>
-        <p>الرد لغير loopback بقى <code>status</code> بس، مع <code>Cache-Control: no-store</code>.</p>
-        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة، ما شغّلتش اختبارات مينا، ومش على إنتاج.</div>
+        <p>الرد لغير loopback بقى <code>status</code> بس.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V39</span>
         <h3><code>next</code> في صفحة الدخول</h3>
-        <p><code>safeLoginNext</code> بيرفض <code>//</code> والـbackslash والـcolon وحروف التحكم، وبيرجّع مسار نسبي بنفس الأصل بس. (ده كان تأكيد صغير من V37.)</p>
-        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة، ما شغّلتش اختبارات مينا، ومش على إنتاج.</div>
+        <p><code>safeLoginNext</code> بيقبل مسار نسبي بنفس الأصل بس.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ تحقق — V39 (ديف 3–7 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V39</span>
         <h3><code>xlsx</code> من الريبو (vendored) و<code>npm ci</code></h3>
-        <p><code>xlsx-0.20.3.tgz</code> جوه <code>vendor/</code> في الباك والفرونت، والـDockerfiles بتستخدم <code>npm ci</code> وPM2 من الـlock، و<code>NODE_ENV=production</code> صريح. مفيش اعتماد على CDN وقت الـbuild.</p>
-        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة، ما شغّلتش اختبارات مينا، ومش على إنتاج.</div>
+        <p><code>xlsx</code> vendored و<code>npm ci</code> في الـDockerfiles.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ اتقفل — V38 (ديف 2 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V38</span>
         <h3>الـReDoS في كل مسارات مدخل المستخدم</h3>
-        <p><code>stripTags</code> خطية، وسقف 10,000 حرف للإجابة عند التسليم والدرس وSkills Hub والمسابقة، و<code>textOnly</code> بيقص قبل الـregex. جرّبنا الدوال على 14 نوع مدخل عدائي بحجم 200K: أبطأ نتيجة 32ms (كانت 7–40 ثانية).</p>
-        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة وجُرّب محليًا، مش على staging/إنتاج.</div>
+        <p><code>stripTags</code> خطية وسقف 10K حرف. أبطأ مدخل 200K = 32ms (كان 7–40 ثانية).</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ اتقفل — V38 (ديف 2 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V38</span>
         <h3>bucket الـrate limit المشترك في <code>proxy.ts</code></h3>
-        <p><code>proxy.ts</code> بقى يمرّر <code>x-forwarded-for</code> في طلبات <code>/me</code>، فالـlimiter بيعدّ كل IP لوحده بدل bucket واحد للمنصة (بشرط إن Traefik بيحط الـIP الصحيح).</p>
-        <div class="resolved">✓ اتقفل في الكود — تأكيده باختبار <code>RateLimit-Remaining</code> من جهازين (صندوق التأكيد).</div>
+        <p><code>proxy.ts</code> بيمرّر <code>x-forwarded-for</code>.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ اتقفل — V38 (ديف 2 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V38</span>
         <h3>جسم الطلب 100MB قبل المصادقة</h3>
-        <p>الافتراضي بقى 2MB في البروكسي والباك. 100MB بس لمسارات المحتوى والـrestore، بعد التحقق من الجلسة والدور (الـregex متطابق في الاتنين). راجعنا مسارات الامتحانات والدروس والكورسات والـbackup وتصنيفها صح.</p>
-        <div class="resolved">✓ اتقفل — باقي اختبار 413 على 3 مسارات small (صندوق التأكيد).</div>
+        <p>الافتراضي 2MB، و100MB لمسارات المحتوى بعد المصادقة.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ اتقفل — V38 (ديف 2 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V38</span>
         <h3>ترجمة النص الغني: تضخيم الطلبات والـregex</h3>
-        <p>سقف 200 جزء للنص و400 للـbatch، وتوازي 4 بدل 16، وrate limit 20/دقيقة على <code>/api/translate</code>، وparser خطي بدل الـregex الكبير.</p>
-        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة وجُرّب محليًا، مش على staging/إنتاج.</div>
+        <p>سقف 200 جزء، وتوازي 4، وrate limit 20/دقيقة.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ اتقفل — V38 (ديف 2 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V38</span>
         <h3>ميزانية الـAI العام وrace الـrate limiter</h3>
-        <p>حد 200 طلب/يوم و30/دقيقة لكل المزوّدين (تشمل الـretries وقطع الصوت). و<code>checkRateLimit</code> بـLua atomic بيصلّح المفاتيح من غير TTL، والحدود الصارمة fail-closed.</p>
-        <div class="resolved">✓ اتقفل في الكود — باقي حد إنفاق عند المزوّد نفسه (خارج التطبيق).</div>
+        <p>200/يوم و30/دقيقة للعام، وLua atomic للـlimiter.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ اتقفل — V38 (ديف 2 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V38</span>
         <h3>فلتر PDF للشهادات بيتخطّاه ObjStm مضغوط</h3>
-        <p>الفلتر بقى يرفض <code>ObjStm</code> و<code>Encrypt</code>. نمط الـbypass اللي جرّبناه (ObjStm مضغوط) بقى يترفض (اتأكدنا بتشغيل الـregex الجديد على نفس العينة).</p>
-        <div class="resolved">✓ اتقفل — اختبر شهادات PDF سليمة (فلتر محافظ، ممكن يرفض PDFs مضغوطة).</div>
+        <p>رفض <code>ObjStm</code> و<code>Encrypt</code>.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ اتقفل — V38 (ديف 2 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V38</span>
         <h3>تسريب رسائل الأخطاء الداخلية</h3>
-        <p>اتشال <code>error.message</code> الخام من <code>fail()</code> في التقارير، و<code>details</code> من <code>/api/translate</code> ومن رد البروكسي، وكتابة <code>proxy_error.log</code>.</p>
-        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة وجُرّب محليًا، مش على staging/إنتاج.</div>
+        <p>اتشال <code>error.message</code> الخام من الردود.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ اتقفل — V38 (ديف 2 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V38</span>
         <h3>مسح الإشعارات كل دقيقة + retention</h3>
-        <p>المسح بيتخطى الطلاب في الدقايق الهادية (فحص تغييرات بـ<code>findFirst</code>)، وبيعيد استخدام الاستعلامات لكل cohort، وretention 90 يوم بدفعات.</p>
-        <div class="resolved">✓ اتقفل في الكود — اتراجع بالقراءة وجُرّب محليًا، مش على staging/إنتاج.</div>
+        <p>مسح مرحلي وretention 90 يوم.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ اتقفل — V38 (ديف 2 نوفمبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V38</span>
         <h3>تنضيف الريبو (<code>back/dist</code>، <code>src_backup</code>، logs، backups)</h3>
-        <p>اتشالوا من الشجرة الحالية وبقوا في <code>.gitignore</code>.</p>
-        <div class="resolved">✓ جزئي — الشجرة نضيفة، لكن التاريخ لسه فيه الـbackups (بند عالي مفتوح فوق).</div>
+        <p>اتشال <code>dist</code> و<code>src_backup</code> واللوجز من الشجرة (التاريخ اتنضّف حسب مينا).</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ تحقق — V37 (ديف 24–31 أكتوبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V37</span>
         <h3>مساعد الـAI: التصميم الأمني</h3>
-        <p>SSRF مقفول (فحص DNS عند كل اتصال، من غير redirects، حد 8MB)، المفاتيح AES-256-GCM، ملكية المحادثات والدروس، سياق الدرس من غير مفاتيح الإجابة، وعرض الردود آمن (HTML escaped، روابط محصورة بصفحات المنصة، KaTeX <code>trust:false</code>).</p>
-        <div class="resolved">✓ تحقق بقراءة الـbackend كله — مش اختبار حي. UI الـAI سطر بسطر لسه.</div>
+        <p>SSRF مقفول، المفاتيح AES-256-GCM، صلاحيات المحادثات سليمة، وعرض الردود آمن.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ مقفول/تحقق — V36 (ديف 19–23 أكتوبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V36</span>
         <h3>الـdeploy بيبني (tsc) من جديد في كل مرة</h3>
-        <p>الـDockerfile بيعمل <code>npm run build</code> وبياخد <code>dist</code> من الـbuilder، و<code>tsc</code> بيفشل الـbuild لو فيه type errors. يعني <code>dist</code> المتعمله commit مش بتتشغّل. (تصحيح: كنا فاكرين إنها ممكن تأثر على الإنتاج.)</p>
-        <div class="resolved">✓ مقفول من الـDockerfile. متبقي: تأكيد إن Build Type في Dokploy = Dockerfile.</div>
+        <p>الـDockerfile بيبني (tsc) في كل نشر؛ <code>dist</code> المحفوظ مش بيتشغّل.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ مقفول/تحقق — V36 (ديف 19–23 أكتوبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V36</span>
         <h3>تقسيم الـcontrollers ما شالش أي تحقق ownership</h3>
-        <p>قارنّا الأسطر المحذوفة بالمضافة لـexams/courses/backups: <code>canManageExam</code> 16/16، <code>teacherCourse</code> 9/9، <code>creatorId</code> 10/10. الفرق الوحيد في <code>canViewExam</code> (4 → 3) سببه نقل الـanalytics لـ<code>reporting.service.ts</code>، وفيه <code>canViewExam</code>.</p>
-        <div class="resolved">✓ مقفول بقراءة الكود. (الأرقام الحسابية للـanalytics لسه ما اتقارنتش.)</div>
+        <p>ما شال أي تحقق ownership (16/16 و9/9 و10/10).</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ مقفول/تحقق — V36 (ديف 19–23 أكتوبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V36</span>
         <h3>الـheaders <code>X-Offline-User-Id</code> / <code>X-Offline-School-Id</code></h3>
-        <p><code>auth.ts</code> بيقارنها بالهوية اللي اتحققت من الكوكي ويرجّع 409 لو اختلفت. فحص تطابق مش مصدر هوية.</p>
-        <div class="resolved" style="background:rgba(148,163,184,.14); color:var(--ink-soft);">↩️ مقفول — اتضح إنه مش مشكلة.</div>
+        <p>فحص تطابق مش مصدر هوية.</p>
+        <div class="resolved" style="background:rgba(148,163,184,.14); color:var(--ink-soft);">↩️ مش مشكلة</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ مقفول/تحقق — V36 (ديف 19–23 أكتوبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V36</span>
         <h3>ميزات 19–23 أكتوبر: Push والشهادات والمسابقات</h3>
-        <p>allowlist لعناوين Push (SSRF مقفول)، الـservice worker من غير cache للـAPI، تنزيل الشهادات attachment + CSP، والمسابقات: ملكية، توقيت على السيرفر، idempotency، ومفاتيح الإجابة محجوبة قبل الإجابة.</p>
-        <div class="resolved">✓ تحقق جزئي بقراءة الكود. <code>hideKeys</code> لكل أنواع الأسئلة لسه نقطة تأكيد.</div>
+        <p>Push وservice worker والشهادات والمسابقات: تصميم سليم.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
       <div class="discovery" style="margin-top:20px; border-color:var(--good);">
-        <span class="d-tag" style="background:var(--good);">✅ مقفول/تحقق — V36 (ديف 19–23 أكتوبر)</span>
+        <span class="d-tag" style="background:var(--good);">✅ V36</span>
         <h3>CSV/Excel formula injection</h3>
-        <p><code>csvCell</code> بتسبق القيم اللي بتبدأ بـ<code>= + - @</code> وtab/CR بعلامة <code>'</code>. جرّبناها على 11 مدخل. وكتابة XLSX بتخزّن النصوص كخلايا نصية من غير formula.</p>
-        <div class="resolved">✓ مقفول بتجربة (Node في sandbox). XLSX جُرّب على 0.18.5 بس.</div>
+        <p><code>csvCell</code> بيحيّد 11 مدخل، وXLSX بيخزّن النصوص كنصوص.</p>
+        <div class="resolved">✓ اتقفل</div>
       </div>
 
     </section>
 
-    <div class="part-divider" id="server-specs" style="margin-top:40px; background:var(--signal);">
-      <div class="part-eyebrow">توصية تقنية</div>
-      <h2>اقتراح إمكانيات ومزودي السيرفرات</h2>
-      <p>بناءً على الوضع الحالي للمنصة ومتطلبات التشغيل، هذه هي المواصفات المقترحة لبيئة الإنتاج وأبرز الاستضافات الموصى بها.</p>
-    </div>
-
-    <section id="server-specs-content">
-      <div class="box">
-        <p><strong>الوضع الحالي:</strong> الخادم الحالي عبارة عن VPS محدود (vCPU واحد، 4GB RAM، 50GB NVMe) وموارده مشتركة مع مشاريع أخرى، مما يسبب بطء الأداء.</p>
-        <p><strong>المواصفات المقترحة (الحد الأدنى لبيئة الإنتاج):</strong></p>
-        <ul style="margin-top:10px; color:var(--ink-soft); font-size:15px; line-height:1.8; padding-right: 20px;">
-          <li><strong>المعالج (CPU):</strong> من 4 إلى 8 أنوية (vCPUs) مخصصة لاستيعاب الطلبات المتزامنة والنسخ الاحتياطي.</li>
-          <li><strong>الذاكرة العشوائية (RAM):</strong> من 8GB إلى 16GB لتشغيل PostgreSQL و Docker بسلاسة.</li>
-          <li><strong>مساحة التخزين:</strong> 100GB كحد أدنى من نوع NVMe SSD.</li>
-          <li><strong>تخزين الملفات (Media Storage):</strong> نقل تخزين الفيديوهات والصور إلى مساحة خارجية مثل Cloudflare R2.</li>
-          <li><strong>التوسع المستقبلي:</strong> فصل قاعدة البيانات على سيرفر مستقل عن الواجهة الأمامية والخلفية للمشروع.</li>
-        </ul>
-      </div>
-
-      <h3 style="margin-top:28px; font-size:18px;">المزودون المقترحون (Hosting Providers)</h3>
-      <p class="section-sub">مقارنة بين خيارات الاستضافة المناسبة للأداء العالي والميزانية:</p>
-
-      <div class="cost-grid" style="grid-template-columns: repeat(2, 1fr);">
-        <div class="cost-card" style="border-top: 3px solid var(--signal);">
-          <div class="cc-num" style="color:var(--signal);">Option 1 — التوصية الأولى (أفضل أداء مقابل سعر)</div>
-          <h4>Hetzner (Cloud / Dedicated)</h4>
-          <p>أفضل خيار في أوروبا وأمريكا من حيث قوة المعالجات والأقراص السريعة بأسعار تنافسية جداً. يقدم خطط Dedicated CPU (سلسلة CCX) وسيرفرات كاملة (AX Line).</p>
-          <ul style="font-size:13px; color:var(--ink-soft); padding-right:16px; margin:8px 0;">
-            <li><strong>المميزات:</strong> أداء عالي جداً (NVMe SSD)، معالجات مخصصة، تكلفة منخفضة للغاية مقارنة بالمواصفات.</li>
-            <li><strong>العيوب:</strong> مراكز البيانات رئيسياً في ألمانيا وفنلندا وأمريكا (قد تتطلب CDN مثل Cloudflare للمنطقة العربية).</li>
-          </ul>
-          <span class="cc-price">CPX31 (4 vCPU / 8GB RAM) ≈ €14/شهر</span>
-        </div>
-
-        <div class="cost-card" style="border-top: 3px solid var(--navy-2);">
-          <div class="cc-num" style="color:var(--navy-2);">Option 2 — الأكثر سهولة واستقراراً</div>
-          <h4>DigitalOcean</h4>
-          <p>ممتاز ومناسب جداً للشبكات والتطبيقات السحابية. يتيح إنشاء خوادم سريعة (Droplets) وربط Managed Databases بسهولة.</p>
-          <ul style="font-size:13px; color:var(--ink-soft); padding-right:16px; margin:8px 0;">
-            <li><strong>المميزات:</strong> لوحة تحكم سهلة جداً، ثبات عالي، خوادم في ألمانيا وفرانكفورت والشرق الأوسط أحياناً.</li>
-            <li><strong>العيوب:</strong> التكلفة أعلى قليلاً من Hetzner و Contabo لنفس الإمكانيات.</li>
-          </ul>
-          <span class="cc-price">Dedicated CPU (4 vCPU / 8GB RAM) ≈ $48/شهر</span>
-        </div>
-
-        <div class="cost-card" style="border-top: 3px solid var(--purple);">
-          <div class="cc-num" style="color:var(--purple);">Option 3 — خيار موثوق وشبكة قوية</div>
-          <h4>Linode / Akamai</h4>
-          <p>من أقدم وأقوى شركات الاستضافة السحابية، وتوفر خطط Dedicated CPU متزنة ومناسبة لبيئات Production.</p>
-          <ul style="font-size:13px; color:var(--ink-soft); padding-right:16px; margin:8px 0;">
-            <li><strong>المميزات:</strong> دعم فني ممتاز، استقرار عالي جداً للشبكة، تسعير واضح بدون تكاليف خفية.</li>
-            <li><strong>العيوب:</strong> تحتاج خبرة في إدارة وتأمين السيرفرات لعدم وجود إدارات مدمجة كثيرة.</li>
-          </ul>
-          <span class="cc-price">Dedicated 8GB (4 vCPU / 8GB RAM) ≈ $36/شهر</span>
-        </div>
-
-        <div class="cost-card" style="border-top: 3px solid var(--warn);">
-          <div class="cc-num" style="color:var(--warn);">Option 4 — الخيار الاقتصادي للبدايات</div>
-          <h4>Contabo</h4>
-          <p>توفر حجم ذاكرة عشوائية (RAM) ومعالجات ضخمة جداً مقابل مبالغ زهيدة. مناسبة للميزانيات المحدودة جداً.</p>
-          <ul style="font-size:13px; color:var(--ink-soft); padding-right:16px; margin:8px 0;">
-            <li><strong>المميزات:</strong> أسعار رخيصة جداً مقابل إمكانيات عتاد مرتفعة.</li>
-            <li><strong>العيوب:</strong> الموارد قد تكون مشتركة بشكل مكثف في خطط VPS العادية، مما قد يسبب تذبذب السرعة تحت الضغط العالي.</li>
-          </ul>
-          <span class="cc-price">Cloud VPS 2 (6 vCPU / 16GB RAM) ≈ $12/شهر</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= DATABASE & ARCHITECTURE ================= -->
-
-    <div class="part-divider" id="architecture">
-      <div class="part-eyebrow">مرجع تقني</div>
-      <h2>قاعدة البيانات والمعمارية</h2>
-      <p>كل المخططات والمواد التقنية في مكان واحد.</p>
-    </div>
-
-    <section id="db-and-arch">
-      <h2>مخطط قاعدة البيانات (ERD)</h2>
-      <p class="section-sub">مستخرج مباشرة من schema.prisma الحالي.</p>
-      <div class="erd-box">
-        <div class="erd-frame">
-          <img src="https://res.cloudinary.com/dnkuwemxn/image/upload/v1784615165/erd_edu_track_platform_chqnyo.png" alt="مخطط ERD لقاعدة بيانات منصة Klevro">
-          <div class="erd-cap">ERD — Entity Relationship Diagram</div>
-        </div>
-      </div>
-
-      <h2 style="margin-top:36px;">المعمارية: الحالية مقابل المقترحة</h2>
-      <p class="section-sub">اضغط للتبديل.</p>
-      <div class="arch-tabs">
-        <button class="arch-tab active" data-tab="current">الحالية</button>
-        <button class="arch-tab" data-tab="proposed">المقترحة</button>
-      </div>
-
-      <div class="arch-panel active" id="panel-current">
-        <div class="arch-box">
-          <div class="arch-flow">
-            <div class="arch-node">Next.js<span class="an-sub">الفرونت اند</span></div>
-            <div class="arch-connector"></div>
-            <div class="arch-node accent">Express API + Authentication Middleware</div>
-            <div class="arch-connector"></div>
-            <div class="arch-node">Prisma ORM</div>
-            <div class="arch-connector"></div>
-            <div class="arch-node accent">PostgreSQL</div>
-            <div class="arch-connector"></div>
-            <div class="arch-node storage">Uploads + Backups<span class="an-sub">Docker volume دائم</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="arch-panel" id="panel-proposed">
-        <div class="arch-box">
-          <div class="arch-flow">
-            <div class="arch-node">Next.js</div>
-            <div class="arch-connector"></div>
-            <div class="arch-node accent">Express + Authentication<span class="an-sub">JWT حقيقي بدون fallback ✓</span></div>
-            <div class="arch-connector"></div>
-            <div class="arch-node">Prisma<span class="an-sub">migrate deploy ✓</span></div>
-            <div class="arch-connector"></div>
-            <div class="arch-node accent">PostgreSQL<span class="an-sub">+ Connection Pooling</span></div>
-            <div class="arch-connector"></div>
-            <div class="arch-branch">
-              <div class="arch-branch-col"><div class="arch-branch-lbl">الكاش والحماية</div><div class="arch-node storage">Redis</div></div>
-              <div class="arch-branch-col"><div class="arch-branch-lbl">الوسائط</div><div class="arch-node storage">Cloudflare R2<span class="an-sub">بدون SVG خام</span></div></div>
-              <div class="arch-branch-col"><div class="arch-branch-lbl">النسخ الاحتياطي</div><div class="arch-node storage">تخزين خارجي دائم</div></div>
-            </div>
-            <div class="arch-connector"></div>
-            <div class="arch-node accent">Monitoring &amp; Alerting<span class="an-sub">Sentry بدل console.log</span></div>
-          </div>
-        </div>
-      </div>
-
-      <h2 style="margin-top:36px;">تكلفة التخزين السحابي المقترح: Cloudflare R2</h2>
-      <p class="section-sub">لنقل الوسائط من التخزين المحلي/base64 لتخزين خارجي.</p>
-      <div class="erd-box">
-        <div class="cf-frame">
-          <img src="https://res.cloudinary.com/dnkuwemxn/image/upload/v1784719743/%D8%B4%D8%B1%D8%AD_cloudflare_v62y3t.png" alt="شرح تسعير Cloudflare R2">
-          <div class="cf-cap">توضيح مبسّط لآلية احتساب التكلفة</div>
-        </div>
-        <div class="free-tier-box">
-          <p class="ft-title">الخطة المجانية — تتجدد كل شهر تلقائيًا</p>
-          <ul>
-            <li>10 GB مساحة تخزين</li>
-            <li>1 مليون Class A Operations</li>
-            <li>10 مليون Class B Operations</li>
-            <li>تحميل الملفات للمستخدمين مجاني بالكامل</li>
-          </ul>
-        </div>
-        <div class="cost-grid">
-          <div class="cost-card"><div class="cc-num">Storage</div><h4>مساحة التخزين</h4><p>فيديوهات، صور، PDF.</p><span class="cc-price">0.015$ / GB شهريًا</span></div>
-          <div class="cost-card"><div class="cc-num">Class A</div><h4>عمليات الكتابة</h4><p>رفع، حذف، استبدال.</p><span class="cc-price">4.5$ / مليون عملية</span></div>
-          <div class="cost-card"><div class="cc-num">Class B</div><h4>عمليات القراءة</h4><p>مشاهدة، تحميل.</p><span class="cc-price">0.36$ / مليون عملية</span></div>
-        </div>
-        <p style="margin:0; font-size:13.5px; color:var(--ink-soft);">مثال: 100 GB ≈ 1.5$/شهر · 500 GB ≈ 7.5$/شهر · 1 TB ≈ 15$/شهر.</p>
-      </div>
-    </section>
     <!-- ================= ACTION PLAN ================= -->
 
     <section id="plan">
       <h2>خطة العمل</h2>
-      <p class="section-sub">الوضع العام: مفيش بند حرج (critical) مفتوح — آخر بند حرج (IDOR حذف الدروس) اتقفل في مراجعة 24 سبتمبر. في V39 بند عالي واحد: هاشات bcrypt في تاريخ git (والريبو كان public). الترتيب تحت حسب الأولوية.</p>
+      <p class="section-sub">الوضع العام: مفيش بند حرج (critical) مفتوح — آخر بند حرج (IDOR حذف الدروس) اتقفل في مراجعة 24 سبتمبر. بندين عاليين: حادث الدروس، و27 حساب مكشوفين. الترتيب تحت حسب الأولوية.</p>
 
       <div class="timeline">
         <div class="tl-item urgent">
           <div class="tl-dot"></div>
           <div class="tl-day">مرحلة 0 — عاجل (أيام)</div>
           <div class="tl-body">
-            <h4>أمان التاريخ والحسابات</h4>
+            <h4>الدروس والباسوردات والنسخ</h4>
             <ul>
-              <li>تنفيذ تنضيف تاريخ git، وتحديد مدة الـpublic، وإجبار تغيير كلمات المرور لكل الحسابات في ملفات الـbackup (SUPER_ADMIN أولًا)</li>
-              <li>تعطيل حساب المعلم التجريبي في الإنتاج (<code>MINA_TEACHER_DEMO_ENABLED=false</code>) أو تغيير باسورده</li>
-              <li>الـlimiter العام: fail-open لما Redis يقع، وتأكيد حالة Redis في الإنتاج</li>
-              <li>اختبارات staging (صندوق التأكيد) وضبط <code>CERTIFICATE_S3_BUCKET</code> وسقف إنفاق عند مزوّد الـAI</li>
+              <li>تحديد اللي العميل بيشوفه، ومراجعة محتوى الدروس العربية المحذوفة، واسترجاع نسخة من كل درس لو حقيقي</li>
+              <li>إعادة تعيين <code>superadmin</code> ثم الـ27 حساب، وإبلاغ العميل</li>
+              <li>نسخة خارجية، ونسخ Postgres في Dokploy</li>
+              <li>تغيير باسورد حساب الـdemo أو حذفه</li>
             </ul>
           </div>
         </div>
@@ -804,7 +786,7 @@
         <div class="role">مطوّر Backend — أعدّ هذا التقرير</div>
       </div>
     </div>
-    <p class="footer-note">V40 — ٩ نوفمبر ٢٠٢٦ (مراجعة ديف 8 و9 نوفمبر فوق V39: 3–7 نوفمبر). المنهجية: قراءة الكود، وتشغيل <code>normalizeMathFormula</code> على 6 أنواع مدخل عدائي بحجم 200K وعلى 7 أوامر KaTeX خطيرة (KaTeX 0.16.47)، وفحص آلي لأنماط خطرة في الكود الجديد، وgrep لـ<code>trust</code> (نتيجته من هشام). ما شغّلتش اختبارات مينا، وما اتجرّبش حاجة على إنتاج. الأرقام "حساب" مش قياس. <strong>اتقفل في V39 (ديف 3–7 نوفمبر):</strong> صلاحيات المعلم (ونقطتين اشتبهنا فيهم طلعوا سليمين)، <code>hideKeys</code>، الـIP في الـlimiter، تسجيل كشف مفتاح الـAI، <code>/health</code> و<code>/ready</code>، <code>next</code> في الدخول، <code>xlsx</code>. <strong>اتفتح:</strong> حساب demo بباسورد ثابت، وRedis كنقطة فشل، وقرارات المعلم والرسائل، وملاحظة <code>maxSize</code>. والـbackups العالي (الريبو كان public). <strong>لسه مش متراجع:</strong> UI المتابعة والرسائل الجديد، و~98 component قديمة، وقياسات next/image و"use client" (<code>npm run audit:rendering</code>). مفيش بند حرج. الملف الحي هو "Klevro open issues only" بدون رقم نسخة.)</p>
+    <p class="footer-note">V42 — ١٩ نوفمبر ٢٠٢٦ (ديف 18–19 نوفمبر + حادث العميل). المنهجية: قراءة الكود، وسويب regex، وأرقام الإنتاج من مينا (مش متحقق منها). ما شغّلتش اختبارات مينا. <strong>تصحيحات:</strong> سلة المحذوفات ما مسحتش حاجة. الـ91 يوم مش في الكود. الحسابات 21 محجوب و6 لا. فرضية <code>SYSTEM</code> للنسخ اتنفت. <strong>لسه مش متراجع:</strong> UI الجديد، و~98 component قديمة، وقياسات next/image و"use client". مفيش بند حرج. الملف الحي: "Klevro open issues only".</p>
   </div>
 </footer>
 
